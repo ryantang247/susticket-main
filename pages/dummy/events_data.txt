@@ -1,0 +1,40 @@
+category:
+Competition
+Fair
+Performance
+Activity
+Seminar
+
+photo ref : https://newshub.sustech.edu.cn/en/?tag=events&tagid=7&paged=2 
+
+category: 0
+contact: "123"
+contactName
+: "SUSTech"
+description: "Very Fun!"
+endDate: "2024-03-18T16:00:00.000Z"
+id: "61dff5c6-191f-4508-923e-88758ec37eba"
+price:"[{\"category\":\"VIP\",\"price\":25},{\"category\":\"Normal\",\"price\":20},{\"category\":\"Spectator\",\"price\":15}]"
+registrationDate: "2024-03-10T00:00:00.000Z"
+seatsioChartKey: "0ca17a6f-bd8c-6171-2874-4664c7dc3da2"
+seatsioEventsKey: "fa663037-ec81-4082-8bbd-8b18d8f5c18f"
+startDate: "2024-03-13T16:00:00.000Z"
+thumbnail: "https://res.cloudinary.com/doa7ha032/image/upload/v1710080416/VenuePhoto/ynxwq6nqd2swzfrhyuqf.jpg"
+title: "Fun Event"
+venueId: "a793c938-662e-4996-858e-12414f3ffdda"
+[[Prototype]]: Object
+1: 
+category: 2
+contact: "123"
+contactName: "SUStech"
+description: "Very Fun!"
+endDate: "2024-03-14T16:00:00.000Z"
+id: "635b9c0b-d988-4853-9d44-adef7a5e40ca"
+price: "[{\"category\":\"Normal Seatings\",\"price\":55}]"
+registrationDate: "2024-03-12T00:00:00.000Z"
+seatsioChartKey: "68b3593d-7f01-7efe-a203-f5d20dd6604a"
+seatsioEventsKey: "538237a3-0302-466c-9319-b881a8d21765"
+startDate: "2024-03-12T16:00:00.000Z"
+thumbnail: "https://res.cloudinary.com/doa7ha032/image/upload/v1710255689/VenuePhoto/c1ycypr1lnoqi2qemms8.jpg"
+title: "Fun Event"
+venueId: "a793c938-662e-4996-858e-12414f3ffdda"
