@@ -152,7 +152,7 @@
         // Handle the error if the request fails
         ElNotification.error({
           title: 'Error',
-          message: 'Failed to add event to cart. Please try again later.',
+          message: 'Failed to add event to cart. Please try again later.' +response.statusText,
           offset: 100
         });
       }

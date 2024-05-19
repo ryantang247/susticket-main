@@ -106,7 +106,6 @@ const addToCart = async (totalAmount) => {
         price: totalAmount// Adjust this accordingly based on how you get the price
       })
     });
-    console.log('Response:', response);
 
     // Check if the request was successful
     if (response.ok) {
@@ -118,9 +117,10 @@ const addToCart = async (totalAmount) => {
       });
     } else {
       // Handle the error if the request fails
+      console.log(response)
       ElNotification.error({
         title: 'Error',
-        message: 'Failed to add event to cart. Please try again later.',
+        message: 'Failed to add event to cart. Please try again later.' + response.statusText,
         offset: 100
       });
     }
@@ -129,7 +129,7 @@ const addToCart = async (totalAmount) => {
     console.error('Error adding event to cart:', error);
     ElNotification.error({
       title: 'Error',
-      message: 'An unexpected error occurred. Please try again later.',
+      message: 'An unexpected error occurred. Please try again later.' + error.statusText,
       offset: 100
     });
   }

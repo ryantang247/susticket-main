@@ -12,6 +12,7 @@
         <span class="close-btn" @click="closeChatBox">x</span> <!-- Close button -->
       </div>
       <div>
+        <ClientOnly>
         <ChatEngineWrapper>
           <ChatSocket
               :projectID="projectId"
@@ -22,6 +23,7 @@
 
           <ChatFeed/>
         </ChatEngineWrapper>
+        </ClientOnly>
       </div>
       <!--        <div class="header">-->
       <!--          Chat with Customer Service-->

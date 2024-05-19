@@ -36,6 +36,11 @@ export default defineNuxtConfig({
         // plugins: [
         //     veaury
         // ]
+        build: {
+            commonjsOptions: {
+                transformMixedEsModules: true,
+            },
+        }
     }
 })
 // https://nuxt.com/docs/api/configuration/nuxt-config
