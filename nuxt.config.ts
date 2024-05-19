@@ -1,8 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
+import { defineConfig } from 'vite'
+// import veauryVitePlugins from "veaury/vite/index.js"
+// const veaury = veauryVitePlugins({
+//     type: 'vue',
+// });
+// veaury.shift();
 export default defineNuxtConfig({
     routeRules: {
         '/': { prerender: true },
+    },
+    build:{
+        transpile: ['veaury'],
     },
   runtimeConfig:{
 
@@ -23,7 +31,12 @@ export default defineNuxtConfig({
     '@nuxt/test-utils/module'
     // 'nuxt-icon'
   ],
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+    vite: {
+        // plugins: [
+        //     veaury
+        // ]
+    }
 })
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // https://nuxt.com/docs/api/configuration/nuxt-config

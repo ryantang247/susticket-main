@@ -44,8 +44,8 @@
 <script>
 import { PrettyChatWindow } from "react-chat-engine-pretty";
 import { ChatFeed,ChatEngineWrapper,ChatSocket  } from 'react-chat-engine';
-import { applyReactInVue } from "veaury";
-import userconfig from '@/userconfig.json';
+// const {applyReactInVue} = require('veaury')
+import  {applyReactInVue} from 'veaury';
 // const config = useRuntimeConfig()
 
 export default {
