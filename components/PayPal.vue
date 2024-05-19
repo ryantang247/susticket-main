@@ -6,8 +6,6 @@
 import { loadScript } from "@paypal/paypal-js";
 import { nextTick, defineComponent, onMounted, watch } from 'vue'
 import axios from 'axios';
-import userconfig from '@/userconfig.json';
-
 
 export default defineComponent({
   name: 'Paypal',
@@ -72,12 +70,12 @@ export default defineComponent({
                                       {
                                         objects: props.objectSelected,
                                       },
-                                      {
-                                        auth: {
-                                          username: userconfig.username,
-                                          password: userconfig.password
-                                        }
-                                      }
+                                      // {
+                                      //   auth: {
+                                      //     username: userconfig.username,
+                                      //     password: userconfig.password
+                                      //   }
+                                      // }
                                   )
                                       .then((bookingResponse) => {
                                         console.log("Return URL link",response.data.forwardLink);
