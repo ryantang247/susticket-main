@@ -68,9 +68,10 @@ const categoryMapping = {
   'Seminar': 5
 };
 
-import {reccPublicKey} from '@/userconfig.json'
+// import {reccPublicKey} from '@/userconfig.json'
 import recombee from 'recombee-js-api-client'
-const client = new recombee.ApiClient('secourse-secourse-us', reccPublicKey, {region: 'us-west'});
+
+const client = new recombee.ApiClient('secourse-secourse-us', useRuntimeConfig().public.reccPublicKey, {region: 'us-west'});
 
 let currentUserSID = null;
 if (process.client) {

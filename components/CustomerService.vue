@@ -46,6 +46,8 @@ import { PrettyChatWindow } from "react-chat-engine-pretty";
 import { ChatFeed,ChatEngineWrapper,ChatSocket  } from 'react-chat-engine';
 import { applyReactInVue } from "veaury";
 import userconfig from '@/userconfig.json';
+// const config = useRuntimeConfig()
+
 export default {
   components:{
     PrettyChatWindow: applyReactInVue(PrettyChatWindow),
@@ -59,20 +61,22 @@ export default {
       newMessage: '',
       messages: [],
       showChatBox: false, // Initially set to false
-      projectId: userconfig.chatProjectId,
-      privateKey: userconfig.chatPrivateKey,
+      projectId: useRuntimeConfig().public.chatProjectId,
+      privateKey: useRuntimeConfig().public.chatPrivateKey,
       username: '',
       chatID: '',
       chatAccessKey: ''
     };
   },
   mounted(){
-
+    console.log()
     if (process.client) {
       this.chatID = localStorage.getItem("ChatID")
       this.username = localStorage.getItem("Username")
       this.chatAccessKey = localStorage.getItem("ChatAccessKey")
+
     }
+
   },
   methods: {
 //     <!--

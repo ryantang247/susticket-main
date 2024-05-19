@@ -2,7 +2,7 @@
     <!-- Form for adding/editing event -->
     <div v-if="loadChart">
       <SeatsioSeatingChart
-          workspaceKey="b7250d79-002d-4bbe-9c83-a30c494c6bee"
+          :workspaceKey="workspaceKey"
           :event="eventList[0].seatsioEventsKey"
           :pricing="pricing"
           region="oc"
@@ -26,6 +26,7 @@ export default {
   components: {SeatsioSeatingChart ,SeatsioEventManager},
   data() {
     return {
+      workspaceKey: this.$config.workspaceKey,
       eventList: [],
       loadChart:false,
       pricing: [],
