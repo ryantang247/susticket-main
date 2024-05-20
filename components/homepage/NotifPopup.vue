@@ -14,10 +14,7 @@
   
   <script>
   import axios from "axios";
-  const cookie = await useCookie('secourse', {
-    secure: true,
-    sameSite: 'None'
-  });
+
   console.log("Cookies in notif: ", cookie)
   export default {
     props: {
@@ -63,6 +60,10 @@
         return simplifiedTimestamp;
       },
       getNotification() {
+        const cookie = useCookie('secourse', {
+          secure: true,
+          sameSite: 'None'
+        });
         axios.get(
             `https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications`,
             {
