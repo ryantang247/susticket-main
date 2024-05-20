@@ -58,26 +58,29 @@
 
         return simplifiedTimestamp;
       },
-      getNotification(){
+      getNotification() {
         axios.get(
             `https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications`,
-
+            {
+              withCredentials: true
+            }
         )
-        .then((response) => {
+            .then((response) => {
               // Check the response status
               const data = response.data;
-              this.notifications = response.data
-              console.log("Notifications ",data);
-
-       }).catch((error) => {
-          ElNotification.error({
-            title: 'Error fetching notification',
-            message: error,
-            offset: 100,
-          });
-          console.error('Error booking seats:', error);
-        });
+              this.notifications = response.data;
+              console.log("Notifications ", data);
+            })
+            .catch((error) => {
+              ElNotification.error({
+                title: 'Error fetching notification',
+                message: error,
+                offset: 100,
+              });
+              console.error('Error booking seats:', error);
+            });
       }
+
       }
     }
   </script>
