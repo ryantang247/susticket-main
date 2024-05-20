@@ -7,11 +7,13 @@
 
     <!-- Chat box component -->
     <div v-show="showChatBox" class="chat-box">
-      <div class="header">-->
-        Chat with Customer Service
-        <span class="close-btn" @click="closeChatBox">x</span> <!-- Close button -->
-      </div>
       <div>
+        <button class="close-btn" style="margin-bottom:10px " @click="closeChatBox">x</button> <!-- Close button -->
+
+      </div>
+
+      <div >
+
         <ClientOnly>
         <ChatEngineWrapper>
           <ChatSocket
@@ -25,20 +27,6 @@
         </ChatEngineWrapper>
         </ClientOnly>
       </div>
-      <!--        <div class="header">-->
-      <!--          Chat with Customer Service-->
-      <!--          <span class="close-btn" @click="closeChatBox">x</span> &lt;!&ndash; Close button &ndash;&gt;-->
-      <!--        </div>-->
-      <!--        <div class="messages" ref="messages">-->
-      <!--          <div v-for="(message, index) in messages" :key="index" class="message">-->
-      <!--            <div v-if="message.sender === 'user'" class="user-message">{{ message.text }}</div>-->
-      <!--            <div v-else class="service-message">{{ message.text }}</div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="input">-->
-      <!--          <input v-model="newMessage" @keyup.enter="sendMessage" placeholder="Type your message...">-->
-      <!--          <button @click="sendMessage">Send</button>-->
-      <!--        </div>-->
     </div>
   </div>
 </template>
@@ -139,6 +127,7 @@ export default {
   overflow: hidden;
   background-color: #f0f0f0;
   padding: 10px;
+
 }
 
 .header {
@@ -210,6 +199,7 @@ export default {
   top: 10px;
   right: 10px;
   cursor: pointer;
+  z-index: 2000;
 }
 .chat-button {
   position: fixed; /* Fixed position relative to the viewport */

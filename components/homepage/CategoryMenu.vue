@@ -57,6 +57,7 @@ methods: {
 <style scoped>
 .category-menu {
   font-family: sans-serif;
+  overflow-x: auto;
 }
 
 .category-list {
@@ -78,6 +79,8 @@ methods: {
   border: 2px solid #284949; /* Add border */
   border-radius: 50%;
   opacity: 0.4;
+  margin-left:10px;
+  margin-right:10px;
   transition: opacity 0.3s ease;
 }
 

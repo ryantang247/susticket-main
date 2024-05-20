@@ -5,63 +5,78 @@
     usage: I've used it to generate a template for the menu bar/header, and modify it based on our navigation purpose
 -->
 <template>
-  <header class="header">
-    <div class="logo">
-      <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
-    </div>
-    <div class="search-box">
-      <a href="#" class="search-icon-wrapper">
-        <img src="~/assets/header/search.png" class="search-icon" alt="Search" @click="searchEvent"/>
-      </a>
-      <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
-    </div>
-    
-    <div class="image-container-calendar" @click="goToCalendar">
-      <img src="~/assets/header/calendar.png" alt="Image" class="image">
-      <button class="calendar-button">Calendar</button>
-    </div>
-    
+  <div v-if="!smallerThanMd">
+    <header  class="header">
+      <div class="logo">
+        <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
+      </div>
+      <div class="search-box">
+        <a href="#" class="search-icon-wrapper">
+          <img src="~/assets/header/search.png" class="search-icon" alt="Search" @click="searchEvent"/>
+        </a>
+        <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
+      </div>
 
-    <div class="image-container-bookmark" @click="goToBookmarks">
-      <img src="~/assets/header/bookmark.png" alt="Image" class="image">
-      <button class="bookmark-button">Bookmark</button>
-    </div>
-    
-    <div class="image-container-ticket" @click="goToTickets">
-      <img src="~/assets/header/ticket.png" alt="Image" class="image">
-      <button class="ticket-button">My Tickets</button>
-    </div>
+      <div class="image-container-calendar" @click="goToCalendar">
+        <img src="~/assets/header/calendar.png" alt="Image" class="image">
+        <button class="calendar-button">Calendar</button>
+      </div>
 
-    <div class="image-container-cart" @click="goToCart">
-      <el-badge :value="12" class="item">
-        <img src="~/assets/header/cart.png" alt="Image" class="image">
-      </el-badge>
-      
-      <button class="cart-button">Cart</button>
-    </div>
-    
-    <div class="image-container-notif">
-      <el-badge :value="3" class="item">
-        <img src="~/assets/header/nontif.png" alt="Image" class="image" @click="toggleNotifBox">
-      </el-badge>
-      <NotifPopup :isVisible="showNotifBox" />
-    
-      <button class="notif-button" @click="toggleNotifBox">Notification</button>
-    </div>
 
-    <div class="user-profile">
-      <img src="assets\logo.png" alt="User Profile" @click="toggleProfileBox" />
-    </div>
-    
-    <Profile :userProfile="userProfile" :isVisible="showProfileBox" />
-  </header>
+      <div class="image-container-bookmark" @click="goToBookmarks">
+        <img src="~/assets/header/bookmark.png" alt="Image" class="image">
+        <button class="bookmark-button">Bookmark</button>
+      </div>
+
+      <div class="image-container-ticket" @click="goToTickets">
+        <img src="~/assets/header/ticket.png" alt="Image" class="image">
+        <button class="ticket-button">My Tickets</button>
+      </div>
+
+      <div class="image-container-cart" @click="goToCart">
+        <el-badge :value="12" class="item">
+          <img src="~/assets/header/cart.png" alt="Image" class="image">
+        </el-badge>
+
+        <button class="cart-button">Cart</button>
+      </div>
+
+      <div class="image-container-notif">
+        <el-badge :value="3" class="item">
+          <img src="~/assets/header/nontif.png" alt="Image" class="image" @click="toggleNotifBox">
+        </el-badge>
+        <NotifPopup :isVisible="showNotifBox" />
+
+        <button class="notif-button" @click="toggleNotifBox">Notification</button>
+      </div>
+
+      <div class="user-profile">
+        <img src="assets\logo.png" alt="User Profile" @click="toggleProfileBox" />
+      </div>
+
+      <Profile :userProfile="userProfile" :isVisible="showProfileBox" />
+    </header>
+  </div>
+  <div v-else>
+    <header  class="header">
+      <div class="logo">
+        <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
+      </div>
+    </header>
+  </div>
+
+
 </template>
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import { Menu } from '@element-plus/icons-vue';
 
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
 
 let name = ""
 let email=""
@@ -80,6 +95,7 @@ const userProfile = {
 }
 const showProfileBox = ref(false);
 const showNotifBox = ref(false);
+const showMenu = ref(false);
 
 function toggleProfileBox() {
   console.log('profile clicked');
@@ -100,6 +116,15 @@ function toggleNotifBox() {
     showProfileBox.value = false;
   }
 }
+
+const isScreenSmall = computed(() =>{
+    if (process.client) {
+      let width = window.innerWidth
+      console.log("Screen small: ",width < 700)
+      return width < 700
+    }
+
+})
 
 const avatarSrc = computed(() => {
   return userProfile.avatar || 'assets/avatarr.png';
@@ -139,6 +164,7 @@ function goToFoundEvent(){
 function goToHomepage(){
   router.push('/')
 }
+
 
 </script>
 <style scoped>
