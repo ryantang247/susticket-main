@@ -14,7 +14,11 @@
   
   <script>
   import axios from "axios";
-
+  const cookie = await useCookie('secourse', {
+    secure: true,
+    sameSite: 'None'
+  });
+  console.log("Cookies in notif: ", cookie)
   export default {
     props: {
       isVisible: Boolean
