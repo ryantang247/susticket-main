@@ -61,7 +61,7 @@
           this.loginStatus = false
           // Set cookie asynchronously
           const cookie = await useCookie('secourse', {
-            domain:"secourse2024-675d60a0d98b.herokuapp.com/api",
+
             secure: true,
             sameSite: 'None'
           });
