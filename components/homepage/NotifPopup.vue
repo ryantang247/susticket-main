@@ -60,10 +60,8 @@
         return simplifiedTimestamp;
       },
       getNotification() {
-        const cookie = useCookie('secourse', {
-          secure: true,
-          sameSite: 'None'
-        });
+        const cookie = useCookie('secourse');
+        console.log(cookie)
         axios.get(
             `https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications`,
             {
