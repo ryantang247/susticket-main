@@ -50,8 +50,8 @@
         <button class="notif-button" @click="toggleNotifBox">Notification</button>
       </div>
 
-      <div class="user-profile">
-        <img src="assets\logo.png" alt="User Profile" @click="toggleProfileBox" />
+      <div class="user-profile" @click="toggleProfileBox">
+        <img :src="avatar" />
       </div>
 
       <Profile :userProfile="userProfile" :isVisible="showProfileBox" />
@@ -74,25 +74,62 @@ import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { Menu } from '@element-plus/icons-vue';
-
+import axios from 'axios';
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
 
-let name = ""
-let email=""
-let avatar = ""
-let coins = 150
-if (process.client) {
- name = localStorage.getItem("Username")
-  email = localStorage.getItem("Email")
-  avatar = localStorage.getItem("avatar")
-}
-const userProfile = {
-  name: name,
-  email: email,
-  coin: coins,
-  avatar: avatar
-}
+const avatar = ref('');
+const notificationsCount = ref(0);
+const myCartCount = ref(0)
+
+const userProfile = ref({
+  name: "",
+  email: "",
+  coin: 150,
+  avatar: ""
+});
+
+const fetchNotificationsCount = async () => {
+  try {
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications');
+    console.log("NOTIF");
+    console.log(response)
+    notificationsCount.value = response.data.length; 
+  } catch (error) {
+    console.error('Failed to fetch notifications: ', error);
+  }
+};
+
+const fetchMyCartCount = async () => {
+  try {
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0');
+    console.log("MY CART");
+    console.log(response)
+    myCartCount.value = response.data.length; 
+  } catch (error) {
+    console.error('Failed to fetch notifications: ', error);
+  }
+};
+
+onMounted(() => {
+  fetchNotificationsCount();
+  fetchMyCartCount();
+
+  const cookie = useCookie('secourse');
+  if (cookie.value === null || cookie.value === undefined) {
+    console.log('User is not logged in');
+  } else {
+    if (process.client) {
+      console.log("HELLO!!!")
+      userProfile.value.sid = localStorage.getItem("SID");
+      userProfile.value.name = localStorage.getItem("Username");
+      userProfile.value.email = localStorage.getItem("Email");
+      userProfile.value.avatar = localStorage.getItem("Avatar");
+      avatar.value = userProfile.value.avatar || 'assets/logo.png';
+    }
+  }
+});
+
 const showProfileBox = ref(false);
 const showNotifBox = ref(false);
 const showMenu = ref(false);
@@ -213,11 +250,12 @@ function goToHomepage(){
 }
 
 .user-profile img {
-  border-radius: 50%; /* Make the image round */
-  width: 15%; /* Adjust size as necessary */
-  height: 15%; /* Adjust size as necessary */
+  border-radius: 50%; 
+  width: 50px; 
+  height: 50px; 
   margin-right: 5px;
   cursor: pointer;
+  margin-right: 150px;
 }
 .user-profile:hover img{
   transform: scale(1.05);

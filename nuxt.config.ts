@@ -9,9 +9,9 @@ export default defineNuxtConfig({
     routeRules: {
         '/': { prerender: true },
     },
-    build:{
-        transpile: ['veaury'],
-    },
+    // build:{
+    //     transpile: ['veaury'],
+    // },
   runtimeConfig:{
 
       public:{
@@ -36,11 +36,11 @@ export default defineNuxtConfig({
         // plugins: [
         //     veaury
         // ]
-        build: {
-            commonjsOptions: {
-                transformMixedEsModules: true,
-            },
-        }
+        // build: {
+        //     commonjsOptions: {
+        //         transformMixedEsModules: true,
+        //     },
+        // }
     }
 })
 // https://nuxt.com/docs/api/configuration/nuxt-config
