@@ -1,21 +1,43 @@
 <template>
   <div class="event-list">
-    <div v-for="event in events" :key="event.id" class="event-card" >
-      <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;" @click="this.$router.push({ path: `/events/${event.id}`, replace: true })">
-      <el-button type="danger" round class="status">{{event.status}}</el-button>
-      <h1>{{ event.title }}</h1>
-      <!-- <p>{{ event.startDate }}</p> -->
-      <p>{{ formatDate(event.startDate) }}</p> <!-- Use formatDate here -->
-      <!-- Display venue name corresponding to the venueID -->
-      <p>{{ getVenueName(event.venueId) }}</p>
-      <h2>{{ '¥' + displayPrice(event.price) }}</h2>
-      <p class="available">{{ event.available }}</p>
-      <div class="bookmark-share">
-        <!-- <img src="/assets/header/bookmark.png" class="bookmark"> -->
-        <img :src="bookmarkSrc(event)" @click="toggleBookmark(event)" class="bookmark">
-        <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)">
+      <div v-for="event in events" :key="event.id" class="event-card" >
+        <div>
+        <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;" @click="this.$router.push({ path: `/events/${event.id}`, replace: true })">
+        <el-button type="danger" round class="status">{{event.status}}</el-button>
+        <h1>{{ event.title }}</h1>
+        <!-- <p>{{ event.startDate }}</p> -->
+        <p>{{ formatDate(event.startDate) }}</p> <!-- Use formatDate here -->
+        <!-- Display venue name corresponding to the venueID -->
+        <p>{{ getVenueName(event.venueId) }}</p>
+        <h2>{{ '¥' + displayPrice(event.price) }}</h2>
+        <p class="available">{{ event.available }}</p>
+        <div class="bookmark-share">
+          <!-- <img src="/assets/header/bookmark.png" class="bookmark"> -->
+          <img :src="bookmarkSrc(event)" @click="toggleBookmark(event)" class="bookmark">
+          <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)">
+        </div>
+        </div>
       </div>
-    </div>
+
+<!--    <div v-else>-->
+<!--      <div v-for="event in events" :key="event.id"  >-->
+<!--        <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;" @click="this.$router.push({ path: `/events/${event.id}`, replace: true })">-->
+<!--        <el-button type="danger" round class="status">{{event.status}}</el-button>-->
+<!--        <h1>{{ event.title }}</h1>-->
+<!--        &lt;!&ndash; <p>{{ event.startDate }}</p> &ndash;&gt;-->
+<!--        <p>{{ formatDate(event.startDate) }}</p> &lt;!&ndash; Use formatDate here &ndash;&gt;-->
+<!--        &lt;!&ndash; Display venue name corresponding to the venueID &ndash;&gt;-->
+<!--        <p>{{ getVenueName(event.venueId) }}</p>-->
+<!--        <h2>{{ '¥' + displayPrice(event.price) }}</h2>-->
+<!--        <p class="available">{{ event.available }}</p>-->
+<!--        <div class="bookmark-share">-->
+<!--          &lt;!&ndash; <img src="/assets/header/bookmark.png" class="bookmark"> &ndash;&gt;-->
+<!--          <img :src="bookmarkSrc(event)" @click="toggleBookmark(event)" class="bookmark">-->
+<!--          <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)">-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
   </div>
 </template>
 
@@ -25,12 +47,16 @@ import { ElNotification } from 'element-plus'
 import emptyBookmark from '@/assets/event/bookmark_empty.png';
 import filledBookmark from '@/assets/header/bookmark.png';
 import axios from 'axios';
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const props = defineProps(['events']);
 const { events } = toRefs(props);
 
 const bookmarkEvents = ref({})
 
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const smallerThanMd = breakpoints.smaller('sm') // only smaller than lg
 
 const toggleBookmark = async (event) => {
   console.log('button clicked');
@@ -39,7 +65,11 @@ const toggleBookmark = async (event) => {
 
     if(!bookmarkEvents.value[event.id]){
       try {
-        const bookmarkResponse = await axios.post('https://secourse2024-675d60a0d98b.herokuapp.com/api/bookmarkThisEvent', { eventId: event.id });
+        const bookmarkResponse = await axios.post('https://secourse2024-675d60a0d98b.herokuapp.com/api/bookmarkThisEvent',
+            { eventId: event.id },
+            {//AxiosRequestConfig parameter
+            withCredentials: true //correct
+        } );
         console.log(bookmarkResponse);
         bookmarkEvents.value[event.id] = true;
         ElNotification.success({
@@ -61,8 +91,12 @@ const toggleBookmark = async (event) => {
     } else {
       try {
         const bookmarkResponse = await axios.delete('https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteThisEventBookmark', {
-          data: {eventId: event.id}
-        });
+          data: {eventId: event.id},
+        }, {
+          //AxiosRequestConfig parameter
+          withCredentials: true //correct
+        }
+        );
         console.log(bookmarkResponse)
         bookmarkEvents.value[event.id] = false
         ElNotification.success({
@@ -133,7 +167,9 @@ onMounted(async () => {
       eventIDMap[event.id] = false; // Assuming eventID is a unique identifier for each event
     });
 
-    const bookmarkResponse = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents');
+    const bookmarkResponse = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents' ,{//AxiosRequestConfig parameter
+      withCredentials: true //correct
+    } );
     console.log("Bookmark response " ,bookmarkResponse.data)
     if(bookmarkResponse){
       bookmarkResponse.data.forEach(item =>{
@@ -220,6 +256,8 @@ function displayPrice(priceJson) {
   justify-content:left; /* Adjust alignment between items */
   margin-left: 5%;
   font-family: sans-serif;
+  overflow-y: scroll;
+
 }
 
 .event-card {

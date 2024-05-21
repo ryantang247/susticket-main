@@ -58,7 +58,8 @@
           },{
             //AxiosRequestConfig parameter
             withCredentials: true //correct
-          });
+          }
+          );
           console.log("User login successfully");
           console.log(response.data);
           this.loginStatus = false

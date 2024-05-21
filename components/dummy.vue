@@ -28,16 +28,12 @@ import filledBookmark from '@/assets/header/bookmark.png';
 const events = ref([]);
 const venues = ref([]);
 
-const { eventData } = await useFetch('https://secourse2024-675d60a0d98b.herokuapp.com/api
-
-/getAllEvents');
+const { eventData } = await useFetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents');
 console.log("data received: ", eventData.value);
 events.value = eventData.value;
 
 // Fetch venues data using useFetch function after component is mounted
-const { data } = await useFetch('https://secourse2024-675d60a0d98b.herokuapp.com/api
-
-/getAllVenues');
+const { data } = await useFetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues');
 console.log("data received: ", data.value);
 venues.value = data.value;
 

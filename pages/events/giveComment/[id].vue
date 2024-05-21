@@ -82,7 +82,9 @@
         eventId: eventId,
         text: text,
         picture: picture
-        });
+        } , {//AxiosRequestConfig parameter
+          withCredentials: true //correct
+        } );
         // Handle the response as needed
         console.log(response.data); // Assuming the API returns data
         // You can also show a success message or update the UI

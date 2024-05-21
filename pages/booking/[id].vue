@@ -101,6 +101,7 @@ const addToCart = async (totalAmount) => {
       headers: {
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({
         eventId: currentEvent.value,
         price: totalAmount// Adjust this accordingly based on how you get the price
@@ -136,108 +137,102 @@ const addToCart = async (totalAmount) => {
 };
 
 const eventData = ref({
-id: null,
-thumbnails: ['https://via.placeholder.com/400x200','https://via.placeholder.com/200x200','https://via.placeholder.com/300x200','https://via.placeholder.com/100x200'],
-contactName: '',
-contact: '',
-status: '',
-rate: ref(3.7),
-soldTickets: 1000,
-title: '',
-dateTime: '',
-location: '',
-price: '',
-description: '',
-seatsioEventsKey: null,
-seatsioChartKey: null,
-// comments: [
-//   { user: 'John Doe', text: 'This was an amazing experience!', image: 'https://via.placeholder.com/200x200', video: '', star: '3.5' },
-//   { user: 'Jane Smith', text: 'Highly recommend it to everyone.', image: '', video: 'https://www.example.com/video.mp4', star: '3.9' }
-// ]
+  id: null,
+  thumbnails: ['https://via.placeholder.com/400x200','https://via.placeholder.com/200x200','https://via.placeholder.com/300x200','https://via.placeholder.com/100x200'],
+  contactName: '',
+  contact: '',
+  status: '',
+  rate: ref(3.7),
+  soldTickets: 1000,
+  title: '',
+  dateTime: '',
+  location: '',
+  price: '',
+  description: '',
+  seatsioEventsKey: null,
+  seatsioChartKey: null,
 });
 
 const seats = ref([]); 
 
 const totalAmount = computed(() => {
 
-var totalPrice =0;
-if (eventData.value.seatsioEventsKey) {
-  for (let i = 0; i < objects.value.length; i++) {
-    totalPrice += objects.value[i].pricing.price;
+    var totalPrice =0;
+    if (eventData.value.seatsioEventsKey) {
+      for (let i = 0; i < objects.value.length; i++) {
+        totalPrice += objects.value[i].pricing.price;
 
-  }
+      }
 
-} else {
-  console.log(objects.value)
+    } else {
+      console.log(objects.value)
 
-  for (let i = 0; i < objects.value.length; i++) {
-    totalPrice += objects.value[i].price;
+      for (let i = 0; i < objects.value.length; i++) {
+        totalPrice += objects.value[i].price;
 
-  }
+      }
 
-}
-return totalPrice;
+    }
+    return totalPrice;
 
 });
 
 const onObjectDeselected = (selectedObjects) => {
-console.log(selectedObjects.label);
-objects.value = objects.value.filter(object => object.label !== selectedObjects.label);
-seatLabels.value = seatLabels.value.filter(object => object !== selectedObjects.label)
-console.log(seatLabels.value);
-const existingCategoryIndex = seats.value.findIndex(category => category.type === selectedObjects.category.label);
+  console.log(selectedObjects.label);
+  objects.value = objects.value.filter(object => object.label !== selectedObjects.label);
+  seatLabels.value = seatLabels.value.filter(object => object !== selectedObjects.label)
+  console.log(seatLabels.value);
+  const existingCategoryIndex = seats.value.findIndex(category => category.type === selectedObjects.category.label);
 
-if (existingCategoryIndex !== -1) {
-  // If the category exists, decrement its booking
-  seats.value[existingCategoryIndex].booking -= 1;
+  if (existingCategoryIndex !== -1) {
+    // If the category exists, decrement its booking
+    seats.value[existingCategoryIndex].booking -= 1;
 
-  if (seats.value[existingCategoryIndex].booking === 0) {
-    seats.value.splice(existingCategoryIndex);
+    if (seats.value[existingCategoryIndex].booking === 0) {
+      seats.value.splice(existingCategoryIndex);
+    }
   }
-}
 
 };
 
 const onObjectNoSeatsDeselected = (selectedObjects) => {
-// selectedObjects take in value from prices, not objects
+  // selectedObjects take in value from prices, not objects
 
-console.log("Current seats",seats.value);
-console.log("Current object",objects.value);
+  console.log("Current seats",seats.value);
+  console.log("Current object",objects.value);
 
-const existingCategoryIndex = seats.value.findIndex(category => category.type === selectedObjects.type);
-const objectIndex = objects.value.findIndex(category => category.type === selectedObjects.type);
+  const existingCategoryIndex = seats.value.findIndex(category => category.type === selectedObjects.type);
+  const objectIndex = objects.value.findIndex(category => category.type === selectedObjects.type);
 
-console.log(existingCategoryIndex)
-//
-if (existingCategoryIndex !== -1) {
-  // If the category exists, increment its booking
-  seats.value[existingCategoryIndex].booking-=1;
-  objects.value.splice(objectIndex, 1); // Splice the element if it meets the condition
+  console.log(existingCategoryIndex)
+  //
+  if (existingCategoryIndex !== -1) {
+    // If the category exists, increment its booking
+    seats.value[existingCategoryIndex].booking-=1;
+    objects.value.splice(objectIndex, 1); // Splice the element if it meets the condition
 
-  if(seats.value[existingCategoryIndex].booking===0){
-    seats.value.splice(existingCategoryIndex)
+    if(seats.value[existingCategoryIndex].booking===0){
+      seats.value.splice(existingCategoryIndex)
+    }
+
   }
-
-}
 
 };
 
 const onObjectSelectedNoSeats = (selectedObjects) => {
-const existingCategoryIndex = seats.value.findIndex(category => category.type === selectedObjects.category);
-const selectedSeat = {type: selectedObjects.category, booking: 1, price:  Number(selectedObjects.price) }
-objects.value.push({type: selectedObjects.category, price:  Number(selectedObjects.price) });
-console.log("After adding to objects",objects.value);
+  const existingCategoryIndex = seats.value.findIndex(category => category.type === selectedObjects.category);
+  const selectedSeat = {type: selectedObjects.category, booking: 1, price:  Number(selectedObjects.price) }
+  objects.value.push({type: selectedObjects.category, price:  Number(selectedObjects.price) });
+  console.log("After adding to objects",objects.value);
 
-if (existingCategoryIndex !== -1) {
-  // If the category exists, increment its booking
-  seats.value[existingCategoryIndex].booking+=1;
-} else {
-  // If the category doesn't exist, add it to the array
-  seats.value.push(selectedSeat);
-}
-console.log(seats.value)
-
-
+  if (existingCategoryIndex !== -1) {
+    // If the category exists, increment its booking
+    seats.value[existingCategoryIndex].booking+=1;
+  } else {
+    // If the category doesn't exist, add it to the array
+    seats.value.push(selectedSeat);
+  }
+  console.log(seats.value)
 
 };
 

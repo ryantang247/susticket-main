@@ -37,7 +37,9 @@ const toggleBookmark = async (event) => {
 
   if (event.bookmarked) {
     try {
-      const response = await axios.post('https://secourse2024-675d60a0d98b.herokuapp.com/api/bookmarkThisEvent', requestBody);
+      const response = await axios.post('https://secourse2024-675d60a0d98b.herokuapp.com/api/bookmarkThisEvent', requestBody,{//AxiosRequestConfig parameter
+        withCredentials: true //correct
+      } );
       // Handle the success scenario
       ElNotification({
         title: 'Success',

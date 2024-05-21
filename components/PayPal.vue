@@ -54,6 +54,9 @@ export default defineComponent({
                             {
                               eventId: props.eventId,
                               price: Number(props.totalAmount)
+                            },{
+                              //AxiosRequestConfig parameter
+                              withCredentials: true //correct
                             }
                         )
                             .then((response) => {
