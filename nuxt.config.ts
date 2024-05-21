@@ -1,17 +1,16 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import { defineConfig } from 'vite'
-// import veauryVitePlugins from "veaury/vite/index.js"
-// const veaury = veauryVitePlugins({
-//     type: 'vue',
-// });
-// veaury.shift();
+
 export default defineNuxtConfig({
+    nitro: {
+        preset: 'vercel-edge',
+    },
     routeRules: {
         '/': { prerender: true },
     },
-    // build:{
-    //     transpile: ['veaury'],
-    // },
+    // Uncomment this during production build
+    build:{
+        transpile: ['veaury'],
+    },
   runtimeConfig:{
 
       public:{
@@ -35,12 +34,13 @@ export default defineNuxtConfig({
     vite: {
         // plugins: [
         //     veaury
-        // ]
-        // build: {
-        //     commonjsOptions: {
-        //         transformMixedEsModules: true,
-        //     },
-        // }
+        // ],
+        build: {
+            // Uncomment this in commiting this to produciton
+            commonjsOptions: {
+                transformMixedEsModules: true,
+            },
+        }
     }
 })
 // https://nuxt.com/docs/api/configuration/nuxt-config
