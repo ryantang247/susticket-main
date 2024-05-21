@@ -81,9 +81,9 @@
       </aside>
       
   </div>
-  <div class="live-stream">
+  <div v-if="eventData.videolink" class="live-stream">
     <h2>Live Streaming</h2>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/Gt63wqsV96s" frameborder="0" allowfullscreen></iframe>
+    <iframe width="560" height="315" :src="transformToEmbedUrl(eventData.videolink)" frameborder="0" allowfullscreen></iframe>
   </div>
   <div class="comments-box">
       <h2>Comments</h2>
@@ -143,14 +143,22 @@ const eventData = ref({
   location: '',
   price: '',
   description: '',
+  videolink: null,
   comments: [
   ]
+
 });
 
-// import { postComment, getEventComments } from '@/api'; // Import your API functions
+function transformToEmbedUrl(youtubeUrl) {
+  // Extract the video ID from the URL
+  const url = new URL(youtubeUrl);
+  const videoId = url.searchParams.get('v');
 
-// Add methods for posting comment and getting event comments
-// Method to add the event to the cart
+  const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+
+  return embedUrl;
+}
+
 const addToCart = async () => {
   try {
     // Send a POST request to the API endpoint
@@ -229,20 +237,6 @@ const goToCommentPage = () => {
   router.push('/events/giveComment/'+route.params.id);
 };
 
-// onMounted(async () => {
-//   const eventDataResponse = await getEvents(route.params.id);
-//   if (eventDataResponse.eventData) {
-//     event.value = eventDataResponse;
-//     pricing.value = eventDataResponse.pricing;
-//     Object.assign(eventData.value, eventDataResponse.eventData);
-//     eventData.value.location = eventDataResponse.eventData.venue;
-//     isLoading.value = false;
-
-//   }else {
-//     console.log(eventDataResponse)
-//   }
-//   // const fetchEventComments = async (eventId) => {
-// });
 onMounted(async () => {
     isLoading.value = true;  
     try {

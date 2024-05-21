@@ -27,6 +27,7 @@ export async function getEvents(eventId) {
                 contact: singleEvent.contact,
                 seatsioEventsKey: singleEvent.seatsioEventsKey,
                 seatsioChartKey: singleEvent.seatsioChartKey,
+                videolink: singleEvent.videolink,
                 venue: await getVenues(singleEvent.venueId)
             },
         };
