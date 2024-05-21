@@ -60,12 +60,12 @@
           console.log(response.data);
           this.loginStatus = false
           // Set cookie asynchronously
-          const cookie = useCookie('secourse', {
-            secure: true,
-            sameSite: 'None'
-          });
+          // const cookie = useCookie('secourse', {
+          //   secure: true,
+          //   sameSite: 'None'
+          // });
 
-          cookie.value = response.data.secourse;
+          // cookie.value = response.data.secourse;
           localStorage.setItem("Username", response.data.user.name)
           localStorage.setItem("SID", response.data.user.sid)
           localStorage.setItem("Avatar", response.data.user.avatar)
