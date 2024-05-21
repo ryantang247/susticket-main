@@ -184,7 +184,7 @@ const goToCalendar = () => {
 };
 
 const goToCart = () => {
-  router.push('/myCart/myCart');
+  router.push('/myCart');
 };
 
 const goToTickets = () => {
