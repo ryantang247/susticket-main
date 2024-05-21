@@ -66,10 +66,10 @@
             }
         )
             .then((response) => {
-              // Check the response status
+
               const data = response.data;
               this.notifications = response.data;
-              console.log("Notifications ", data);
+
             })
             .catch((error) => {
               ElNotification.error({

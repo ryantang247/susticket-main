@@ -101,6 +101,11 @@ const events = ref([
 ]);
 // Computed property to calculate total price based on ticked events
 const total = computed(() => {
+
+  if(transactions.value.length===0){
+    return 0;
+  }
+
   return transactions.value.reduce((acc, curr) => {
     if (curr.bookmarked) {
       return acc + parseFloat(curr.price);
@@ -114,17 +119,7 @@ const toggleTicked = (event) => {
   console.log(event.bookmarked);
   event.bookmarked = !event.bookmarked; // Toggle the bookmarked state
 };
-// const toggleTicked = (event) => {
-//   const index = transactions.value.findIndex((cart) => cart.id === event.id);
-//   if (index !== -1) {
-//     transactions.value[index].bookmarked = !transactions.value[index].bookmarked;
-//   } else {
-//     const eventIndex = events.value.findIndex((ev) => ev.id === event.id);
-//     if (eventIndex !== -1) {
-//       events.value[eventIndex].bookmarked = !events.value[eventIndex].bookmarked;
-//     }
-//   }
-// };
+
 
 const tickedSrc = (event) => {
   return event.bookmarked ? tickedImage : checkboxImage;
@@ -133,11 +128,12 @@ const tickedSrc = (event) => {
 // Fetch events for the cart from the API
 const fetchEventsForCart = async () => {
   try {
-    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0');
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', {credentials: 'include'});
     const eventData = await response.json();
     transactions.value = eventData;
     console.log(eventData);
   } catch (error) {
+
     console.error('Error fetching events for cart:', error);
   }
 };
@@ -147,6 +143,7 @@ const deleteFromCart = async (orderId) => {
   try {
     const response = await fetch(`https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteFromMyCart/${orderId}`, {
       method: 'DELETE',
+      credentials: 'include'
     });
     if (response.ok) {
       // If deletion is successful, update the events list
