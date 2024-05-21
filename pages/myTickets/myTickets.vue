@@ -62,7 +62,7 @@ const copyLink = (event) => {
 // Fetch purchased tickets from the API endpoint
 const fetchPurchasedTickets = async () => {
   try {
-    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/1'); // Update the endpoint URL
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/1',{credentials: 'include'}); // Update the endpoint URL
     const ticketData = await response.json();
     console.log(ticketData)
     transactions.value = ticketData;
@@ -121,56 +121,7 @@ onMounted(fetchPurchasedTickets);
   background-color: rgb(189,189,189);
   border-radius: 50%;
 }
-.action-btn{
-  width: 150px;
-}
-.myticket-card {
-  font-family: sans-serif;
-  margin-top: 20px;
-}
-h1{
-  font-size: 30px;
-}
-.event-card {
-  display: flex;
-  justify-content: space-between; /* Align items to opposite ends */
-  width: 70%;
-  padding: 0px 20px;
-  border-radius: 10px;
-  border: 2px solid #6DC9C8;
-  margin-bottom: 15px;
-  margin-left: 60px;
-}
-.event-details {
-  flex: 1; /* Take remaining space */
-  float: left;
-}
-.left{
-  float: left;
-}
-.right{
-  float:right;
-  justify-content: center;
-  align-items: center;
-}
-.available{
-  font-size: 80%;
-  opacity: 0.7;
-}
-.event-image {
-  width: 250px;
-  height: 150px;
-  object-fit: cover;
-  margin-top: 30px;
-  margin-bottom: 10px;
-  justify-content: center;
-  align-items: center;
 
-}
-.bookmark-share {
-  display: flex;
-  align-items: center;
-}
 .bookmark-share img{
   width: 30px;
   height: 30px;
