@@ -60,8 +60,7 @@
           console.log(response.data);
           this.loginStatus = false
           // Set cookie asynchronously
-          const cookie = await useCookie('secourse', {
-
+          const cookie = useCookie('secourse', {
             secure: true,
             sameSite: 'None'
           });
