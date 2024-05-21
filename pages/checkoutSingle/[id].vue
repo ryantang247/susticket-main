@@ -51,7 +51,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { ElNotification } from 'element-plus'
 import Header from '@/components/homepage/Header.vue';
 import Footer from '@/components/homepage/Footer.vue';
 import CustomerService from '@/components/CustomerService.vue';

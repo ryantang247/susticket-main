@@ -13,10 +13,6 @@
       <!-- Main content -->
       <!-- <div class="main-content"> -->
       <el-main>
-        <!-- <Thumbnail/> -->
-        <!-- <div class="thumbnail">
-          <img :src="attraction.thumbnail" :alt="attraction.name">
-        </div> -->
         <div class="block text-center">
           <el-carousel height="250px">
             <el-carousel-item v-for="item in attraction.thumbnails" :key="item">
@@ -30,7 +26,6 @@
           <div class="status">
             <div class="left-container">
               <el-tag type="primary">{{ attraction.status }}</el-tag>
-              <!-- <p>Status: {{ attraction.status }}</p> -->
             </div>
             <div class="right-container">
               <span>Rate: {{ attraction.rate }}</span>
@@ -82,7 +77,7 @@
           </video>
           <el-divider/>
         </div>
-        <el-button @click="goToCommentPage">More comments...</el-button>
+        <el-button ><NuxtLink to="/comment-page">More comments...</NuxtLink></el-button>
       </el-card>
       <p>Contact Person: <span>{{ attraction.contactName }}</span> - {{ attraction.contact }}</p>
             
@@ -129,26 +124,10 @@
       }
     },
     methods: {
-        geEvents(){
-          axios.get(`https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents/:`, {
-          data: ''//thumbnail, title, description, venueId, registrationDate, contactName, contact, seatsioChartKey, seatsioEventsKey,
-          })    .then(response => {
-            console.log(response.data);
-
-            this.events = response.data;
-            this.loading = false;
-          })},
         goBack() {
         // Navigate back to the dashboard page
         this.$router.push('/dashboard');
       },
-      close() {
-        // Close the attraction details page (can implement modal closing, for example)
-      },
-      goToCommentPage() {
-        // Navigate to the comment page
-        this.$router.push('/comment-page');
-      }
     }
   }
   </script>
@@ -166,25 +145,8 @@
     justify-content: space-between;
     margin-bottom: 20px;
   }
-  
-  .back-btn, .close-btn {
-    padding: 5px 10px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-  }
-  
-  /* Styles for the main content */
-  .main-content {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .thumbnail {
-    flex: 0 0 50%;
-    margin-right: 20px;
-  }
-  
+
+
   .details {
     flex: 0 0 50%;
   }
@@ -195,10 +157,7 @@
     justify-content: space-between;
     margin-bottom: 10px;
   }
-  
-  .right-container {
-    align-content: left;
-  }
+
   
   /* Styles for the comments section */
   .comments {
@@ -220,12 +179,7 @@
     justify-content: space-between;
     margin-top: 20px;
   }
-  
-  .left-footer, .right-footer {
-    display: flex;
-    align-items: center;
-  }
-  
+
   .left-footer el-button, .right-footer el-button {
     padding: 10px 20px;
     margin-right: 10px;

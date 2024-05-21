@@ -2,42 +2,21 @@
   <div class="event-list">
       <div v-for="event in events" :key="event.id" class="event-card" >
         <div>
-        <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;" @click="this.$router.push({ path: `/events/${event.id}`, replace: true })">
+            <NuxtLink :to="`/events/${event.id}`">
+              <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;">
+            </NuxtLink>
         <el-button type="danger" round class="status">{{event.status}}</el-button>
         <h1>{{ event.title }}</h1>
-        <!-- <p>{{ event.startDate }}</p> -->
-        <p>{{ formatDate(event.startDate) }}</p> <!-- Use formatDate here -->
-        <!-- Display venue name corresponding to the venueID -->
+        <p>{{ formatDate(event.startDate) }}</p>
         <p>{{ getVenueName(event.venueId) }}</p>
         <h2>{{ '¥' + displayPrice(event.price) }}</h2>
         <p class="available">{{ event.available }}</p>
         <div class="bookmark-share">
-          <!-- <img src="/assets/header/bookmark.png" class="bookmark"> -->
           <img :src="bookmarkSrc(event)" @click="toggleBookmark(event)" class="bookmark">
           <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)">
         </div>
         </div>
       </div>
-
-<!--    <div v-else>-->
-<!--      <div v-for="event in events" :key="event.id"  >-->
-<!--        <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;" @click="this.$router.push({ path: `/events/${event.id}`, replace: true })">-->
-<!--        <el-button type="danger" round class="status">{{event.status}}</el-button>-->
-<!--        <h1>{{ event.title }}</h1>-->
-<!--        &lt;!&ndash; <p>{{ event.startDate }}</p> &ndash;&gt;-->
-<!--        <p>{{ formatDate(event.startDate) }}</p> &lt;!&ndash; Use formatDate here &ndash;&gt;-->
-<!--        &lt;!&ndash; Display venue name corresponding to the venueID &ndash;&gt;-->
-<!--        <p>{{ getVenueName(event.venueId) }}</p>-->
-<!--        <h2>{{ '¥' + displayPrice(event.price) }}</h2>-->
-<!--        <p class="available">{{ event.available }}</p>-->
-<!--        <div class="bookmark-share">-->
-<!--          &lt;!&ndash; <img src="/assets/header/bookmark.png" class="bookmark"> &ndash;&gt;-->
-<!--          <img :src="bookmarkSrc(event)" @click="toggleBookmark(event)" class="bookmark">-->
-<!--          <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)">-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-
   </div>
 </template>
 

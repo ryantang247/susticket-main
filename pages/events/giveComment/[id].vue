@@ -5,11 +5,6 @@
             <h2>Event Details</h2>
         </div>
         <div class="content">
-            
-            <!-- <div class="add-photos">
-                <button class="add-photos-button">Add photos or videos</button>
-            </div> -->
-            
             <textarea class="feedback" placeholder="Share your thoughts about this event ...."></textarea>
             <div class="upload-box">
                 <el-upload
