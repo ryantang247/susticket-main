@@ -16,7 +16,10 @@
                 </el-carousel-item>
               </el-carousel>
             </div>
-          <el-button type="danger" round class="status">{{eventData.status}}</el-button>
+          <!-- <el-button type="danger" round class="status">{{eventData.status}}</el-button> -->
+          <el-button type="warning" round class="status" v-if="eventData.status == 0">on sale</el-button>
+          <el-button type="success" round class="status" v-if="eventData.status == 1">on going</el-button>
+          <el-button type="info" round class="status" v-if="eventData.status == 2">ended</el-button>
 
           <div class="event-desc">
               <h1>{{eventData.title}}</h1>
@@ -35,12 +38,18 @@
               
               <h5>Price</h5>
               <div class="date-loc">
-                <el-row :gutter="10" v-if="pricing">
-                  <el-col :span="1.6" v-for="(item, index) in pricing" :key="index" >
-                    <el-tag :type="tagTypes[index]"><h2>{{ item.category }}: ¥{{ item.price }}</h2></el-tag>
+                <el-row :gutter="10" v-if="pricing && pricing.length">
+                  <el-col :span="1.6" v-for="(item, index) in pricing" :key="index">
+                    <el-tag :type="tagTypes[index]">
+                      <h2 v-if="item.price > 0">{{ item.category }}: ¥{{ item.price }}</h2>
+                      <h2 v-else>{{ item.category }}: Free</h2>
+                    </el-tag>
                   </el-col>
                 </el-row>
-
+                <div v-else>
+                  <!-- <h3 color="red">Free</h3> -->
+                  <el-button type="danger" plain><h2>Free</h2></el-button>
+                </div>
               </div>
 
               <table></table>
