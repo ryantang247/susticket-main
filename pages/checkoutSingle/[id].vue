@@ -16,14 +16,9 @@
             </div>
             <div class="use-coin">
                 <p>You have <span>50 coins</span>. Do you want to use it?</p>
-                <input type="number"  min="0" max="50"> coins used.
+                <input type="number" v-model="coinVal"  min="0" max="50"> coins used.
             </div>
-
-            <!-- <div class="place-order-button">
-              
-                Place order
-            </div> -->
-            <PayPal v-if="eventId" :event-id="eventId" :object-selected="seatLabels" :event-key="seatsioEventsKey" :total-amount="totalAmount"/>
+            <PayPal v-if="eventId" :event-id="eventId" :object-selected="seatLabels" :event-key="seatsioEventsKey" :total-amount="totalAmount" :coins="coinVal"/>
             <div class="cancel-order-btn" @click="goBack">
               Cancel payment
             </div>
@@ -58,11 +53,11 @@ import PayPal from "~/components/PayPal.vue";
 
 const router = useRouter();
 const route = useRoute();
-
 const goBack = () => {
   router.go(-1); 
 };
 
+const coinVal = ref(0);
 const eventId = ref(route.query.eventId);
 const seatsioEventsKey = ref(route.query.seatsioEventsKey);
 const totalAmount = ref(route.query.totalAmount);

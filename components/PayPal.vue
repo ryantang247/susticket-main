@@ -13,6 +13,7 @@ export default defineComponent({
     totalAmount: Number,
     eventId: String,
     eventKey: String,
+    coins: Number,
     objectSelected: Object
   },
   setup(props){
@@ -53,6 +54,7 @@ export default defineComponent({
                             `https://secourse2024-675d60a0d98b.herokuapp.com/api/paySingleOrder`,
                             {
                               eventId: props.eventId,
+                              coin: props.coins,
                               price: Number(props.totalAmount)
                             },{
                               //AxiosRequestConfig parameter
