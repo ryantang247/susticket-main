@@ -34,7 +34,7 @@
       </div>
 
       <div class="image-container-cart" @click="goToCart">
-        <el-badge :value="12" class="item">
+        <el-badge v-if="myCartCount != 0" :value="myCartCount" class="item">
           <img src="~/assets/header/cart.png" alt="Image" class="image">
         </el-badge>
 
@@ -42,7 +42,7 @@
       </div>
 
       <div class="image-container-notif">
-        <el-badge :value="3" class="item">
+        <el-badge v-if="notificationsCount != 0" :value="notificationsCount" class="item">
           <img src="~/assets/header/nontif.png" alt="Image" class="image" @click="toggleNotifBox">
         </el-badge>
         <NotifPopup :isVisible="showNotifBox" />
