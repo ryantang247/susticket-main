@@ -75,12 +75,15 @@
           // });
 
           // cookie.value = response.data.secourse;
-          localStorage.setItem("Username", response.data.user.name)
-          localStorage.setItem("SID", response.data.user.sid)
-          localStorage.setItem("Avatar", response.data.user.avatar)
-          localStorage.setItem("Email", response.data.user.email)
-          localStorage.setItem("ChatID", response.data.user.chat_id)
-          localStorage.setItem("ChatAccessKey",response.data.user.chat_access_key)
+          if(response.data.secourse){
+            localStorage.setItem("Username", response.data.user.name)
+            localStorage.setItem("SID", response.data.user.sid)
+            localStorage.setItem("Avatar", response.data.user.avatar)
+            localStorage.setItem("Email", response.data.user.email)
+            localStorage.setItem("ChatID", response.data.user.chat_id)
+            localStorage.setItem("ChatAccessKey",response.data.user.chat_access_key)
+          }
+
 
           // Redirect to another page only after cookie is set
           this.$router.push('/');
