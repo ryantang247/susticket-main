@@ -93,6 +93,26 @@ export default defineComponent({
                                         });
                                       })
                                       .catch((error) => {
+                                        axios.post(
+                                            `https://api-oc.seatsio.net/events/${props.eventKey}/actions/release`,
+                                            {
+                                              objects: props.objectSelected,
+                                            },
+                                            {
+                                              auth: {
+                                                username: useRuntimeConfig().public.seatsioKey
+                                              }
+                                            }
+                                        ).then((bookingResponse) => {
+                                          console.log("Release success", bookingResponse)
+                                        })
+
+                                        ElNotification.error({
+                                          title: 'Error',
+                                          message: "Error in payment"+error,
+                                          duration: 5000, // Duration in milliseconds
+                                          offset: 100 // Notification offset from top
+                                        });
                                         console.error('Error booking seats:', error);
                                       });
                                 } else {
@@ -108,10 +128,30 @@ export default defineComponent({
                                 }
 
                               } else {
+
+                                ElNotification.error({
+                                  title: 'Error',
+                                  message: "Error in server",
+                                  duration: 5000, // Duration in milliseconds
+                                  offset: 100 // Notification offset from top
+                                });
                                 console.error('Error paying for order:', response.data);
                               }
                             })
                             .catch((error) => {
+                              axios.post(
+                                  `https://api-oc.seatsio.net/events/${props.eventKey}/actions/release`,
+                                  {
+                                    objects: props.objectSelected,
+                                  },
+                                  {
+                                    auth: {
+                                      username: useRuntimeConfig().public.seatsioKey
+                                    }
+                                  }
+                              ).then((bookingResponse) => {
+                                console.log("Release success", bookingResponse)
+                              })
                               console.error('Error paying for order:', error);
                             });
                       }
