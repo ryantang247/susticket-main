@@ -109,6 +109,7 @@
     border: 1px solid #ccc;
     position: relative;
     padding-top: 0;
+    padding-left: 20px;
   }
   h5{
     font-size: 20px;
