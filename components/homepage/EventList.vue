@@ -5,7 +5,10 @@
             <NuxtLink :to="`/events/${event.id}`">
               <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;">
             </NuxtLink>
-        <el-button type="danger" round class="status">{{event.status}}</el-button>
+        <!-- <el-button type="danger" round class="status">{{event.status}}</el-button> -->
+        <el-button type="warning" round class="status" v-if="event.status == 0">on sale</el-button>
+        <el-button type="success" round class="status" v-if="event.status == 1">on going</el-button>
+        <el-button type="info" round class="status" v-if="event.status == 2">ended</el-button>
         <h1>{{ event.title }}</h1>
         <p>{{ formatDate(event.startDate) }}</p>
         <p>{{ getVenueName(event.venueId) }}</p>

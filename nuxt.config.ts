@@ -8,9 +8,9 @@ export default defineNuxtConfig({
         '/': { prerender: true },
     },
     // Uncomment this during production build
-    build:{
-        transpile: ['veaury'],
-    },
+    // build:{
+    //     transpile: ['veaury'],
+    // },
   runtimeConfig:{
 
       public:{
@@ -37,9 +37,9 @@ export default defineNuxtConfig({
         // ],
         build: {
             // Uncomment this in commiting this to produciton
-            commonjsOptions: {
-                transformMixedEsModules: true,
-            },
+            // commonjsOptions: {
+            //     transformMixedEsModules: true,
+            // },
         }
     }
 })
