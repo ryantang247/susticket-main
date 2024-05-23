@@ -6,16 +6,15 @@
       <h1>My Cart</h1>
     </div>
     <div class="container">
-      <!-- <MyCardCard :events="events" /> -->
-      <div v-for="event in events" :key="event.id" class="event-card">
+      <MyCardCard :events="events" />
+      <!-- <div v-for="event in events" :key="event.id" class="event-card">
         <aside class="left">
           <aside class="check-box">
-            <!-- <img src="/assets/header/ticked.png" class="checkbox"> -->
             <img :src="tickedSrc(event)" @click="toggleTicked(event)" class="checkbox">
           </aside>
           <aside class="desc">
             <h1>{{ event.title }}</h1>
-            <p>{{ event.date + ' | ' + event.time }}</p>
+            <p>{{ formatDate(event.startDate) }}</p>
             <p>{{ event.location }}</p>
             <p class="seat"><b>{{event.seat}}</b></p>
             <h2>{{ '¥' + event.price }}</h2>
@@ -28,16 +27,14 @@
             <img src="/assets/events/event6.jpg" alt="event-image" class="event-image">
           </div>
           <div class="button-actions">
-            <!-- <button class="next-action">Next actions</button> -->
             <img src="/assets/header/delete.png" class="delete">
-            <!-- <el-button type="danger" :icon="Delete" circle /> -->
           </div>
         </aside>
-      </div>
-      <div v-for="cart in transactions" :key="cart.id" class="event-card">
+      </div> -->
+      <!-- <div v-for="cart in transactions" :key="cart.id" class="event-card">
         <aside class="left">
           <aside class="check-box">
-            <!-- <img src="/assets/header/ticked.png" class="checkbox"> -->
+
             <img :src="tickedSrc(cart.event[0])" @click="toggleTicked(cart.event[0])" class="checkbox">
           </aside>
           <aside class="desc">
@@ -55,12 +52,12 @@
             <img :src="cart.event[0].thumbnail" alt="event-image" class="event-image">
           </div>
           <div class="button-actions">
-            <!-- <button class="next-action">Next actions</button> -->
+
             <img src="/assets/header/delete.png" class="delete">
-            <!-- <el-button type="danger" :icon="Delete" circle /> -->
+
           </div>
         </aside>
-      </div>
+      </div> -->
       <!-- <MyCardCard :transactions="transactions" /> -->
     </div>
     <div class="checkout-container">
@@ -95,7 +92,6 @@ const goToHomepage = () => {
   router.push('/');
 };
 const transactions = ref([]);
-const categories = ref(["To Pay", "Paid", "To Review", "Reviewed"]);
 const events = ref([
   // Other event objects...
 ]);
@@ -131,7 +127,10 @@ const fetchEventsForCart = async () => {
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', {credentials: 'include'});
     const eventData = await response.json();
     transactions.value = eventData;
+    console.log("EventData: ");
     console.log(eventData);
+    console.log("Transaction: ");
+    console.log(transactions);
   } catch (error) {
 
     console.error('Error fetching events for cart:', error);
@@ -156,6 +155,21 @@ const deleteFromCart = async (orderId) => {
     console.error('Error deleting event from cart:', error);
   }
 };
+
+function formatDate(dateString) {
+    /**
+ * AI-generated-content
+ * tool: Copilot
+ * version: latest
+ * usage: displaying date in readable format
+ */
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date(dateString);
+  const formattedDate = date.toLocaleDateString('en-US', options);
+  const time = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).replace(' ', '').toUpperCase();
+
+  return `${formattedDate} | ${time} BJT`;
+}
 
 // Fetch events for the cart when the component is mounted
 onMounted(fetchEventsForCart);

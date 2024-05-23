@@ -2,12 +2,13 @@
   <div class="welcome-banner">
     
     <div v-if="name">
-      <h1>Hello, {{ name }}!</h1>
+      <h1>Hello, {{name}}!</h1>
     </div>
     <div v-else>
       <h1>Hello, There!</h1>
-
     </div>
+
+    
     <p>What event are you looking for?</p>
     <button @click="goToMapPage" class="nearby-events-button">
       <img src="/assets/event/point.png"> Find event
@@ -20,12 +21,17 @@ import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-let isCookieNull = null
+// let isCookieNull = null
+// let userName = 'There';
 
-if (process.client) {
-  isCookieNull = localStorage.getItem("Status")
-  console.log("Has cookie ", isCookieNull)
-;}
+// if (process.client) {
+//   isCookieNull = localStorage.getItem("Status");
+//   console.log("Has cookie ", isCookieNull);
+// ;}
+
+// if (isCookieNull || localStorage.getItem("Username") || isCookieNull != undefined || localStorage.getItem("Username") != null){
+//   userName = localStorage.getItem("Username")
+// }
 
 const goToMapPage = () => {
   router.push('./map');

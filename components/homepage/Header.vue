@@ -68,7 +68,7 @@
 
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
@@ -78,16 +78,19 @@ import axios from 'axios';
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
 
-const avatar = ref('');
+// const avatar = ref('');
 const notificationsCount = ref(0);
 const myCartCount = ref(0)
 
-const userProfile = ref({
-  name: "",
-  email: "",
-  coin: 150,
-  avatar: ""
+const userProfile = defineProps({
+  name: String,
+  email: String,
+  avatar: String
 });
+
+
+
+
 
 const fetchNotificationsCount = async () => {
   try {
@@ -115,27 +118,27 @@ onMounted(() => {
   fetchNotificationsCount();
   fetchMyCartCount();
 
-  if (process.client) {
+  // if (process.client) {
 
-    const status = localStorage.getItem("Status");
+  //   const status = localStorage.getItem("Status");
 
-    if (!status) {
-      ElNotification.error({
-        title: 'Error',
-        message: "User not logged in",
-        offset: 100,
-      });
+  //   if (!status) {
+  //     ElNotification.error({
+  //       title: 'Error',
+  //       message: "User not logged in",
+  //       offset: 100,
+  //     });
 
-    } else {
+  //   } else {
 
-        console.log("HELLO!!!")
-        userProfile.value.sid = localStorage.getItem("SID");
-        userProfile.value.name = localStorage.getItem("Username");
-        userProfile.value.email = localStorage.getItem("Email");
-        userProfile.value.avatar = localStorage.getItem("Avatar");
-        avatar.value = userProfile.value.avatar || 'assets/logo.png';
-      }
-  }
+  //       console.log("HELLO!!!")
+  //       userProfile.value.sid = localStorage.getItem("SID");
+  //       userProfile.value.name = localStorage.getItem("Username");
+  //       userProfile.value.email = localStorage.getItem("Email");
+  //       userProfile.value.avatar = localStorage.getItem("Avatar");
+  //       avatar.value = userProfile.value.avatar || 'assets/logo.png';
+  //     }
+  // }
 });
 
 const showProfileBox = ref(false);
