@@ -72,7 +72,7 @@
                 <div class="get-ticket-btn">
               <nuxt-link :to="`/booking/${currentEvent}`">
 
-                  <a>Get Ticket</a>
+                  <p>Get Ticket</p>
               </nuxt-link>
 
                 </div>
