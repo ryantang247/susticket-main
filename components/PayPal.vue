@@ -75,12 +75,11 @@ export default defineComponent({
                                       {
                                         objects: props.objectSelected,
                                       },
-                                      // {
-                                      //   auth: {
-                                      //     username: userconfig.username,
-                                      //     password: userconfig.password
-                                      //   }
-                                      // }
+                                      {
+                                      auth: {
+                                        username: useRuntimeConfig().public.seatsioKey
+                                      }
+                                      }
                                   )
                                       .then((bookingResponse) => {
                                         console.log("Return URL link",response.data.forwardLink);
