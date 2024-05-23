@@ -1,7 +1,7 @@
 <template>
   <div class="welcome-banner">
     
-    <div v-if="!isCookieNull">
+    <div v-if="name">
       <h1>Hello, {{ name }}!</h1>
     </div>
     <div v-else>
@@ -20,11 +20,13 @@ import { defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-let cookie = ""
+let isCookieNull = null
+
 if (process.client) {
-  cookie = useCookie('secourse')
+  isCookieNull = localStorage.getItem("Status")
+  console.log("Has cookie ", isCookieNull)
 ;}
-const isCookieNull = (cookie.value === undefined);
+
 const goToMapPage = () => {
   router.push('./map');
 };
@@ -34,10 +36,7 @@ const props = defineProps({
   name: String
 });
 
-// Function to find nearby events
-const findNearbyEvents = () => {
-  // Logic to find nearby events
-};
+
 /**
  * AI-generated-content
  * tool: ChatGPT

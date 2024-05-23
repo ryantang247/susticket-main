@@ -52,7 +52,7 @@ import EventList from '@/components/homepage/EventList.vue';
 import CustomerService from '@/components/CustomerService.vue';
 import Footer from '@/components/homepage/Footer.vue';
 
-let userName = ref("");
+let userName = ref(null);
 
 const allEvents = ref([]);
 const events = ref([]);
@@ -116,7 +116,9 @@ const fetchEvents = async () => {
 onMounted(() => {
   fetchEvents();
   if (process.client) {
-    userName.value = localStorage.getItem("Username") || '';
+    const name = localStorage.getItem("Username") || ''
+    console.log("Banner name :",name)
+    userName.value = name;
   }
 });
 

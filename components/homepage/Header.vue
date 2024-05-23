@@ -115,18 +115,26 @@ onMounted(() => {
   fetchNotificationsCount();
   fetchMyCartCount();
 
-  const cookie = useCookie('secourse');
-  if (cookie.value === null || cookie.value === undefined) {
-    console.log('User is not logged in');
-  } else {
-    if (process.client) {
-      console.log("HELLO!!!")
-      userProfile.value.sid = localStorage.getItem("SID");
-      userProfile.value.name = localStorage.getItem("Username");
-      userProfile.value.email = localStorage.getItem("Email");
-      userProfile.value.avatar = localStorage.getItem("Avatar");
-      avatar.value = userProfile.value.avatar || 'assets/logo.png';
-    }
+  if (process.client) {
+
+    const status = localStorage.getItem("Status");
+
+    if (!status) {
+      ElNotification.error({
+        title: 'Error',
+        message: "User not logged in",
+        offset: 100,
+      });
+
+    } else {
+
+        console.log("HELLO!!!")
+        userProfile.value.sid = localStorage.getItem("SID");
+        userProfile.value.name = localStorage.getItem("Username");
+        userProfile.value.email = localStorage.getItem("Email");
+        userProfile.value.avatar = localStorage.getItem("Avatar");
+        avatar.value = userProfile.value.avatar || 'assets/logo.png';
+      }
   }
 });
 

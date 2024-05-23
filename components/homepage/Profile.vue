@@ -33,17 +33,15 @@
       }
     },
     mounted(){
-      const cookie = useCookie('secourse');
-      if (cookie.value ===null || cookie.value === undefined){
-        this.loginStatus = false
-      }else {
-        if (process.client) {
+      if (process.client) {
+      const status = localStorage.getItem("Status")
 
-          this.sid = localStorage.getItem("SID")
-          this.name = localStorage.getItem("Username"),
-          this.email = localStorage.getItem("Email")
-          this.email = localStorage.getItem("avatar")
-        }
+        if (status){
+            this.sid = localStorage.getItem("SID")
+            this.name = localStorage.getItem("Username"),
+            this.email = localStorage.getItem("Email")
+            this.email = localStorage.getItem("avatar")
+          }
       }
     },
     methods: {
@@ -57,6 +55,7 @@
           localStorage.setItem("SID", null)
           localStorage.setItem("Avatar", null)
           localStorage.setItem("Email", null)
+          localStorage.setItem("Status", null)
         }
 
           // Redirect to another page only after cookie is set

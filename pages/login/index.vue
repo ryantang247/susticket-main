@@ -76,6 +76,7 @@
 
           // cookie.value = response.data.secourse;
           if(response.data.secourse){
+            localStorage.setItem("Status", "success")
             localStorage.setItem("Username", response.data.user.name)
             localStorage.setItem("SID", response.data.user.sid)
             localStorage.setItem("Avatar", response.data.user.avatar)
