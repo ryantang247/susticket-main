@@ -92,6 +92,15 @@ const goBack = () => {
 };
 
 const addToCart = async (totalAmount) => {
+  if (objects.value.length === 0) {
+    ElNotification.error({
+      title: 'Error',
+      message: 'Please select a seat before adding to cart.',
+      offset: 100
+    });
+    return;
+  }
+
   try {
     console.log('Adding to cart:', currentEvent.value, totalAmount);
     
@@ -269,6 +278,14 @@ if (eventDataResponse) {
 });
 
 function navigateToCheckout() {
+  if (objects.value.length === 0) {
+    ElNotification.error({
+      title: 'Error',
+      message: 'Please select a seat before proceeding to checkout.',
+      offset: 100
+    });
+    return;
+  }
   const checkoutData = {
     eventId: eventData.value.id,
     seatsioEventsKey: eventData.value.seatsioEventsKey,

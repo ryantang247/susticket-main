@@ -23,7 +23,7 @@
 
           <div class="event-desc">
               <h1>{{eventData.title}}</h1>
-              <p> {{eventData.rate}} ratings | {{eventData.soldTickets}} solds</p>
+              <p v-if="eventData.status == 2"> {{eventData.rate}} ratings | {{eventData.soldTickets}} solds</p>
               <h5>Date & time</h5>
               <div class="date-loc">
                   <img src="/assets/header/calendar.png">
@@ -52,8 +52,6 @@
                 </div>
               </div>
 
-              <table></table>
-
               <div class="desc">
                   <h5>About this event</h5>
                   <div class="desc-box">
@@ -80,7 +78,7 @@
                 </div>
               
               <div class="share-bookmark">
-                <img src="/assets/event/bookmark_empty.png">
+                <!-- <img :src="bookmarkSrc(currentEvent)" @click="toggleBookmark(currentEvent)"> -->
                 <h6>Bookmark</h6>
                 <img src="/assets/event/linkshare.png" @click="copyLink(event)">
                 <h6>Copy link</h6>
@@ -132,6 +130,7 @@ import { getEvents } from '@/api';
 import emptyBookmark from '@/assets/event/bookmark.png';
 import filledBookmark from '@/assets/event/bookmark (1).png';
 
+const bookmarkEvents = ref({});
 const event = ref([]);
 const tagTypes=['success', 'info', 'warning', 'danger'];
 const router = useRouter();
@@ -157,6 +156,8 @@ const eventData = ref({
   ]
 
 });
+
+
 
 function transformToEmbedUrl(youtubeUrl) {
   // Extract the video ID from the URL
@@ -229,14 +230,6 @@ const copyLink = (event) => {
   });
 };
 
-const toggleBookmark = (event) =>  {
-  console.log('button clicked');
-  event.value.bookmarked = !event.value.bookmarked; // Toggle the bookmarked state
-};
-
-const bookmarkSrc = (event) =>  {
-  return event.value.bookmarked ? filledBookmark : emptyBookmark;
-};
 
 const goBack = () => {
   router.push('/');
@@ -294,6 +287,72 @@ function formatDate(dateString) {
   return `${formattedDate} | ${time} BJT`;
 }
 
+
+// const bookmarkSrc = (event) =>  {
+//   return event.value.bookmarked ? filledBookmark : emptyBookmark;
+// };
+// const toggleBookmark = async (event) => {
+//   console.log('button clicked');
+
+//   if(bookmarkEvents.value.hasOwnProperty(event.id)){
+
+//     if(!bookmarkEvents.value[event.id]){
+//       try {
+//         const bookmarkResponse = await axios.post('https://secourse2024-675d60a0d98b.herokuapp.com/api/bookmarkThisEvent',
+//             { eventId: event.id },
+//             {//AxiosRequestConfig parameter
+//             withCredentials: true //correct
+//         } );
+//         console.log(bookmarkResponse);
+//         bookmarkEvents.value[event.id] = true;
+//         ElNotification.success({
+//           title: 'Copied',
+//           message: "Event's successfully bookmarked!",
+//           offset: 100,
+//         });
+//       } catch (error) {
+//         // Handle the error
+//         console.error('Error occurred while bookmarking the event:', error);
+//         // Optionally, you can also notify the user about the error
+//         ElNotification.error({
+//           title: 'Error',
+//           message: `Failed to bookmark the event. Please try again later. ${error}`,
+//           offset: 100,
+//         });
+//       }
+
+//     } else {
+//       try {
+//         const bookmarkResponse = await axios.delete('https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteThisEventBookmark', {
+//           data: {eventId: event.id},
+//         }, {
+//           //AxiosRequestConfig parameter
+//           withCredentials: true //correct
+//         }
+//         );
+//         console.log(bookmarkResponse)
+//         bookmarkEvents.value[event.id] = false
+//         ElNotification.success({
+//           title: 'Copied',
+//           message: "Event's successfully removed from bookmark!",
+//           offset: 100,
+//         });
+
+//       } catch(error){
+//         console.error('Error occurred while bookmarking the event:', error);
+//         // Optionally, you can also notify the user about the error
+//         ElNotification.error({
+//           title: 'Error',
+//           message: `Failed to delete bookmark. Please try again later. ${error}`,
+//           offset: 100,
+//         });
+//       }
+//     }
+
+//   }
+
+//   event.bookmarked = !event.bookmarked; // Toggle the bookmarked state
+// };
 </script>
 
 
