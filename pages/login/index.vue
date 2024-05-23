@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div class="app">
         <!-- <HeaderNoLogin /> -->
         <div class="box">
             <aside class="left">
@@ -16,19 +16,24 @@
                               v-model="password"
                               style="width: 400px; height: 50px;border-radius: 20px"
                               type="password"
-                              placeholder="Please input password"
+                              placeholder="Password"
                               show-password
                           />
+                          <button v-loading="loginStatus" @click="login()" class="log-in" type="button">Login</button>
+                          
                         </div>
-                      <button v-loading="loginStatus" @click="login()" class="log-in" type="button">Login</button>
+                      
+                        
                     </form>
-    
+                    <!-- <button class="back" @click="goToHomepage()">Back to Homepage</button> -->
+                    
                 </div>
                 
             </aside>
             <aside class="right">
                 <img class="logo" src="assets/login_logo.png">
             </aside>
+            
         </div>
     </div>
   </template>
@@ -86,18 +91,35 @@
           ElNotification.error({
             title: 'Error logging in',
             message: error,
-            duration: 5000, // Duration in milliseconds
-            offset: 100 // Notification offset from top
+            duration: 5000, 
+            offset: 100 
           });
         }
       }
     }
   }
+
+
   </script>
 
   <style scoped>
-body{
-    background-color: ghostwhite;
+
+  *{
+    font-family: sans-serif;
+  }
+
+.app {
+    height: 100vh; 
+    background-image: url('/assets/welcomeBanner/banner5.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    opacity: 0.9;
 }
 .box {
     position: absolute;
@@ -105,29 +127,29 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60%; /* Set your desired width */
-    height: 60%; /* Set your desired height */
-    border: 1px solid #ccc; /* Optional: Add border for visualization */
+    width: 60%; 
+    height: 60%; 
+    border: 1px solid #ccc; 
     background-color: rgb(0, 128, 128);
+    border-radius: 5px;
+    opacity: 0.9;
 }
 
-.left{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-    height: 100%;
-    border-right: solid 1px silver;
-    flex-direction: column;
+.left, .right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+  padding: 20px;
 }
 
-.right{
-    display: flex;
-    border-left: 1px black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.left {
+  border-right: solid 1px silver;
+}
+
+.right {
+  border-left: 1px black;
 }
 
 .left-login {
@@ -165,33 +187,24 @@ body{
     margin-bottom: 0.5em;
 }
 
-.login-form input{
-    box-sizing: border-box;
-    background-color: ghostwhite;
-    width: 400px;
-    height: 60px;
-    border-radius: 12px;
-    border: none;
-    text-align: center;
-    margin-bottom: 2px;
 
-}
 
 .log-in {
-    background-color: #3d9140; /* Set the background color */
+    background-color: #3d9140; 
     border: none;
     color: white;
-    padding: 8px 3px; /* Set the padding */
+    padding: 8px 3px; 
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    width: 400px; 
+    width: 90%; 
     height: 50px;
     font-size: 16px;
     margin: 4px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
-    border-radius: 12px; /* Set the border radius */
+    border-radius: 12px; 
+    margin-top: 10px;
     
 }
 .log-in:hover {
@@ -206,5 +219,38 @@ body{
     margin-left: 40px;
 
 }
+
+@media (max-width: 1024px) {
+  .box {
+    width: 90%;
+    height: auto;
+}
+  .left, .right {
+    width: 100%;
+    padding: 10px;
+    border: none;
+}
+.left {
+    border-bottom: solid 1px silver;
+}
+
+}
+
+@media (max-width: 700px) {
+  .left-login h1 {
+    font-size: 1.5rem;
+}
+.login-form input, .log-in {
+    height: 40px;
+}
+.logo {
+    display: none;
+}
+.right{
+  display: none;
+}
+}
+
+
   </style>
   
