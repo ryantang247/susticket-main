@@ -78,7 +78,15 @@ if (process.client) {
   chat_id = localStorage.getItem("chat_id");
   chat_access_key = localStorage.getItem("chat_access_key");
 }
-
+if (currentUserAvatar === "null" || currentUserAvatar === null){
+  currentUserAvatar = '';
+}
+if (currentUserName === "null" || currentUserName === null) {
+  currentUserName = '';
+}
+if (currentUserEmail === "null" || currentUserEmail === null) {
+  currentUserEmail = '';
+}
 console.log("currentUserSID: " + currentUserSID);
 console.log("currentUserName: " + currentUserName);
 console.log("currentUserEmail: " + currentUserEmail);

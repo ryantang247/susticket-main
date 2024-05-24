@@ -67,7 +67,7 @@ const logout = async () => {
   }
 
   // Redirect to another page only after cookie is set
-  await router.push('/login');
+  await router.push('/');
 };
 </script>
 

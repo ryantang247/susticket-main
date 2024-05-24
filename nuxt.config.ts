@@ -3,9 +3,9 @@ export default defineNuxtConfig({
     routeRules: {
         '/': { prerender: true },
     },
-    build:{
-        transpile: ['veaury'],
-    },
+    // build:{
+    //     transpile: ['veaury'],
+    // },
     runtimeConfig:{
 
         public:{
@@ -27,9 +27,9 @@ export default defineNuxtConfig({
         //     veaury
         // ]
         build: {
-            commonjsOptions: {
-                transformMixedEsModules: true,
-            },
+            // commonjsOptions: {
+            //     transformMixedEsModules: true,
+            // },
         }
     }
 })

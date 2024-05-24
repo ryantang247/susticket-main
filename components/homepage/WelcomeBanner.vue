@@ -7,7 +7,6 @@
     <div v-else>
       <h1>Hello, There!</h1>
     </div>
-
     
     <p>What event are you looking for?</p>
     <button @click="goToMapPage" class="nearby-events-button">
@@ -39,8 +38,11 @@ const goToMapPage = () => {
 
 // Define the prop 'name' with its type
 const props = defineProps({
-  name: String
+  name: String,
+  default: ''
 });
+
+
 
 
 /**

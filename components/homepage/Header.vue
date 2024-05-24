@@ -85,8 +85,13 @@ const myCartCount = ref(0)
 const userProfile = defineProps({
   name: String,
   email: String,
-  avatar: String
+  avatar: String,
+  default: ''
 });
+
+// if(avatar === ''){
+//   avatar = '~/assets/logo.png'
+// }
 
 
 
