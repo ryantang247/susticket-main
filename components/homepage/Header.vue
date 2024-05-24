@@ -97,6 +97,11 @@ const fetchNotificationsCount = async () => {
     notificationsCount.value = response.data.length; 
   } catch (error) {
     console.error('Failed to fetch notifications: ', error);
+    ElNotification.error({
+      title: 'Error',
+      message: `Error fetching notifications. ${error.message}`,
+      offset: 100,
+    });
   }
 };
 
@@ -107,7 +112,12 @@ const fetchMyCartCount = async () => {
     console.log(response)
     myCartCount.value = response.data.length; 
   } catch (error) {
-    console.error('Failed to fetch notifications: ', error);
+    console.error('Failed to fetch carts: ', error);
+    ElNotification.error({
+      title: 'Error',
+      message: `Error fetching carts. ${error.message}`,
+      offset: 100,
+    });
   }
 };
 
@@ -116,18 +126,14 @@ onMounted(() => {
   fetchMyCartCount();
 
   if (process.client) {
-
     const status = localStorage.getItem("Status");
-
     if (!status) {
       ElNotification.error({
         title: 'Error',
         message: "User not logged in",
         offset: 100,
       });
-
     } else {
-
         console.log("HELLO!!!")
         userProfile.value.sid = localStorage.getItem("SID");
         userProfile.value.name = localStorage.getItem("Username");

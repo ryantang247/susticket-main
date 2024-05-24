@@ -106,11 +106,8 @@ export default {
     axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues')
       .then(response => {
         // console.log(this.APIFormData)
-
-
         for(let i =0; i< response.data.length; i++){
           var item = response.data[i]
-
           const newDataItem = {
             id: item.id,
             name: item.name,
@@ -136,11 +133,21 @@ export default {
         }
 
         this.initMap();
-
+        ElNotification.success({
+          title: 'Success',
+          message: "Sucessfully fetch venues!",
+          offset: 100,
+        }
+        );
       })
       .catch(error => {
         this.APIFormData = '';
         this.error = error.message || 'An error occurred';
+        ElNotification.error({
+          title: 'Error',
+          message: "Error fetching venues" + error,
+          offset: 100,
+        });
       });
   },
   methods: {
@@ -166,7 +173,11 @@ export default {
           })
           .catch(error => {
               console.log("Error fetching events by venuId", error)
-
+              ElNotification.error({
+              title: 'Error',
+              message: "Error fetching venues by Id" + error,
+              offset: 100,
+            });
           })
 
       // this.$emit('dorm-selected', curData.area, curData.building);
