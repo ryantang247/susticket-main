@@ -113,9 +113,7 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font-size: 16px;
-}
+
 .chat-box {
   position: fixed;
   bottom: 20px;
@@ -127,53 +125,6 @@ export default {
   background-color: #f0f0f0;
   padding: 10px;
 
-}
-
-.header {
-  background-color: #007bff;
-  color: #fff;
-  padding: 13px;
-  text-align: center;
-}
-
-.messages {
-  height: 300px; /* Adjust the height of the message display area */
-  overflow-y: auto;
-  padding: 10px;
-  margin-bottom: 3px;
-}
-
-.message {
-  overflow-y: auto;
-  padding: 3px;
-  text-align: right;
-}
-
-.user-message {
-  background-color: #007bff;
-  padding: 8px;
-  border-radius: 8px;
-  max-width: 70%;
-  display: inline-block;
-  max-width: 70%; /* Optionally, set a max-width to prevent message box from becoming too wide */
-  text-align: left;
-
-}
-
-.service-message {
-  background-color: #e6e6e6;
-  padding: 8px;
-  border-radius: 8px;
-  text-align: left;
-  max-width: 70%;
-
-}
-
-.input {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-top: 1px solid #ccc;
 }
 
 .input input {

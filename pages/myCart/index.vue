@@ -61,7 +61,6 @@
 
 <script setup>
 import Header from '@/components/homepage/Header.vue';
-import MyCardCard from '@/components/myTicket/MyCartCard.vue';
 import Footer from '@/components/homepage/Footer.vue';
 import CustomerService from '@/components/CustomerService.vue';
 import { ref, computed } from 'vue';
@@ -354,10 +353,7 @@ h1{
   display: flex;
   justify-content: space-between; /* Align items to opposite ends */
   width: 70%;
-  padding-top: 0px ;
-  padding-bottom: 0px;
-  padding-left: 10px;
-  padding-right: 20px;
+  padding: 0 20px 0 10px;
   border-radius: 10px;
   border: 2px solid #6DC9C8;
   margin-bottom: 15px;
@@ -412,7 +408,7 @@ h1{
   width: 30px;
   height: 30px;
   margin: 5px;
-  display: flex-end;
+
 }
 .button-actions img:hover{
   background-color: rgb(189, 189, 189);
