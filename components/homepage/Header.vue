@@ -34,7 +34,7 @@
       </div>
 
       <div class="image-container-cart" @click="goToCart">
-        <el-badge v-if="myCartCount != 0" :value="myCartCount" class="item">
+        <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item">
           <img src="~/assets/header/cart.png" alt="Image" class="image">
         </el-badge>
 
@@ -42,7 +42,7 @@
       </div>
 
       <div class="image-container-notif">
-        <el-badge v-if="notificationsCount != 0" :value="notificationsCount" class="item">
+        <el-badge v-if="notificationsCount !== 0" :value="notificationsCount" class="item">
           <img src="~/assets/header/nontif.png" alt="Image" class="image" @click="toggleNotifBox">
         </el-badge>
         <NotifPopup :isVisible="showNotifBox" />
@@ -73,7 +73,6 @@ import { useRouter } from 'vue-router';
 import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { Menu } from '@element-plus/icons-vue';
 import axios from 'axios';
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
@@ -266,8 +265,7 @@ function goToHomepage(){
 .user-profile img {
   border-radius: 50%; 
   width: 50px; 
-  height: 50px; 
-  margin-right: 5px;
+  height: 50px;
   cursor: pointer;
   margin-right: 150px;
 }
