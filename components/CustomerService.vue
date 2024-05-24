@@ -121,10 +121,9 @@ export default {
   bottom: 20px;
   right: 20px;
   width: 600px;
-  height: 500px;
+  height: 700px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  overflow: hidden;
   background-color: #f0f0f0;
   padding: 10px;
 

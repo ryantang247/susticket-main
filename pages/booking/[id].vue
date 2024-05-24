@@ -76,6 +76,7 @@ import PayPal from "~/components/PayPal.vue";
 import { SeatsioSeatingChart } from '@seatsio/seatsio-vue';
 import { getEvents } from "~/api.js";
 import { useRoute, useRouter } from 'vue-router';
+import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
@@ -117,6 +118,21 @@ const addToCart = async (totalAmount) => {
       })
     });
 
+    // TODO: Add axios to seatsio to temporarily book the seat
+    if(eventData.seatsioEventsKey){
+      await axios.post(
+          `https://api-oc.seatsio.net/events/${eventData.value.seatsioEventsKey}/actions/book`,
+          {
+            objects: seatLabels.value,
+          },
+          {
+            auth: {
+              username: useRuntimeConfig().public.seatsioKey
+            }
+          }
+      )
+    }
+
     // Check if the request was successful
     if (response.ok) {
       // Notify the user that the event has been added to the cart
@@ -127,19 +143,23 @@ const addToCart = async (totalAmount) => {
       });
     } else {
       // Handle the error if the request fails
-      console.log(response)
+      const responseText = await response.text()
+      console.log(responseText);
+
       ElNotification.error({
         title: 'Error',
-        message: 'Failed to add event to cart. Please try again later.' + response.statusText,
+        message: 'Failed to add event to cart. ' + responseText,
         offset: 100
       });
     }
   } catch (error) {
     // Handle any unexpected errors
-    console.error('Error adding event to cart:', error);
+
+    const responseText = await response.text()
+
     ElNotification.error({
       title: 'Error',
-      message: 'An unexpected error occurred. Please try again later.' + error.statusText,
+      message: 'An unexpected error occurred.' + responseText,
       offset: 100
     });
   }

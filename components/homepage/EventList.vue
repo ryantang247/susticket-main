@@ -187,7 +187,8 @@ function displayPrice(priceJson) {
  * version: latest
  * usage: displaying prices in beautiful UI
  * I slightly adapt the generated code by modifying the RMB symbol
- */  console.log("Parsed ", priceJson);
+ */
+  // console.log("Parsed ", priceJson);
   
   let prices;
   try {

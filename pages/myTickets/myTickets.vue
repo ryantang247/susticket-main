@@ -5,15 +5,6 @@
       <img src="~/assets/categorymenu/back.png" alt="Back" @click="goToHomepage">
       <h1>My Ticket</h1>
     </div>
-    <nav class="filter-menu">
-      <ul class="filter-list">
-        <li v-for="cate in categories" :key="cate">
-          <a href="#">
-            <span class="filter-name">{{ cate }}</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
     <div class="container">
       <MyTicketCard :transactions="transactions" />
       <MyTicketCard :events="events" />

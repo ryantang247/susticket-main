@@ -35,13 +35,22 @@
         </aside>
       </div>
       <!-- <MyCardCard :transactions="transactions" /> -->
+      <div class="use-coin-cart">
+        <p>You have {{ coinVal}} . Do you want to use it?</p>
+        <div>
+          <input type="number" v-model="usedCoin"  min="0" max="50"> coins used.
+
+        </div>
+      </div>
     </div>
+
     <div class="checkout-container">
       <div class="checkout-box">
         <p>Total: <b>{{ total }}</b></p>
         <!-- <button class="checkout-btn">Checkout</button> -->
       </div>
       <button class="checkout-btn" @click="checkoutWithPayPal">Checkout</button>
+
       <!-- <PayPal v-if="eventData.id" :event-id="eventData.id" :object-selected="seatLabels" :event-key="eventData.seatsioEventsKey" :total-amount="totalAmount.toFixed(2)"/> -->
     </div>
     <el-backtop :right="60" :bottom="150" />
@@ -73,6 +82,8 @@ const categories = ref(["To Pay", "Paid", "To Review", "Reviewed"]);
 const events = ref([
   // Other event objects...
 ]);
+const coinVal = ref(0)
+const usedCoin = ref(0);
 
 const orders = ref([
   // Other event objects...
@@ -102,8 +113,8 @@ const toggleTicked = (event) => {
 
   if (orderIndex === -1) {
     orders.value.push({
-      id: event.eventId,
-      orderId: event.id
+      eventId: event.eventId,
+      id: event.id
     });
   } else {
     orders.value.splice(orderIndex, 1);
@@ -112,6 +123,19 @@ const toggleTicked = (event) => {
   console.log("Current orders: ",  event.bookmarked );
   event.bookmarked = !event.bookmarked; // Toggle the bookmarked state
 };
+
+const getUserCoins  = async () =>{
+
+  try{
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getUser', {credentials: 'include'});
+    const eventData = await response.json();
+    console.log("User details: ",eventData)
+    coinVal.value = eventData.coin
+  }catch (e) {
+    console.log("Error getting user detail")
+  }
+
+}
 
 
 const tickedSrc = (event) => {
@@ -154,26 +178,38 @@ const checkoutWithPayPal = async () => {
         'Content-Type': 'application/json'  // Set the Content-Type header to application/json
       },
       body: JSON.stringify({
-        orderlist: orders.value,
-        totalprice: total.value
+        orderList: orders.value,
+        coin: usedCoin.value,
+        price: Number(total.value)
       })
     });
 
 
     if (response.ok) {
       console.log('Payment successful:', response);
+      const eventData = await response.json();
+
       ElNotification.success({
         title: 'Success',
         message: 'Payment successful, redirecting...',
         offset: 100
       });
+      navigateTo(eventData.forwardLink, {
+        external: true,
+        open: {
+          target: '_blank',
+        }
+      });
+
     } else {
+      const errorMsg = await response.json();
+      console.log(errorMsg)
       ElNotification.error({
         title: 'Error',
-        message: 'Payment failed: ' + response.statusText,
+        message: 'Payment failed: ' + errorMsg.msg,
         offset: 100
       });
-      console.error('Payment failed:', response.statusText);
+      console.error('Payment failed:', errorMsg.msg);
     }
   } catch (error) {
     ElNotification.error({
@@ -221,7 +257,11 @@ const deleteFromCart = async (orderId) => {
 };
 
 // Fetch events for the cart when the component is mounted
-onMounted(fetchEventsForCart);
+onMounted(() => {
+  // Execute these functions when the component is mounted
+  fetchEventsForCart();
+  getUserCoins();
+});
 
 </script>
 <!--
@@ -234,16 +274,7 @@ onMounted(fetchEventsForCart);
 *{
   font-family: sans-serif;
 }
-.filter-menu {
-  overflow-x: auto; /* Add horizontal scrollbar if needed */
-}
 
-.filter-list {
-  display: flex; /* Use flexbox */
-  list-style-type: none; /* Remove default list styles */
-  padding: 0; /* Remove default padding */
-  margin-left: 7%; /* Remove default margin */
-}
 
 .filter-list li {
   margin-right: 20px; /* Add spacing between items */
@@ -258,9 +289,11 @@ onMounted(fetchEventsForCart);
   opacity: 1.5;
 }
 
-/* Adjust styling for filter names as needed */
-.filter-name {
-  padding: 5px 10px; /* Add padding to each filter name */
+
+.use-coin-cart{
+  display: flex;
+  margin-left: 60px;
+  align-items: center;
 }
 
 .label-page{
@@ -295,10 +328,7 @@ onMounted(fetchEventsForCart);
   height: 50px;
   border:2px solid #000000;
 }
-.total{
-  float: left;
-  text-align: center;
-}
+
 
 .total b{
   font-size: 24px;
@@ -316,13 +346,7 @@ onMounted(fetchEventsForCart);
   color: #485e5e;
   cursor: pointer;
 }
-.action-btn{
-  width: 150px;
-}
-.myticket-card {
-  font-family: sans-serif;
-  margin-top: 20px;
-}
+
 h1{
   font-size: 30px;
 }
@@ -339,10 +363,7 @@ h1{
   margin-bottom: 15px;
   margin-left: 60px;
 }
-.event-details {
-  flex: 1; /* Take remaining space */
-  float: left;
-}
+
 .left{
   float: left;
 }
@@ -382,17 +403,7 @@ h1{
   justify-content: center;
   align-items: center;
 }
-.next-action {
-  margin: 10px;
-  padding: 5px 25px;
-  background-color: #FAA543;
-  border: none; /* Remove border or specify width, style, and color */
-  border-radius: 5px; /* Specify border radius */
-  font-size: 12px;
-}
-.next-action:hover{
-  background-color: #965c19;
-}
+
 .button-actions {
   display: flex;
   align-items: center;
