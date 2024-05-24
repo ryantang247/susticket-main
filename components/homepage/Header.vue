@@ -91,7 +91,7 @@ const userProfile = ref({
 
 const fetchNotificationsCount = async () => {
   try {
-    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications');
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications',{ withCredentials:true});
     console.log("NOTIF");
     console.log(response)
     notificationsCount.value = response.data.length; 
@@ -107,7 +107,7 @@ const fetchNotificationsCount = async () => {
 
 const fetchMyCartCount = async () => {
   try {
-    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0');
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', { withCredentials:true});
     console.log("MY CART");
     console.log(response)
     myCartCount.value = response.data.length; 
