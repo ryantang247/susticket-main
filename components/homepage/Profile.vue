@@ -57,7 +57,12 @@
           localStorage.setItem("Email", null)
           localStorage.setItem("Status", null)
         }
-
+          // ElNotification.success({
+          //   title: 'Success',
+          //   message: "Sucessfully log out!",
+          //   offset: 100,
+          // }
+          // );
           // Redirect to another page only after cookie is set
           this.$router.push('/login');
 
