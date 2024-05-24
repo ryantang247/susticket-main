@@ -6,36 +6,12 @@
       <h1>My Cart</h1>
     </div>
     <div class="container">
-      <MyCardCard :events="events" />
-      <!-- <div v-for="event in events" :key="event.id" class="event-card">
-        <aside class="left">
-          <aside class="check-box">
-            <img :src="tickedSrc(event)" @click="toggleTicked(event)" class="checkbox">
-          </aside>
-          <aside class="desc">
-            <h1>{{ event.title }}</h1>
-            <p>{{ formatDate(event.startDate) }}</p>
-            <p>{{ event.location }}</p>
-            <p class="seat"><b>{{event.seat}}</b></p>
-            <h2>{{ '¥' + event.price }}</h2>
-            <el-button type="danger" round class="status">{{event.status}}</el-button>
-            <p class="available">{{ event.available }}</p>
-          </aside>
-        </aside>
-        <aside class="right">
-          <div class="image-container">
-            <img src="/assets/events/event6.jpg" alt="event-image" class="event-image">
-          </div>
-          <div class="button-actions">
-            <img src="/assets/header/delete.png" class="delete">
-          </div>
-        </aside>
-      </div> -->
-      <!-- <div v-for="cart in transactions" :key="cart.id" class="event-card">
-        <aside class="left">
-          <aside class="check-box">
 
-            <img :src="tickedSrc(cart.event[0])" @click="toggleTicked(cart.event[0])" class="checkbox">
+      <div v-for="cart in transactions" :key="cart.id" class="event-card">
+        <aside class="left">
+          <aside class="check-box">
+            <!-- <img src="/assets/header/ticked.png" class="checkbox"> -->
+            <img :src="tickedSrc(cart)" @click="toggleTicked(cart)" class="checkbox">
           </aside>
           <aside class="desc">
             <h1>{{ cart.event[0].title }}</h1>
@@ -52,12 +28,12 @@
             <img :src="cart.event[0].thumbnail" alt="event-image" class="event-image">
           </div>
           <div class="button-actions">
-
-            <img src="/assets/header/delete.png" class="delete">
-
+            <!-- <button class="next-action">Next actions</button> -->
+            <img @click="deleteFromCart(cart.id)" src="/assets/header/delete.png" class="delete">
+            <!-- <el-button type="danger" :icon="Delete" circle /> -->
           </div>
         </aside>
-      </div> -->
+      </div>
       <!-- <MyCardCard :transactions="transactions" /> -->
     </div>
     <div class="checkout-container">
@@ -85,6 +61,7 @@ import checkboxImage from '@/assets/header/checkbox.png';
 import tickedImage from '@/assets/header/ticked.png';
 
 import { useRouter } from 'vue-router';
+import {ElNotification} from "element-plus";
 
 const router = useRouter();
 
@@ -92,7 +69,12 @@ const goToHomepage = () => {
   router.push('/');
 };
 const transactions = ref([]);
+const categories = ref(["To Pay", "Paid", "To Review", "Reviewed"]);
 const events = ref([
+  // Other event objects...
+]);
+
+const orders = ref([
   // Other event objects...
 ]);
 // Computed property to calculate total price based on ticked events
@@ -112,7 +94,22 @@ const total = computed(() => {
 });
 // console.log(events);
 const toggleTicked = (event) => {
-  console.log(event.bookmarked);
+  console.log("Selected event", event);
+  if(!event.bookmarked){
+    event.bookmarked = false
+  }
+  const orderIndex = orders.value.findIndex(order => order.orderId === event.id);
+
+  if (orderIndex === -1) {
+    orders.value.push({
+      id: event.eventId,
+      orderId: event.id
+    });
+  } else {
+    orders.value.splice(orderIndex, 1);
+  }
+
+  console.log("Current orders: ",  event.bookmarked );
   event.bookmarked = !event.bookmarked; // Toggle the bookmarked state
 };
 
@@ -127,49 +124,101 @@ const fetchEventsForCart = async () => {
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', {credentials: 'include'});
     const eventData = await response.json();
     transactions.value = eventData;
-    console.log("EventData: ");
     console.log(eventData);
-    console.log("Transaction: ");
-    console.log(transactions);
   } catch (error) {
-
+    ElNotification.error({
+      title: 'Error',
+      message: 'Error fetching events from your cart',
+      offset: 100
+    });
     console.error('Error fetching events for cart:', error);
   }
 };
+
+const checkoutWithPayPal = async () => {
+
+  if(orders.value.length ===0){
+    ElNotification.error({
+      title: 'Error',
+      message: 'Payment failed: selected events cannot be empty',
+      offset: 100
+    });
+    return;
+  }
+
+  try {
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/payFromMyCart', {
+      method: 'POST',  // Specify the method as POST
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'  // Set the Content-Type header to application/json
+      },
+      body: JSON.stringify({
+        orderlist: orders.value,
+        totalprice: total.value
+      })
+    });
+
+
+    if (response.ok) {
+      console.log('Payment successful:', response);
+      ElNotification.success({
+        title: 'Success',
+        message: 'Payment successful, redirecting...',
+        offset: 100
+      });
+    } else {
+      ElNotification.error({
+        title: 'Error',
+        message: 'Payment failed: ' + response.statusText,
+        offset: 100
+      });
+      console.error('Payment failed:', response.statusText);
+    }
+  } catch (error) {
+    ElNotification.error({
+      title: 'Error',
+      message: 'Payment error',
+      offset: 100
+    });
+    console.error('Error paying by cart:', error);
+  }
+};
+
 
 // Delete an event from the cart
 const deleteFromCart = async (orderId) => {
   try {
     const response = await fetch(`https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteFromMyCart/${orderId}`, {
       method: 'DELETE',
-      credentials: 'include'
+      credentials: 'include',
     });
     if (response.ok) {
       // If deletion is successful, update the events list
       await fetchEventsForCart();
-      console.log('Event deleted successfully');
+      ElNotification.success({
+        title: 'Success',
+        message: 'Event has been deleted from your cart',
+        offset: 100
+      });
+
     } else {
+      ElNotification.error({
+        title: 'Error',
+        message: 'Event delete error ' + response.statusText,
+        offset: 100
+      });
       console.error('Failed to delete event from cart');
     }
   } catch (error) {
+    ElNotification.error({
+      title: 'Error',
+      message: 'Event delete error',
+      offset: 100
+    });
     console.error('Error deleting event from cart:', error);
   }
 };
-
-function formatDate(dateString) {
-    /**
- * AI-generated-content
- * tool: Copilot
- * version: latest
- * usage: displaying date in readable format
- */
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const date = new Date(dateString);
-  const formattedDate = date.toLocaleDateString('en-US', options);
-  const time = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).replace(' ', '').toUpperCase();
-
-  return `${formattedDate} | ${time} BJT`;
-}
 
 // Fetch events for the cart when the component is mounted
 onMounted(fetchEventsForCart);

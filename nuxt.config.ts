@@ -12,7 +12,8 @@ export default defineNuxtConfig({
             workspaceKey: process.env.workspaceKey,
             chatProjectId: process.env.chatProjectId,
             chatPrivateKey: process.env.chatPrivateKey,
-            reccPublicKey: process.env.reccPublicKey
+            reccPublicKey: process.env.reccPublicKey,
+            seatsioKey: process.env.seatsioKey
         } ,
 
     },
