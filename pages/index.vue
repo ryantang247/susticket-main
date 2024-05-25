@@ -275,5 +275,132 @@ const selectFilter = (filter) => {
     /* Add any other hover and active styles here */
   }
   
+  
+@media (max-width: 1620px) and (max-height:2160px){
+  .box{
+    width:70%;
+    height: 40%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .box {
+    width: 90%;
+    height: auto;
+  }
+  .left, .right {
+    width: 100%;
+    padding: 10px;
+    border: none;
+  }
+  .left {
+    border-bottom: solid 1px silver;
+  }
+
+}
+
+@media (max-width:1024px) and (max-height:1366px){
+  .box{
+    width: 80%;
+    height: 30%;
+  }
+
+  .left-login h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-form .input, .log-in {
+    height: 40px;
+  }
+
+  .right {
+    display: none;
+  }
+}
+
+@media (max-width: 830px) {
+  .box{
+    width: 90%;
+    height: 60%
+  }
+  .left-login h1 {
+    font-size: 1.5rem;
+  }
+  .login-form .input, .log-in {
+    width: 500px;
+    height: 60px;
+  }
+  .left-login h1 {
+    font-size: 4rem;
+  }
+  .logo {
+    display: none;
+  }
+  .right{
+    display: none;
+  }
+}
+
+@media (max-width: 830px) and (max-height:1800px){
+  .box{
+    width: 90%;
+    height: 40%;
+  }
+  .login-form .input, .log-in {
+    width: 500px;
+    height: 60px;
+  }
+  .left-login h1 {
+    font-size: 4rem;
+  }
+
+}
+
+@media (max-width:820px) and (max-height:1180px){
+  .box{
+    width:80%;
+    height: 40%;
+  }
+
+  .left-login h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-form .input, .log-in {
+    width: 500px;
+    height: 60px;
+  }
+
+  .right {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .left-login h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-form .input, .log-in {
+    height: 40px;
+    width: 300px;
+  }
+
+  .right {
+    display: none;
+  }
+}
+
+@media (max-width: 450px) {
+  .box {
+    width: 80%;
+    padding: 10px;
+  }
+  .login-form .input, .log-in {
+    width: 250px;
+    height: 35px;
+  }
+}
+
 
 </style>

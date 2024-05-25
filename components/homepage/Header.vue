@@ -22,7 +22,6 @@
         <button class="calendar-button">Calendar</button>
       </div>
 
-
       <div class="image-container-bookmark" @click="goToBookmarks">
         <img src="~/assets/header/bookmark.png" alt="Image" class="image">
         <button class="bookmark-button">Bookmark</button>
@@ -34,12 +33,10 @@
       </div>
 
       <div class="image-container-cart" @click="goToCart">
-        <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item">
-          <img src="~/assets/header/cart.png" alt="Image" class="image">
-        </el-badge>
-
+        <img src="~/assets/header/cart.png" alt="Image" class="image">
+        <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge>
         <button class="cart-button">Cart</button>
-      </div>
+      </div>      
 
       <div class="image-container-notif">
         <el-badge v-if="notificationsCount !== 0" :value="notificationsCount" class="item">
@@ -108,7 +105,7 @@ const fetchMyCartCount = async () => {
   try {
     const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', { withCredentials:true});
     console.log("MY CART");
-    console.log(response)
+    console.log(response.data.length);
     myCartCount.value = response.data.length; 
   } catch (error) {
     console.error('Failed to fetch carts: ', error);
