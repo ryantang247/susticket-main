@@ -11,9 +11,9 @@
         <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
       </div>
       <div class="search-box">
-        <a href="#" class="search-icon-wrapper">
+        <!-- <a href="#" class="search-icon-wrapper">
           <img src="~/assets/header/search.png" class="search-icon" alt="Search" @click="searchEvent"/>
-        </a>
+        </a> -->
         <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
       </div>
 
@@ -268,8 +268,7 @@ function goToHomepage(){
 .user-profile img {
   border-radius: 50%; 
   width: 50px; 
-  height: 50px; 
-  margin-right: 5px;
+  height: 50px;
   cursor: pointer;
   margin-right: 150px;
 }
