@@ -2,7 +2,7 @@
   <Header />
   <div class="event-book-container">
       <div class="header">
-          <img src="/assets/header/backarrow.png" class="back" @click="goBack">
+          <img src="/assets/header/backarrow.png" class="back" @click="goBack" alt="/assets/header/backarrow.png">
           <h3>  Seat selection</h3>
       </div>
 
@@ -25,7 +25,7 @@
             <el-col v-bind:key="price-cat" v-for="price in pricing">
               <el-card @click="onObjectSelectedNoSeats(price)" class="ticket-card">
                 <h1 class="price">${{price.price}}</h1>
-                  <p1 class="category" >{{price.category}}</p1>
+                  <p class="category" >{{price.category}}</p>
               </el-card>
             </el-col >
           </el-row>
@@ -72,10 +72,10 @@ import { ElNotification } from 'element-plus'
 import Header from '@/components/homepage/Header.vue';
 import Footer from '@/components/homepage/Footer.vue';
 import CustomerService from '@/components/CustomerService.vue';
-import PayPal from "~/components/PayPal.vue";
 import { SeatsioSeatingChart } from '@seatsio/seatsio-vue';
 import { getEvents } from "~/api.js";
 import { useRoute, useRouter } from 'vue-router';
+import axios from "axios";
 
 const route = useRoute();
 const router = useRouter();
@@ -117,6 +117,21 @@ const addToCart = async (totalAmount) => {
       })
     });
 
+    // TODO: Add axios to seatsio to temporarily book the seat
+    if(eventData.seatsioEventsKey){
+      await axios.post(
+          `https://api-oc.seatsio.net/events/${eventData.value.seatsioEventsKey}/actions/book`,
+          {
+            objects: seatLabels.value,
+          },
+          {
+            auth: {
+              username: useRuntimeConfig().public.seatsioKey
+            }
+          }
+      )
+    }
+
     // Check if the request was successful
     if (response.ok) {
       // Notify the user that the event has been added to the cart
@@ -127,19 +142,23 @@ const addToCart = async (totalAmount) => {
       });
     } else {
       // Handle the error if the request fails
-      console.log(response)
+      const responseText = await response.text()
+      console.log(responseText);
+
       ElNotification.error({
         title: 'Error',
-        message: 'Failed to add event to cart. Please try again later.' + response.statusText,
+        message: 'Failed to add event to cart. ' + responseText,
         offset: 100
       });
     }
   } catch (error) {
     // Handle any unexpected errors
-    console.error('Error adding event to cart:', error);
+
+    const responseText = await response.text()
+
     ElNotification.error({
       title: 'Error',
-      message: 'An unexpected error occurred. Please try again later.' + error.statusText,
+      message: 'An unexpected error occurred.' + responseText,
       offset: 100
     });
   }
@@ -325,7 +344,6 @@ function navigateToCheckout() {
 }
 .header h2{
   margin-left: 20px;
-  margin: 0;
 }
 .back{
   width: 25px;
@@ -335,14 +353,7 @@ function navigateToCheckout() {
   background-color: #ccc;
   border-radius: 50%;
 }
-.select-seat-box{
-  max-width: 1000px;
-  height: 600px;
-  margin: 0 auto;
-  border: #ccc 1px solid;
-  padding: 20px;
-  margin-bottom: 50px;
-}
+
 .left{
   float: left;
   border: #6DC9C8 1px;

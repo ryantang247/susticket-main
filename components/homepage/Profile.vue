@@ -23,6 +23,7 @@ import { defineProps } from 'vue';
 import { ElButton } from 'element-plus';
 import 'element-plus/theme-chalk/el-button.css';
 
+<<<<<<< HEAD
 // Define props to accept user profile data
 const props = defineProps({
   userProfile: {
@@ -37,6 +38,40 @@ const props = defineProps({
   isVisible: {
     type: Boolean,
     required: true
+=======
+        if (status){
+            this.sid = localStorage.getItem("SID")
+            this.name = localStorage.getItem("Username"),
+            this.email = localStorage.getItem("Email")
+            this.email = localStorage.getItem("avatar")
+          }
+      }
+    },
+    methods: {
+      logout() {
+          console.log("User logout successfully");
+          // Set cookie asynchronously
+          const cookie = useCookie('secourse');
+          cookie.value = null;
+        if (process.client) {
+          localStorage.setItem("Username", null)
+          localStorage.setItem("SID", null)
+          localStorage.setItem("Avatar", null)
+          localStorage.setItem("Email", null)
+          localStorage.setItem("Status", null)
+        }
+          // ElNotification.success({
+          //   title: 'Success',
+          //   message: "Sucessfully log out!",
+          //   offset: 100,
+          // }
+          // );
+          // Redirect to another page only after cookie is set
+          this.$router.push('/login');
+
+      }
+    }
+>>>>>>> dd9fbc7ce27c5fec40424ef70415cdbcd8de84da
   }
 });
 

@@ -164,11 +164,25 @@ onMounted(async () => {
       bookmarkEvents.value = eventIDMap
     }else{
       console.error('Failed to fetch bookmarks:', bookmarkResponse.statusText);
-
+      ElNotification.error({
+          title: 'Error',
+          message: "Error fetching bookmarks" + error,
+          offset: 100,
+        });
     }
-
+    ElNotification.success({
+      title: 'Success',
+      message: "Sucessfully fetch venues!",
+      offset: 100,
+    }
+    );
   } else {
     console.error('Failed to fetch venues:', venueResponse.statusText);
+    ElNotification.error({
+      title: 'Error',
+      message: "Error fetching venues" + error,
+      offset: 100,
+    });
   }
 
 
@@ -187,7 +201,8 @@ function displayPrice(priceJson) {
  * version: latest
  * usage: displaying prices in beautiful UI
  * I slightly adapt the generated code by modifying the RMB symbol
- */  console.log("Parsed ", priceJson);
+ */
+  // console.log("Parsed ", priceJson);
   
   let prices;
   try {

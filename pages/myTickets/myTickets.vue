@@ -5,15 +5,6 @@
       <img src="~/assets/categorymenu/back.png" alt="Back" @click="goToHomepage">
       <h1>My Ticket</h1>
     </div>
-    <nav class="filter-menu">
-      <ul class="filter-list">
-        <li v-for="cate in categories" :key="cate">
-          <a href="#">
-            <span class="filter-name">{{ cate }}</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
     <div class="container">
       <MyTicketCard :transactions="transactions" />
       <MyTicketCard :events="events" />
@@ -28,7 +19,6 @@
 <script setup>
 import Header from '@/components/homepage/Header.vue';
 import MyTicketCard from '@/components/myTicket/MyTicketCard.vue';
-import EventCard from '@/components/homepage/EventList.vue';
 import CustomerService from '@/components/CustomerService.vue';
 import Footer from '@/components/homepage/Footer.vue';
 import { ref } from 'vue';
@@ -78,15 +68,7 @@ onMounted(fetchPurchasedTickets);
 *{
   font-family: sans-serif;
 }
-.filter-menu {
-  overflow-x: auto; /* Add horizontal scrollbar if needed */
-}
-.filter-list {
-  display: flex; /* Use flexbox */
-  list-style-type: none; /* Remove default list styles */
-  padding: 0; /* Remove default padding */
-  margin-left: 7%; /* Remove default margin */
-}
+
 .filter-list li {
   margin-right: 20px; /* Add spacing between items */
 }
@@ -99,10 +81,7 @@ onMounted(fetchPurchasedTickets);
 .filter-list li a:hover{
   opacity: 1.5;
 }
-/* Adjust styling for filter names as needed */
-.filter-name {
-  padding: 5px 10px; /* Add padding to each filter name */
-}
+
 .label-page{
   display: flex;
   align-items: center;

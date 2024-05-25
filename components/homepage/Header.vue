@@ -34,7 +34,7 @@
       </div>
 
       <div class="image-container-cart" @click="goToCart">
-        <el-badge v-if="myCartCount != 0" :value="myCartCount" class="item">
+        <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item">
           <img src="~/assets/header/cart.png" alt="Image" class="image">
         </el-badge>
 
@@ -42,7 +42,7 @@
       </div>
 
       <div class="image-container-notif">
-        <el-badge v-if="notificationsCount != 0" :value="notificationsCount" class="item">
+        <el-badge v-if="notificationsCount !== 0" :value="notificationsCount" class="item">
           <img src="~/assets/header/nontif.png" alt="Image" class="image" @click="toggleNotifBox">
         </el-badge>
         <NotifPopup :isVisible="showNotifBox" />
@@ -73,7 +73,6 @@ import { useRouter } from 'vue-router';
 import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { Menu } from '@element-plus/icons-vue';
 import axios from 'axios';
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
@@ -99,23 +98,33 @@ const userProfile = defineProps({
 
 const fetchNotificationsCount = async () => {
   try {
-    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications');
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications',{ withCredentials:true});
     console.log("NOTIF");
     console.log(response)
     notificationsCount.value = response.data.length; 
   } catch (error) {
     console.error('Failed to fetch notifications: ', error);
+    ElNotification.error({
+      title: 'Error',
+      message: `Error fetching notifications. ${error.message}`,
+      offset: 100,
+    });
   }
 };
 
 const fetchMyCartCount = async () => {
   try {
-    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0');
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', { withCredentials:true});
     console.log("MY CART");
     console.log(response)
     myCartCount.value = response.data.length; 
   } catch (error) {
-    console.error('Failed to fetch notifications: ', error);
+    console.error('Failed to fetch carts: ', error);
+    ElNotification.error({
+      title: 'Error',
+      message: `Error fetching carts. ${error.message}`,
+      offset: 100,
+    });
   }
 };
 
@@ -123,27 +132,23 @@ onMounted(() => {
   fetchNotificationsCount();
   fetchMyCartCount();
 
-  // if (process.client) {
-
-  //   const status = localStorage.getItem("Status");
-
-  //   if (!status) {
-  //     ElNotification.error({
-  //       title: 'Error',
-  //       message: "User not logged in",
-  //       offset: 100,
-  //     });
-
-  //   } else {
-
-  //       console.log("HELLO!!!")
-  //       userProfile.value.sid = localStorage.getItem("SID");
-  //       userProfile.value.name = localStorage.getItem("Username");
-  //       userProfile.value.email = localStorage.getItem("Email");
-  //       userProfile.value.avatar = localStorage.getItem("Avatar");
-  //       avatar.value = userProfile.value.avatar || 'assets/logo.png';
-  //     }
-  // }
+  if (process.client) {
+    const status = localStorage.getItem("Status");
+    if (!status) {
+      ElNotification.error({
+        title: 'Error',
+        message: "User not logged in",
+        offset: 100,
+      });
+    } else {
+        console.log("HELLO!!!")
+        userProfile.value.sid = localStorage.getItem("SID");
+        userProfile.value.name = localStorage.getItem("Username");
+        userProfile.value.email = localStorage.getItem("Email");
+        userProfile.value.avatar = localStorage.getItem("Avatar");
+        avatar.value = userProfile.value.avatar || 'assets/logo.png';
+      }
+  }
 });
 
 const showProfileBox = ref(false);

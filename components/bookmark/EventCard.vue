@@ -73,6 +73,11 @@ const copyLink = (event) => {
     });
   }).catch(err => {
     console.error('Failed to copy: ', err);
+    ElNotification.error({
+      title: 'Error',
+      message: "Failed to copy" + err,
+      offset: 100,
+    });
   });
 };
 
@@ -92,8 +97,20 @@ onMounted(async () => {
     const venueData = await venueResponse.json();
     venues.value = venueData;
     console.log(venueData);
+    ElNotification.success({
+      title: 'Success',
+      message: "Sucessfully fetch venues!",
+      offset: 100,
+    }
+    );
+    
   } else {
     console.error('Failed to fetch venues:', venueResponse.statusText);
+    ElNotification.error({
+      title: 'Error',
+      message: "Error fetching venues" + error,
+      offset: 100,
+    });
   }
 });
 
@@ -103,12 +120,12 @@ function getVenueName(venueId) {
   return venue ? venue.name : 'Unknown venue';
 }
 
-<!--
+/*
     AI-generated-content
     tool: ChatGPT
     version: latest
     usage: I've used it to ake a function to display formatted prices
--->
+    */
 function displayPrice(priceJson) {
   if (typeof priceJson !== 'string') {
     // If priceJson is not a string, return a default value or error
