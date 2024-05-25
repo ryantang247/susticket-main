@@ -3,7 +3,7 @@
       <div class="profile-box" v-if="isVisible">
         <div v-if="loginStatus" class="profile-content">
           <h2>{{ name }}</h2>
-          <p>{{ email }}</p>
+          <div v-show="email"><p>{{ email }}</p>></div>
           <p><b> 123 coins</b></p>
 
           <el-button  @click="logout" type="danger" round class="logout-btn">Log out</el-button>
@@ -26,9 +26,8 @@
     },
     data() {
       return {
-        sid: "",
         name: "",
-        email: "",
+        email: null,
         loginStatus: true
       }
     },
@@ -37,11 +36,13 @@
       const status = localStorage.getItem("Status")
 
         if (status){
-            this.sid = localStorage.getItem("SID")
-            this.name = localStorage.getItem("Username"),
+            this.name = localStorage.getItem("Username")
             this.email = localStorage.getItem("Email")
-            this.email = localStorage.getItem("avatar")
-          }
+        }else {
+          this.loginStatus = false
+          this.name = "Guest"
+          this.email = null
+        }
       }
     },
     methods: {
@@ -52,7 +53,6 @@
           cookie.value = null;
         if (process.client) {
           localStorage.setItem("Username", null)
-          localStorage.setItem("SID", null)
           localStorage.setItem("Avatar", null)
           localStorage.setItem("Email", null)
           localStorage.setItem("Status", null)
@@ -69,14 +69,7 @@
       }
     }
   }
-  import {
-  Check,
-  Delete,
-  Edit,
-  Message,
-  Search,
-  Star,
-} from '@element-plus/icons-vue'
+
 
   </script>
 
@@ -97,12 +90,6 @@
     align-items: center;
     text-align: center;
   }
-  
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  .fade-enter-from, .fade-leave-to {
-    opacity: 0;
-  }
+
   </style>
   
