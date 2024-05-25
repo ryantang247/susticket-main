@@ -1,6 +1,6 @@
 <template>
+  <HeaderLogin />
     <div class="app">
-        <!-- <HeaderNoLogin /> -->
         <div class="box">
             <aside class="left">
                 <div class="left-login">
@@ -8,13 +8,13 @@
                     <form class="login-form">
                         <div class="up">
                             <label for="school-id" ></label>
-                            <el-input style="width: 400px; height: 50px;border-radius: 20px" v-model="sid" type="text" id="school-id" name="school-id" required placeholder="Student/Faculty ID"/>
+                            <el-input  v-model="sid" type="text" class="input" id="school-id" name="school-id" required placeholder="Student/Faculty ID"/>
                         </div>
                         <div class="down">
 
                           <el-input
                               v-model="password"
-                              style="width: 400px; height: 50px;border-radius: 20px"
+                              class="input"
                               type="password"
                               placeholder="Password"
                               show-password
@@ -36,12 +36,21 @@
             
         </div>
     </div>
+    
+    
+    
   </template>
   
   <script>
   import axios from "axios";
+  import Footer from '@/components/homepage/Footer.vue';
+  import HeaderLogin from '@/components/homepage/HeaderLogin.vue';
 
   export default {
+    components: {
+      HeaderLogin,
+
+    },
     data() {
       return {
         sid: '',
@@ -119,7 +128,7 @@
     background-position: center; 
     background-repeat: no-repeat; 
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     text-align: center;
     color: white;
@@ -185,7 +194,7 @@
 }
 .left-login h1 {
     text-align: center;
-    font-size: 200%;
+    font-size: 2rem;
     width: 100%;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     margin-bottom: 0.5em;
@@ -214,6 +223,12 @@
 .log-in:hover {
     background-color: #2a6e2c;
 }
+
+.login-form .input {
+  width: 350px;
+  height: 50px;
+}
+
 .logo{
     width: 80%;
     height: 80%;
@@ -224,37 +239,130 @@
 
 }
 
+@media (max-width: 1620px) and (max-height:2160px){
+  .box{
+    width:70%;
+    height: 40%;
+  }
+}
+
 @media (max-width: 1024px) {
   .box {
     width: 90%;
     height: auto;
-}
+  }
   .left, .right {
     width: 100%;
     padding: 10px;
     border: none;
-}
-.left {
+  }
+  .left {
     border-bottom: solid 1px silver;
+  }
+
 }
 
+@media (max-width:1024px) and (max-height:1366px){
+  .box{
+    width: 80%;
+    height: 30%;
+  }
+
+  .left-login h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-form .input, .log-in {
+    height: 40px;
+  }
+
+  .right {
+    display: none;
+  }
+}
+
+@media (max-width: 830px) {
+  .box{
+    width: 90%;
+    height: 60%
+  }
+  .left-login h1 {
+    font-size: 1.5rem;
+  }
+  .login-form .input, .log-in {
+    width: 500px;
+    height: 60px;
+  }
+  .left-login h1 {
+    font-size: 4rem;
+  }
+  .logo {
+    display: none;
+  }
+  .right{
+    display: none;
+  }
+}
+
+@media (max-width: 830px) and (max-height:1800px){
+  .box{
+    width: 90%;
+    height: 40%;
+  }
+  .login-form .input, .log-in {
+    width: 500px;
+    height: 60px;
+  }
+  .left-login h1 {
+    font-size: 4rem;
+  }
+
+}
+
+@media (max-width:820px) and (max-height:1180px){
+  .box{
+    width:80%;
+    height: 40%;
+  }
+
+  .left-login h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-form .input, .log-in {
+    width: 500px;
+    height: 60px;
+  }
+
+  .right {
+    display: none;
+  }
 }
 
 @media (max-width: 700px) {
   .left-login h1 {
     font-size: 1.5rem;
-}
-.login-form input, .log-in {
+  }
+
+  .login-form .input, .log-in {
     height: 40px;
-}
-.logo {
+    width: 300px;
+  }
+
+  .right {
     display: none;
-}
-.right{
-  display: none;
-}
+  }
 }
 
+@media (max-width: 450px) {
+  .box {
+    width: 80%;
+    padding: 10px;
+  }
+  .login-form .input, .log-in {
+    width: 250px;
+    height: 35px;
+  }
+}
 
-  </style>
-  
+</style>

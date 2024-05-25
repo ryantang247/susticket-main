@@ -11,9 +11,9 @@
         <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
       </div>
       <div class="search-box">
-        <a href="#" class="search-icon-wrapper">
+        <!-- <a href="#" class="search-icon-wrapper">
           <img src="~/assets/header/search.png" class="search-icon" alt="Search" @click="searchEvent"/>
-        </a>
+        </a> -->
         <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
       </div>
 
@@ -68,7 +68,7 @@
 
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
@@ -77,16 +77,24 @@ import axios from 'axios';
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
 
-const avatar = ref('');
+// const avatar = ref('');
 const notificationsCount = ref(0);
 const myCartCount = ref(0)
 
-const userProfile = ref({
-  name: "",
-  email: "",
-  coin: 150,
-  avatar: ""
+const userProfile = defineProps({
+  name: String,
+  email: String,
+  avatar: String,
+  default: ''
 });
+
+// if(avatar === ''){
+//   avatar = '~/assets/logo.png'
+// }
+
+
+
+
 
 const fetchNotificationsCount = async () => {
   try {
