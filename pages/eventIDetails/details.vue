@@ -184,6 +184,11 @@
       });
     }).catch(err => {
       console.error('Failed to copy: ', err);
+      ElNotification.error({
+      title: 'Error',
+      message: "Failed to copy link" + err,
+      offset: 100,
+    });
     });
   };
   
@@ -228,6 +233,11 @@
       console.log(comments);
     } catch (error) {
       console.error('Error fetching event comments:', error);
+      ElNotification.error({
+        title: 'Error',
+        message: `Error fetching event comments. ${error.message}`,
+        offset: 100,
+      }); 
     }
   });
 

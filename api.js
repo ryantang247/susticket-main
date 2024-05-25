@@ -6,6 +6,11 @@ export async function getVenues(venueId) {
         return response.data.name;
     } catch (error) {
         console.error('Error fetching venue:', error);
+        ElNotification.error({
+            title: 'Error',
+            message: `Error fetching venue. ${error.message}`,
+            offset: 100,
+        });    
         return null;
     }
 }
@@ -33,6 +38,11 @@ export async function getEvents(eventId) {
         };
     } catch (error) {
         console.error('Error fetching event:', error);
+        ElNotification.error({
+            title: 'Error',
+            message: `Error fetching events. ${error.message}`,
+            offset: 100,
+        });    
         throw showError({statusCode: error.response.status, message: error.response.statusText})
     }
 }

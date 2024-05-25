@@ -47,6 +47,11 @@ const copyLink = (event) => {
     });
   }).catch(err => {
     console.error('Failed to copy: ', err);
+    ElNotification.error({
+      title: 'Error',
+      message: "Failed to copy link" + err,
+      offset: 100,
+    });
   });
 };
 // Fetch purchased tickets from the API endpoint
@@ -58,6 +63,11 @@ const fetchPurchasedTickets = async () => {
     transactions.value = ticketData;
   } catch (error) {
     console.error('Error fetching purchased tickets:', error);
+    ElNotification.error({
+        title: 'Error',
+        message: 'Error fetching purchased tickets.'+error,
+        offset: 100
+    });
   }
 };
 // Call fetchPurchasedTickets when the component is mounted

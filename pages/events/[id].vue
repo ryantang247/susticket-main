@@ -204,7 +204,7 @@ const addToCart = async () => {
     console.error('Error adding event to cart:', error);
     ElNotification.error({
       title: 'Error',
-      message: 'An unexpected error occurred. Please try again later.',
+      message: 'Error adding event to cart.'+error,
       offset: 100
     });
   }
@@ -227,6 +227,11 @@ const copyLink = (event) => {
     });
   }).catch(err => {
     console.error('Failed to copy: ', err);
+    ElNotification.error({
+      title: 'Error',
+      message: "Failed to copy link" + err,
+      offset: 100,
+    });
   });
 };
 
@@ -253,6 +258,11 @@ onMounted(async () => {
         }
     } catch (error) {
         console.error('Error fetching event data:', error);
+        ElNotification.error({
+          title: 'Error',
+          message: 'Error fetching event data.'+error,
+          offset: 100
+        });
     } finally {
         isLoading.value = false; 
     }

@@ -91,6 +91,11 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+          ElNotification.error({
+            title: 'Error',
+            message: `Error getting avatar. ${error.message}`,
+            offset: 100,
+          });    
         });
     },
     handleClick() {

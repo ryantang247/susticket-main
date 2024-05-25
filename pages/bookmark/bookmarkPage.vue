@@ -47,10 +47,10 @@ onMounted(async () => {
     console.error('Error fetching bookmarked events:', error);
     // Handle error, e.g., show notification or message to the user
     ElNotification.error({
-          title: 'Error',
-          message: "Error fetching bookmarks" + error,
-          offset: 100,
-        });
+      title: 'Error',
+      message: "Error fetching bookmarks" + error,
+      offset: 100,
+    });
         
   }
 });

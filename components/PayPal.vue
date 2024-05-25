@@ -153,6 +153,11 @@ export default defineComponent({
                                 console.log("Release success", bookingResponse)
                               })
                               console.error('Error paying for order:', error);
+                              ElNotification.error({
+                                title: 'Error',
+                                message: `Error paying for order ${error.message}`,
+                                offset: 100 // Notification offset from top
+                              });
                             });
                       }
                     },
@@ -167,11 +172,21 @@ export default defineComponent({
                   .render("#paypal-buttons")
                   .catch((error) => {
                     console.error("failed to render the PayPal Buttons", error);
+                    ElNotification.error({
+                      title: 'Error',
+                      message: `Failed to render the PayPal Buttons ${error.message}`,
+                      offset: 100 // Notification offset from top
+                    });
                   });
             }
           })
           .catch((error) => {
             console.error("failed to load the PayPal JS SDK script", error);
+            ElNotification.error({
+              title: 'Error',
+              message: `failed to load the PayPal JS SDK script ${error.message}`,
+              offset: 100 // Notification offset from top
+            });
           });
     }
   }

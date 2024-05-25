@@ -213,10 +213,14 @@ export default {
             this.userInfo.interests = response.data[0]['interests'];
             this.userInfo.day = response.data[0]['sleep']+'-'+response.data[0]['wake'];
             this.userInfo.habits = response.data[0]['habits'];
-
           })
           .catch(function (error) {
             console.log(error);
+            ElNotification.error({
+              title: 'Error',
+              message: `Failed to GET User Info. ${err}`,
+              offset: 100,
+            });
           });
     },
     showEditInfoDialog() {
