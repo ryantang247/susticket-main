@@ -54,7 +54,7 @@
         <img :src="avatar" />
       </div>
 
-      <Profile :userProfile="userProfile" :isVisible="showProfileBox" />
+      <Profile :isVisible="showProfileBox" />
     </header>
   </div>
   <div v-else>
@@ -77,16 +77,17 @@ import axios from 'axios';
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
 
-// const avatar = ref('');
+const avatar = ref('');
 const notificationsCount = ref(0);
 const myCartCount = ref(0)
 
-const userProfile = defineProps({
-  name: String,
-  email: String,
-  avatar: String,
-  default: ''
-});
+// const userProfile = defineProps({
+//   name: String,
+//   email: String,
+//   avatar: String,
+//   sid: String,
+//   default: ''
+// });
 
 // if(avatar === ''){
 //   avatar = '~/assets/logo.png'
@@ -142,11 +143,7 @@ onMounted(() => {
       });
     } else {
         console.log("HELLO!!!")
-        userProfile.value.sid = localStorage.getItem("SID");
-        userProfile.value.name = localStorage.getItem("Username");
-        userProfile.value.email = localStorage.getItem("Email");
-        userProfile.value.avatar = localStorage.getItem("Avatar");
-        avatar.value = userProfile.value.avatar || 'assets/logo.png';
+        avatar.value = localStorage.getItem("Avatar") || 'assets/logo.png';
       }
   }
 });
