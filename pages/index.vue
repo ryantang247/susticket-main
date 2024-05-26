@@ -111,7 +111,12 @@ const fetchEvents = async () => {
     filterEvents();
   } else {
     console.error('Failed to fetch events:', response.statusText);
-  }
+    ElNotification.error({
+      title: 'Error',
+      message: `Error fetching events. ${response}`,
+      offset: 100,
+    });    
+}
 };
 onMounted(() => {
   fetchEvents();
@@ -139,6 +144,11 @@ const selectCategory = async (categoryName) => {
     events.value = data;  // Populate events with the new category data without filtering by time
   } else {
     console.error('Failed to fetch events:', response.statusText);
+    ElNotification.error({
+      title: 'Error',
+      message: "Error fetching venues" + response,
+      offset: 100,
+    });
   }
 };
 

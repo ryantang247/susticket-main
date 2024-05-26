@@ -117,6 +117,11 @@ const copyLink = (event) => {
     });
   }).catch(err => {
     console.error('Failed to copy: ', err);
+    ElNotification.error({
+      title: 'Error',
+      message: `Failed to copy. ${err}`,
+      offset: 100,
+    });
   });
 };
 

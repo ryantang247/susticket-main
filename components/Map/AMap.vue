@@ -172,8 +172,8 @@ export default {
 
           })
           .catch(error => {
-              console.log("Error fetching events by venuId", error)
-              ElNotification.error({
+            console.log("Error fetching events by venuId", error)
+            ElNotification.error({
               title: 'Error',
               message: "Error fetching venues by Id" + error,
               offset: 100,

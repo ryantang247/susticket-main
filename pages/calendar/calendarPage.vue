@@ -159,6 +159,11 @@ const fetchEvents = async () => {
     specialDates()
   } catch (error) {
     console.error('Error fetching events:', error);
+    ElNotification.error({
+      title: 'Error',
+      message: `Error fetching events. ${error.message}`,
+      offset: 100,
+    });    
   }
 };
 

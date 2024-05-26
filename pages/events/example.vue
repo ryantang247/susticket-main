@@ -108,7 +108,11 @@ export default {
         })
         .catch(error => {
           console.log("Error fetching/Parsing Events", error)
-
+          ElNotification.error({
+            title: 'Error',
+            message: `Error fetching events. ${error.message}`,
+            offset: 100,
+          }); 
         });
   })
   }

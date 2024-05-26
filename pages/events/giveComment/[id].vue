@@ -85,6 +85,11 @@
         // You can also show a success message or update the UI
     } catch (error) {
         console.error('Error posting comment:', error.response);
+        ElNotification.error({
+            title: 'Error',
+            message: 'Error posting comments.'+error,
+            offset: 100
+        });
         // Handle errors, show error message, etc.
         showErrorNotification(`Failed to submit comment. ${error.response.data.error}`);
     }
@@ -110,6 +115,11 @@
         } catch (error) {
             console.error('Error submitting comment:', error);
             // Handle errors, show error message, etc.
+            ElNotification.error({
+                title: 'Error',
+                message: 'Error submitting comments.'+error,
+                offset: 100
+            });
         }
     }
 /**
