@@ -279,7 +279,7 @@ const selectFilter = (filter) => {
 @media (max-width: 1620px) and (max-height:2160px){
   .box{
     width:70%;
-    height: 40%;
+    height: 50%;
   }
 }
 

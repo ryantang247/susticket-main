@@ -9,19 +9,21 @@
                         <div class="up">
                             <label for="school-id" ></label>
                             <el-input  v-model="sid" type="text" class="input" id="school-id" name="school-id" required placeholder="Student/Faculty ID"/>
+                            <el-input
+                            v-model="password"
+                            class="input"
+                            type="password"
+                            placeholder="Password"
+                            show-password
+                            />
+                            <button v-loading="loginStatus" @click="login()" class="log-in" type="button">Login</button>
                         </div>
-                        <div class="down">
+                        <!-- <div class="down">
 
-                          <el-input
-                              v-model="password"
-                              class="input"
-                              type="password"
-                              placeholder="Password"
-                              show-password
-                          />
-                          <button v-loading="loginStatus" @click="login()" class="log-in" type="button">Login</button>
+
                           
-                        </div>
+                          
+                        </div> -->
                       
                         
                     </form>
@@ -115,37 +117,33 @@
 
   </script>
 
-  <style scoped>
-
-  *{
-    font-family: sans-serif;
-  }
+<style scoped>
+* {
+  font-family: sans-serif;
+}
 
 .app {
-    height: 100vh; 
-    background-image: url('/assets/welcomeBanner/banner5.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    text-align: center;
-    color: white;
-    opacity: 0.9;
+  height: 100vh;
+  background-image: url("/assets/welcomeBanner/banner5.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  opacity: 0.9;
 }
+
 .box {
-    position: absolute;
-    display: flex;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%; 
-    height: 60%; 
-    border: 1px solid #ccc; 
-    background-color: rgb(0, 128, 128);
-    border-radius: 5px;
-    opacity: 0.9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+  background-color: rgba(0, 128, 128, 0.9);
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .left, .right {
@@ -153,206 +151,90 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 50%;
+  width: 100%;
   padding: 20px;
 }
 
-.left {
-  border-right: solid 1px silver;
-}
-
-.right {
-  border-left: 1px black;
-}
-
 .left-login {
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%; 
-    width: 100%;
-    margin-bottom: 1em;
-    gap: 1em;
-}   
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1em;
+  gap: 1em;
+}
 
-
-
-.down{
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-align: center;
+.down {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: center;
   border-radius: 20px;
+}
 
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
-.login-form{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
+
 .left-login h1 {
-    text-align: center;
-    font-size: 2rem;
-    width: 100%;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin-bottom: 0.5em;
+  text-align: center;
+  font-size: 2rem;
+  width: 100%;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin-bottom: 0.5em;
 }
-
-
 
 .log-in {
-    background-color: #3d9140; 
-    border: none;
-    color: white;
-    padding: 8px 3px; 
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    width: 90%; 
-    height: 50px;
-    font-size: 16px;
-    margin: 4px 2px;
-    transition-duration: 0.4s;
-    cursor: pointer;
-    border-radius: 12px; 
-    margin-top: 10px;
-    
-}
-.log-in:hover {
-    background-color: #2a6e2c;
-}
-
-.login-form .input {
-  width: 350px;
+  background-color: #3d9140;
+  border: none;
+  color: white;
+  padding: 8px 3px;
+  text-align: center;
+  display: inline-block;
+  width: 75%;
   height: 50px;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 12px;
+  margin-top: 10px;
 }
 
-.logo{
-    width: 80%;
-    height: 80%;
-    align-items: center;
-    justify-content: center;
-    margin-top: 25px;
-    margin-left: 40px;
-
+.log-in:hover {
+  background-color: #2a6e2c;
 }
 
-@media (max-width: 1620px) and (max-height:2160px){
-  .box{
-    width:70%;
-    height: 40%;
+.input {
+  width: 90%;
+  max-width: 350px;
+  height: 50px;
+  margin: 0.5em;
+}
+
+.logo {
+  width: 80%;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 600px) {
+  .right {
+    display: none;
   }
-}
-
-@media (max-width: 1024px) {
-  .box {
+  .login-form .input,
+  .log-in {
     width: 90%;
-    height: 60%;
-  }
-  .left, .right {
-    width: 100%;
-    padding: 10px;
-    border: none;
-  }
-  .left {
-  }
-  .left {
-    border-bottom: solid 1px silver;
-  }
-}
-
-@media (max-width:1024px) and (max-height:1366px){
-  .box{
-    width: 80%;
-    height: 50%;
-  }
-
-  .left-login h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-form .input, .log-in {
+    max-width: 300px;
     height: 40px;
   }
-
-  .right {
-    display: none;
-  }
-}
-
-
-
-@media (max-width: 830px) and (max-height:1800px){
-  .box{
-    width: 90%;
-    height: 40%;
-  }
-  .login-form .input, .log-in {
-    width: 500px;
-    height: 60px;
-  }
   .left-login h1 {
-    font-size: 1.5rem;
-  }
-
-}
-
-@media (max-width:820px) and (max-height:1180px){
-  .box{
-    width:80%;
-    height: 40%;
-  }
-
-  .left-login h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-form .input, .log-in {
-    width: 500px;
-    height: 60px;
-  }
-
-  .right {
-    display: none;
+    font-size: 2em;
   }
 }
-
-@media (max-width:1024px) and (max-height:1366px){
-  .box{
-    width: 80%;
-    height: 30%;
-  }
-
-  .left-login h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-form .input, .log-in {
-  }
-
-  .login-form .input, .log-in {
-    height: 40px;
-    width: 300px;
-  }
-
-  .right {
-    display: none;
-  }
-}
-
-@media (max-width: 450px) {
-  .box {
-    width: 80%;
-    padding: 10px;
-  }
-  .login-form .input, .log-in {
-    width: 250px;
-    height: 35px;
-  }
-}
-
-
-
 </style>

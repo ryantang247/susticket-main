@@ -41,7 +41,6 @@
     router.push('/')
   }
   
-  // ...other methods for navigation
   </script>
   
   <style scoped>
@@ -50,14 +49,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #6DC9C8; /* Adjust the color to match the image */
+    background-color: #6DC9C8; 
     align-items: center;
   }
   
   .logo {
     font-size: 50px;
     font-weight: bold;
-    color: #FFAA00; /* Adjust the color to match the image */
+    color: #FFAA00; 
     align-items: center;
   }
   .logo img{
@@ -88,9 +87,9 @@
   }
   
   .user-profile img {
-    border-radius: 50%; /* Make the image round */
-    width: 20%; /* Adjust size as necessary */
-    height: 20%; /* Adjust size as necessary */
+    border-radius: 50%; 
+    width: 20%; 
+    height: 20%; 
     margin-right: 10px;
     cursor: pointer;
   }
@@ -129,21 +128,22 @@
   }
   
   .search-icon {
-    width: 20px; /* Adjust icon size as needed */
+    width: 20px; 
     height: 20px;
   }
   
   .search-input {
-    padding: 8px 30px; /* Adjust padding to ensure text doesn't overlap with icon */
+    padding: 8px 30px; 
     border: 1px solid #ccc;
     border-radius: 20px;
-    font-size: 14px; /* Adjust font size as needed */
-    outline: none; /* Remove outline when input is focused */
+    font-size: 14px; 
+    outline: none; 
   }
   
   .search-input::placeholder {
-    color: #999; /* Adjust placeholder color as needed */
+    color: #999; 
   }
+
   
   
   </style>

@@ -49,7 +49,7 @@ export default {
 
   @media (max-width: 1620px) and (max-height:2160px){
     .logo img{
-        height: 80px;
+        height: 45px;
     }
   }
   @media (max-width:1024px) and (max-height:1366px){
