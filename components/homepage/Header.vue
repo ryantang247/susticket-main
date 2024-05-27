@@ -71,6 +71,8 @@ import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import axios from 'axios';
+import { ElLoading, ElNotification } from 'element-plus';
+
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
 
@@ -111,6 +113,11 @@ const fetchNotificationsCount = async () => {
 };
 
 const fetchMyCartCount = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
   try {
     const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', { withCredentials:true});
     console.log("MY CART");
@@ -123,6 +130,9 @@ const fetchMyCartCount = async () => {
       message: `Error fetching carts. ${error.message}`,
       offset: 100,
     });
+  }
+  finally {
+      loading.close();
   }
 };
 

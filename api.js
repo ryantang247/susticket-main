@@ -1,6 +1,12 @@
 import axios from 'axios';
+import { ElLoading, ElNotification } from 'element-plus';
 
 export async function getVenues(venueId) {
+    const loading = ElLoading.service({
+        lock: true,
+        text: 'Loading...',
+        background: 'rgba(0, 0, 0, 0.7)',
+    });
     try {
         const response = await axios.get(`https://secourse2024-675d60a0d98b.herokuapp.com/api/getVenue/${venueId}`);
         return response.data.name;
@@ -13,9 +19,17 @@ export async function getVenues(venueId) {
         });    
         return null;
     }
+    finally {
+        loading.close();
+    }
 }
 
 export async function getEvents(eventId) {
+    const loading = ElLoading.service({
+        lock: true,
+        text: 'Loading...',
+        background: 'rgba(0, 0, 0, 0.7)',
+    });
     try {
         const response = await axios.get(`https://secourse2024-675d60a0d98b.herokuapp.com/api/getEvent/${eventId}`);
         const singleEvent = response.data;
@@ -44,5 +58,8 @@ export async function getEvents(eventId) {
             offset: 100,
         });    
         throw showError({statusCode: error.response.status, message: error.response.statusText})
+    }
+    finally {
+        loading.close();
     }
 }

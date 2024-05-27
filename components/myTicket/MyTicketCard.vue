@@ -51,6 +51,8 @@
   <script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
+  import { ElLoading, ElNotification } from 'element-plus';
+
   defineProps(['transactions','events']);
 
   const router = useRouter();

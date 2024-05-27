@@ -90,7 +90,7 @@
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import { ElNotification } from 'element-plus'
+  import { ElLoading, ElNotification } from 'element-plus';
   
   import Header from '@/components/homepage/Header.vue';
   import Footer from '@/components/homepage/Footer.vue';
@@ -127,6 +127,11 @@
   // Add methods for posting comment and getting event comments
   // Method to add the event to the cart
   const addToCart = async () => {
+    const loading = ElLoading.service({
+      lock: true,
+      text: 'Loading...',
+      background: 'rgba(0, 0, 0, 0.7)',
+    });
     try {
       // Send a POST request to the API endpoint
       const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/putToMyCart', {
@@ -164,6 +169,9 @@
         message: 'An unexpected error occurred. Please try again later.',
         offset: 100
       });
+    }
+    finally {
+      loading.close();
     }
   };
   
@@ -225,6 +233,11 @@
   });
   onMounted(async () => {
     // const fetchEventComments = async (eventId) => {
+    const loading = ElLoading.service({
+      lock: true,
+      text: 'Loading...',
+      background: 'rgba(0, 0, 0, 0.7)',
+    });
     try {
       // Call your API function to fetch event comments
       const comments = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getEventComment/'+route.params.id);
@@ -238,6 +251,9 @@
         message: `Error fetching event comments. ${error.message}`,
         offset: 100,
       }); 
+    }
+    finally {
+      loading.close();
     }
   });
 

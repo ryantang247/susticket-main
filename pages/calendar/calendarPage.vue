@@ -40,7 +40,7 @@
   import CustomerService from '@/components/CustomerService.vue';
 
   import { ref } from 'vue'
-  import { ElCalendar } from 'element-plus';
+  import { ElLoading, ElNotification , ElCalendar } from 'element-plus';
   import 'element-plus/dist/index.css';
 
   const value = ref(new Date())
@@ -143,6 +143,11 @@ const getEventOnDate = (date) => {
   };
 
 const fetchEvents = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
   try {
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents');
     const eventData = await response.json();
@@ -164,6 +169,9 @@ const fetchEvents = async () => {
       message: `Error fetching events. ${error.message}`,
       offset: 100,
     });    
+  }
+  finally {
+    loading.close();
   }
 };
 

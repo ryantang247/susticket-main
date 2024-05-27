@@ -20,6 +20,7 @@
 <script>
 import axios from "axios";
 import { SeatsioEventManager, SeatsioSeatingChart} from '@seatsio/seatsio-vue';
+import { ElLoading, ElNotification } from 'element-plus';
 const username = '5f4908aa-ff2b-42c5-ad29-62a8d60b8207';
 
 export default {

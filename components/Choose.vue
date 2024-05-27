@@ -65,6 +65,7 @@
 
 <script>
 import axios from "axios";
+import { ElLoading, ElNotification } from 'element-plus';
 
 export default {
   name:'choose',
@@ -106,6 +107,7 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+          
         });
       this.dialogVisible = true;
     },

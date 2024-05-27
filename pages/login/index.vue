@@ -47,6 +47,7 @@
   import axios from "axios";
   import Footer from '@/components/homepage/Footer.vue';
   import HeaderLogin from '@/components/homepage/HeaderLogin.vue';
+  import { ElLoading, ElNotification } from 'element-plus';
 
   export default {
     components: {

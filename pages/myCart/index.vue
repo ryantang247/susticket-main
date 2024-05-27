@@ -124,7 +124,12 @@ const toggleTicked = (event) => {
 };
 
 const getUserCoins  = async () =>{
-
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
+  
   try{
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getUser', {credentials: 'include'});
     const eventData = await response.json();
@@ -132,6 +137,15 @@ const getUserCoins  = async () =>{
     coinVal.value = eventData.coin
   }catch (e) {
     console.log("Error getting user detail")
+    ElNotification.error({
+        title: 'Error',
+        message: 'Error getting user detail.'+error,
+        offset: 100
+    });
+    
+  }
+  finally {
+    loading.close();
   }
 
 }
@@ -143,6 +157,11 @@ const tickedSrc = (event) => {
 
 // Fetch events for the cart from the API
 const fetchEventsForCart = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
   try {
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', {credentials: 'include'});
     const eventData = await response.json();
@@ -155,6 +174,9 @@ const fetchEventsForCart = async () => {
       offset: 100
     });
     console.error('Error fetching events for cart:', error);
+  }
+  finally {
+    loading.close();
   }
 };
 
@@ -223,6 +245,11 @@ const checkoutWithPayPal = async () => {
 
 // Delete an event from the cart
 const deleteFromCart = async (orderId) => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
   try {
     const response = await fetch(`https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteFromMyCart/${orderId}`, {
       method: 'DELETE',
@@ -252,6 +279,9 @@ const deleteFromCart = async (orderId) => {
       offset: 100
     });
     console.error('Error deleting event from cart:', error);
+  }
+  finally {
+    loading.close();
   }
 };
 

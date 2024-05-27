@@ -21,6 +21,7 @@ import CustomerService from '@/components/CustomerService.vue';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios'; // Make sure axios is installed
+import { ElLoading, ElNotification } from 'element-plus';
 
 const router = useRouter();
 const events = ref([]);
@@ -33,6 +34,11 @@ const goToHomepage = () => {
 
 // Fetch bookmarked events on component mount
 onMounted(async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
   try {
     const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents');
 
@@ -51,7 +57,8 @@ onMounted(async () => {
       message: "Error fetching bookmarks" + error,
       offset: 100,
     });
-        
+  }finally {
+    loading.close();
   }
 });
 </script>

@@ -22,7 +22,7 @@ import MyTicketCard from '@/components/myTicket/MyTicketCard.vue';
 import CustomerService from '@/components/CustomerService.vue';
 import Footer from '@/components/homepage/Footer.vue';
 import { ref } from 'vue';
-
+import { ElLoading, ElNotification } from 'element-plus';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -56,6 +56,11 @@ const copyLink = (event) => {
 };
 // Fetch purchased tickets from the API endpoint
 const fetchPurchasedTickets = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
   try {
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/1',{credentials: 'include'}); // Update the endpoint URL
     const ticketData = await response.json();
@@ -68,6 +73,8 @@ const fetchPurchasedTickets = async () => {
         message: 'Error fetching purchased tickets.'+error,
         offset: 100
     });
+  }finally {
+    loading.close();
   }
 };
 // Call fetchPurchasedTickets when the component is mounted

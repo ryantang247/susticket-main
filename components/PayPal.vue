@@ -4,8 +4,9 @@
 
 <script lang="ts">
 import { loadScript } from "@paypal/paypal-js";
-import { nextTick, defineComponent, onMounted, watch } from 'vue'
+import { nextTick, defineComponent, onMounted, watch } from 'vue';
 import axios from 'axios';
+import { ElLoading, ElNotification } from 'element-plus';
 
 export default defineComponent({
   name: 'Paypal',

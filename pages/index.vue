@@ -81,42 +81,58 @@ if (process.client) {
 const recommendations = ref([]);
 
 const fetchEvents = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
 
-  var rq = new recombee.RecommendItemsToUser(currentUserSID, 3,
-      {
-        returnProperties: false,
-        scenario: 'homepage'
-      }
-  )
-  rq.timeout = 30000
-  await client.send(rq,
-      (err, resp) => {
-        if(err) {
-          console.log("Could not load recomms: ", err);
-          return;
+  try {
+    var rq = new recombee.RecommendItemsToUser(currentUserSID, 3,
+        {
+          returnProperties: false,
+          scenario: 'homepage'
         }
-        recommendations.value = resp.recomms
-        console.log("Recommendations: ", recommendations.value);
+    )
+    rq.timeout = 30000
+    await client.send(rq,
+        (err, resp) => {
+          if(err) {
+            console.log("Could not load recomms: ", err);
+            return;
+          }
+          recommendations.value = resp.recomms
+          console.log("Recommendations: ", recommendations.value);
 
-      }
-  );
+        }
+    );
 
-  const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents');
-  if (response.ok) {
-    const data = await response.json();
-    allEvents.value = data;
-    // Apply filters to the initial data
-    events.value = data;
-    console.log(data);
-    filterEvents();
-  } else {
-    console.error('Failed to fetch events:', response.statusText);
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents');
+    if (response.ok) {
+      const data = await response.json();
+      allEvents.value = data;
+      // Apply filters to the initial data
+      events.value = data;
+      console.log(data);
+      filterEvents();
+    } else {
+      console.error('Failed to fetch events:', response.statusText);
+      ElNotification.error({
+        title: 'Error',
+        message: `Error fetching events. ${response}`,
+        offset: 100,
+      });     
+    }
+  } catch (error) {
+    console.error(error);
     ElNotification.error({
       title: 'Error',
-      message: `Error fetching events. ${response}`,
+      message: `Error fetching events: ${error.message}`,
       offset: 100,
-    });    
-}
+    });
+  } finally {
+    loading.close();
+  }
 };
 onMounted(() => {
   fetchEvents();
@@ -128,27 +144,39 @@ onMounted(() => {
 });
 
 const selectCategory = async (categoryName) => {
-  currentCategory.value = categoryName;
-  currentFilter.value = 'All';  // Reset time filter to 'All'
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
 
-  const catNumber = categoryMapping[categoryName];
-  let url = 'https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents';
-  if (catNumber !== 0) {
-    url = `https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEventsByCategory/${catNumber}`;
-  }
+  try {
+    currentCategory.value = categoryName;
+    currentFilter.value = 'All';  // Reset time filter to 'All'
 
-  const response = await fetch(url);
-  if (response.ok) {
-    const data = await response.json();
-    allEvents.value = data;
-    events.value = data;  // Populate events with the new category data without filtering by time
-  } else {
-    console.error('Failed to fetch events:', response.statusText);
+    const catNumber = categoryMapping[categoryName];
+    let url = 'https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents';
+    if (catNumber !== 0) {
+      url = `https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEventsByCategory/${catNumber}`;
+    }
+
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      allEvents.value = data;
+      events.value = data;  // Populate events with the new category data without filtering by time
+    } else {
+      throw new Error(`Failed to fetch events: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error(error);
     ElNotification.error({
       title: 'Error',
-      message: "Error fetching venues" + response,
+      message: `Error fetching events: ${error.message}`,
       offset: 100,
     });
+  } finally {
+    loading.close();
   }
 };
 

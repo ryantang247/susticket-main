@@ -45,6 +45,7 @@
 <script>
 import axios from "axios";
 import buildpng from 'assets/building.png';
+import { ElLoading, ElNotification } from 'element-plus';
 export default {
   name: "AMap",
   props :{
