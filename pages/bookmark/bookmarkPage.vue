@@ -40,7 +40,7 @@ onMounted(async () => {
     background: 'rgba(0, 0, 0, 0.7)',
   });
   try {
-    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents');
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents', { withCredentials:true});
 
     response.data.forEach((bookmarkedEvent)=>{
 

@@ -46,7 +46,7 @@
       console.log(status);
 
         if (status!== "null"){
-          console.log("Im letting this in because status is ", status)
+
             this.name = localStorage.getItem("Username");
             this.email = localStorage.getItem("Email");
             this.loginStatus = true;
