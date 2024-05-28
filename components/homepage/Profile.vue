@@ -3,7 +3,7 @@
       <div class="profile-box" v-if="isVisible">
         <div v-if="loginStatus" class="profile-content">
           <h2>{{ name }}</h2>
-          <div v-show="email"><p>{{ email }}</p></div>
+          <div v-if="email!=null"><p>{{ email }}</p></div>
           <!-- <p><b> 123 coins</b></p> -->
           <el-button type="warning" plain>1500 coins</el-button><br>
 
@@ -38,13 +38,12 @@ let userStat = null;
     mounted(){
       if (process.client) {
       const status = localStorage.getItem("Status");
-      userStat = status;
       console.log("loginStatus: ");
       console.log(this.loginStatus);
       console.log("status : ");
       console.log(status);
 
-        if (status){
+        if (status !== null){
             this.name = localStorage.getItem("Username");
             this.email = localStorage.getItem("Email");
             this.loginStatus = true;

@@ -41,7 +41,7 @@ onMounted(() => {
     console.log("status : ");
     console.log(status);
 
-    if (status) {
+    if (status!==null) {
       name = localStorage.getItem("Username");
     } else {
       name = "There";
