@@ -89,14 +89,13 @@
  
   .notif-box {
     position: absolute;
-    right: 20px;
-    top: 70px;
+    right: 12em;
+    top: 6.5em;
     background-color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     border-radius: 8px;
     width: 500px;
     z-index: 100;
-    align-items: center;
   }
   
   .fade-enter-active, .fade-leave-active {
@@ -105,26 +104,36 @@
   .fade-enter-from, .fade-leave-to {
     opacity: 0;
   }
-  .msg-box{
-    border: 1px solid #ccc;
+  .msg-box {
+    border-bottom: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    padding-top: 0;
-    padding-left: 20px;
+    text-align:left;
   }
-  h5{
-    font-size: 20px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 15px;
+  .msg-box:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
   }
+  h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: #333;
+  }
+  
   h6 {
     font-size: 12px;
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 15px;
+    right: 15px;
     color: #ccc;
-    padding: 10px 15px;
-    
   }
   </style>
   

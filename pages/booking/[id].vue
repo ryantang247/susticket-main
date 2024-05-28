@@ -20,7 +20,7 @@
           </div>
         </div>
         <div v-else class="seat-selection card">
-          <h2>Ticket Selection</h2>
+          <!-- <h2>Ticket Selection</h2> -->
           <el-row>
             <el-col v-bind:key="price-cat" v-for="price in pricing">
               <el-card @click="onObjectSelectedNoSeats(price)" class="ticket-card">
@@ -30,9 +30,11 @@
             </el-col >
           </el-row>
         </div>
-      </div>
 
+      </div>
+      
       <div class="right">
+        <div class="right-down">
           <div class="right-info">
             <div class="price-details" v-if="objects.length > 0">
               <div v-for="seat in seats" :key="seat.type" class="item">
@@ -48,18 +50,11 @@
             </div>
             <div class="actions">
               <div class="add-cart-btn" @click="addToCart(totalAmount)" v-if="eventData.id" :event-id="eventData.id" :object-selected="seatLabels" :event-key="eventData.seatsioEventsKey" :total-amount="totalAmount.toFixed(2)">+Add to Cart</div>
-              
               <div class="get-ticket-btn" @click="navigateToCheckout"><a>Get Ticket Now</a></div>
-              
-              
-            </div>
-              
-              
-                                
+            </div>              
           </div>
-      </div>
-
-
+        </div>
+    </div>
   </div>
   <Footer />
   <CustomerService />
@@ -326,8 +321,8 @@ function navigateToCheckout() {
 </script>
 <style scoped>
 .event-book-container{
-  max-width: 1200px;
-  height: 700px;
+  width: 50%;
+  height: 70%;
   margin: 0 auto;
   border: #ccc 1px solid;
   box-shadow: 0 2px 8px rgba(0,0,0,0.5);
@@ -339,7 +334,7 @@ function navigateToCheckout() {
 .header {
   text-align: left;
   display: flex;
-  align-items: center; /* This centers the children vertically */
+  align-items: center; 
   margin-bottom: 20px;
 }
 .header h2{
@@ -355,14 +350,17 @@ function navigateToCheckout() {
 }
 
 .left{
-  float: left;
+  height: 70%;
   border: #6DC9C8 1px;
   border-right: #000 1px;
-  width: 75%;
-  background-color: #6DC9C8;
+  width: 100%;
+}
+.right-down{
+  display: flex;
+  justify-content: right;
 }
 .right{
-  float: right;
+  width: 50%;
   border: #6DC9C8 1px;
 }
 
@@ -401,9 +399,21 @@ text-decoration: none;
 }
 .yuan {
   display: flex;
-  flex-direction: row-reverse; /* Reverse the order of flex items */
+  flex-direction: row-reverse; 
   justify-content: space-between;
   align-items: center;
+}
+
+@media only screen and (max-width: 2880px){
+  .event-book-container{
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 830px){
+  .event-book-container{
+    width: 90%
+  }
 }
 
 </style>

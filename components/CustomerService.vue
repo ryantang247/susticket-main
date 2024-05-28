@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="userStat">
     <!-- Chat button/icon -->
     <div v-if="!showChatBox" class="chat-button" @click="toggleChatBox">
       <img src="/assets/header/cs.png" alt="Chat Icon">
@@ -37,6 +37,22 @@ import { ChatFeed,ChatEngineWrapper,ChatSocket  } from 'react-chat-engine';
 // const {applyReactInVue} = require('veaury')
 import  {applyReactInVue} from 'veaury';
 // const config = useRuntimeConfig()
+
+let name = '';
+let userStat = null;
+onMounted(() => {
+  if (process.client) {
+    console.log("CUST SERVICE");
+    const status = localStorage.getItem("Status");
+    userStat = status;
+    console.log("status : ");
+    console.log(status);
+
+    // if (status) {
+    //   name = localStorage.getItem("Username");
+    // }
+  }
+});
 
 export default {
   components:{

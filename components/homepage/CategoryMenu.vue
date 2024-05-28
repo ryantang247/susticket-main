@@ -73,10 +73,9 @@ methods: {
 }
 
 .category-icon {
-  /* Styles for the icon images */
-  width: 80px; /* Example size, adjust as needed */
-  height: 80px; /* Example size, adjust as needed */
-  border: 2px solid #284949; /* Add border */
+  width: 160px; 
+  height: 160px; 
+  border: 2px solid #284949; 
   border-radius: 50%;
   opacity: 0.4;
   margin-left:10px;
@@ -85,7 +84,6 @@ methods: {
 }
 
 .category-name {
-  /* Styles for the category names */
   display: block;
   text-align: center;
   text-decoration: none;
@@ -99,6 +97,13 @@ methods: {
 }
 .category-list a{
   text-decoration: none;
+}
+
+@media only screen and (max-width: 2880px){
+  .category-icon{
+    width: 80px;
+    height: 80px;
+  }
 }
 
 </style>

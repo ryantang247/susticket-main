@@ -1,21 +1,21 @@
 <template>
   <Header/>
   <div v-if="isLoading" class="loading-overlay">
-    
+    <!-- <p>Loading...</p> -->
   </div>
   <div class="event-desc-container">
       <div class="header">
           <img src="/assets/header/backarrow.png" class="back" @click="goBack">
       </div>
-      <aside class="left">
+      <div class="left">
           <!-- <img class="event-img" src="/assets/events/event6.jpg"> -->
-          <div class="block text-center">
+          
               <el-carousel height="250px" width="">
                 <el-carousel-item v-for="item in eventData.thumbnails" :key="item">
                   <img class="carousel-image" :src="item" alt="Event Thumbnail"/>
                 </el-carousel-item>
               </el-carousel>
-            </div>
+          
           <!-- <el-button type="danger" round class="status">{{eventData.status}}</el-button> -->
           <el-button type="warning" round class="status" v-if="eventData.status == 0">on sale</el-button>
           <el-button type="success" round class="status" v-if="eventData.status == 1">on going</el-button>
@@ -61,37 +61,37 @@
                   <h6>Contact person: <span>{{ eventData.contactName }}</span> - {{ eventData.contact }}</h6>
               </div>
               
-
           </div>
-      </aside>
-      <aside class="right">
-          <div v-if="currentEvent" class="button-action">
-              <!-- <h2>Price: <span>{{ '¥' + displayPrice(event.price)}}</span></h2> -->
-            
-              <!-- <div class="add-cart-btn" @click="addToCart()">+Add to Cart</div> -->
-                <div class="get-ticket-btn">
-              <nuxt-link :to="`/booking/${currentEvent}`">
 
-                  <p>Get Ticket</p>
-              </nuxt-link>
-
-                </div>
+            <div class="down">
+              <div v-if="userStat == 'success' && currentEvent" class="button-action">
+                <!-- <h2>Price: <span>{{ '¥' + displayPrice(event.price)}}</span></h2> -->
               
-              <div class="share-bookmark">
-                <!-- <img :src="bookmarkSrc(currentEvent)" @click="toggleBookmark(currentEvent)"> -->
-                <h6>Bookmark</h6>
-                <img src="/assets/event/linkshare.png" @click="copyLink(event)">
-                <h6>Copy link</h6>
+                <!-- <div class="add-cart-btn" @click="addToCart()">+Add to Cart</div> -->
+                  <div class="get-ticket-btn">
+                    <nuxt-link :to="`/booking/${currentEvent}`">
+                      <p>Get Ticket</p>
+                    </nuxt-link>
+                  </div>
+                
+                  <div class="share-bookmark">
+                    <!-- <img :src="bookmarkSrc(currentEvent)" @click="toggleBookmark(currentEvent)"> -->
+                    <h6>Bookmark</h6>
+                    <img src="/assets/event/linkshare.png" @click="copyLink(event)">
+                    <h6>Copy link</h6>
+                  </div>
               </div>
-            
+              
           </div>
-      </aside>
-      
+            
+      </div>
   </div>
+
   <div v-if="eventData.videolink" class="live-stream">
     <h2>Live Streaming</h2>
     <iframe width="560" height="315" :src="transformToEmbedUrl(eventData.videolink)" frameborder="0" allowfullscreen></iframe>
   </div>
+
   <div class="comments-box">
       <h2>Comments</h2>
       <!-- <el-button type="warning" class="comment-btn" @click="goToCommentPage">Give Comment</el-button> -->
@@ -104,7 +104,9 @@
             :value="comment.star"
             score-template="{ value } points"
         /> -->
-        <p><strong>{{ comment.user }}</strong>: {{ comment.text }}</p>
+        <p>
+          <strong>{{ comment.user }}</strong>: {{ comment.text }}
+        </p>
         <img v-if="comment.image" :src="comment.image" alt="User Comment">
         <video v-if="comment.video" controls>
           <source :src="comment.video" type="video/mp4">
@@ -112,7 +114,7 @@
         </video>
         <el-divider/>
       </div>
-      <el-button type="warning" class="action-btn" @click="goToCommentPage">Add Comment</el-button>
+      <el-button v-if="userStat == 'success'" type="warning" class="action-btn" @click="goToCommentPage">Add Comment</el-button>
   </div>
   <Footer/>
   <CustomerService/>
@@ -157,7 +159,21 @@ const eventData = ref({
 
 });
 
+let name = '';
+let userStat = null;
+onMounted(() => {
+  if (process.client) {
+    console.log("EVENT DESC");
+    const status = localStorage.getItem("Status");
+    userStat = status;
+    console.log("status : ");
+    console.log(status);
 
+    // if (status) {
+    //   name = localStorage.getItem("Username");
+    // }
+  }
+});
 
 function transformToEmbedUrl(youtubeUrl) {
   // Extract the video ID from the URL
@@ -402,7 +418,7 @@ function formatDate(dateString) {
     height: 100px;
     border-radius: 50%;
     border: 10px solid rgba(0, 0, 0, 0.1);
-    border-top-color: #3498db;  /* Bright blue */
+    border-top-color: #3498db;  
     animation: spin 1s linear infinite;
   }
   
@@ -412,50 +428,21 @@ function formatDate(dateString) {
     font-weight: bold;
     text-shadow: 0px 0px 10px rgba(0,0,0,0.5); /* Soft shadow for text */
   }
-  
-
-  
   .event-desc-container{
-      max-width: 1400px;
-      height: 1000px;
+      width: 50%;
       margin: 0 auto;
       border: #ccc 1px solid;
       box-shadow: 0 2px 8px rgba(0,0,0,0.5);
       padding: 20px;
       margin-top: 50px;
-      
-  }
-  .comments-box{
-      max-width: 1400px;
-      height: 200px;
-      margin: 0 auto;
-      border: #ccc 1px solid;
-      padding: 20px;
-      margin-bottom: 50px;
-  }
-  .live-stream{
-    max-width: 1400px;
-    height: 400px;
-    margin: 0 auto;
-    border: #ccc 1px solid;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    padding: 20px;
   }
   .header {
       text-align: left;
       display: flex;
-      align-items: center; /* This centers the children vertically */
+      align-items: center; 
       margin-bottom: 20px;
   }
-
   .left{
-      float: left;
-      border: #6DC9C8 1px;
-      border-right: #ccc 1px;
-      width: 75%;
-  }
-  .right{
-      float: right;
       border: #6DC9C8 1px;
   }
   
@@ -467,23 +454,18 @@ function formatDate(dateString) {
       background-color: #ccc;
       border-radius: 50%;
   }
-  .header h2{
-      margin-left: 20px;
-      margin: 0;
+  .carousel-image{
+    height: 20%;
   }
   .carousel-image{
       width: 100%;
-      height: 400px;
+      height: 700px;
       object-fit: cover;
       margin-bottom: 10px;
   }
   .date-loc img{
       width: 25px;
       height: 25px;
-  }
-  h1{
-      font-size: 50px;
-      margin-bottom: 10px;
   }
   h5{
       font-size: 25px;
@@ -498,6 +480,7 @@ function formatDate(dateString) {
       padding: 0;
   }
   h1{
+    font-size: 50px;
       margin-bottom: 40px;
   }
   .date-loc{
@@ -510,13 +493,17 @@ function formatDate(dateString) {
       width: 300px;
       height: 200px;
       border-radius: 10px;
-      border: 1px solid #6DC9C8; /* Style is required and should precede the color */
-      display: flex; /* Enable Flexbox */
-      flex-direction: column; /* Stack children vertically */
-      justify-content: center; /* Center items vertically */
-      align-items: center; /* Center items horizontally */
+      border: 1px solid #6DC9C8; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center; 
   }
   
+  .down{
+    display: flex;
+    justify-content: right;
+  }
   
  .get-ticket-btn{
       background-color: #284949;
@@ -526,24 +513,22 @@ function formatDate(dateString) {
       margin-bottom: 5px;
       font-size: 20px;
       color: #fff;
-      display: flex; /* Enables Flexbox */
-      justify-content: center; /* Centers content horizontally */
-      align-items: center; /* Centers content vertically */
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
       text-align: center; 
       text-decoration: none;
-
   }
+
   .get-ticket-btn{
       background-color: #284949;
       border: #284949 solid 2px;
-      color: #fff;
       text-decoration: none;
   }
   .get-ticket-btn a{
     text-decoration: none;
-    color:#fff;
+    color: #fff;
   }
-
   .get-ticket-btn:hover{
       background-color: #fff;
       color: #000;
@@ -582,16 +567,51 @@ function formatDate(dateString) {
   }
 
   .fixed-size-tag {
-    width: 100px; /* Or any other fixed width */
+    width: 100px; 
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  .comments-box{
+    width: 50%;
+    height: 200px;
+    margin: 0 auto;
+    border: #ccc 1px solid;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+.live-stream{
+  width: 50%;
+  height: 400px;
+  margin: 0 auto;
+  border: #ccc 1px solid;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  padding: 20px;
+}
 
-  .carousel-image{
-    height: 250px;
+@media only screen and (max-width: 2880px){
+  .event-desc-container{
+    width: 70%;
   }
-  
+  .live-stream{
+    width: 70%;
+  }
+  .comments-box{
+    width: 70%;
+  }
+}
+
+@media only screen and (max-width: 830px) {
+  .event-desc-container{
+    width: 90%;
+  }
+  .live-stream{
+    width: 90%;
+  }
+  .comments-box{
+    width: 90%;
+  }
+}
 
 </style>

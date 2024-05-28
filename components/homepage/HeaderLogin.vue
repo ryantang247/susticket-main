@@ -31,7 +31,7 @@ export default {
 .header {
     width: 100%;
     display: flex;
-    background-color: #6DC9C8; /* Adjust the color to match the image */
+    background-color: #6DC9C8; 
     text-align: center;
   }
   

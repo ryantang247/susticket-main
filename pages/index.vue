@@ -1,4 +1,3 @@
-<!--local host-->
 <template>
   <div>
     <Header />
@@ -6,8 +5,11 @@
       <WelcomeBanner :name="userName" />
     </div>
     <CategoryMenu @category-selected="selectCategory" />
-    <div class="event-list-section">
-      <!-- <EventFilter/> -->
+
+    <div v-if="isLoading" class="loading-screen">
+      <!-- <p>Loading...</p> -->
+    </div>
+    <div v-else class="event-list-section">
       <div class="filter-tabs">
         <a
           href="#"
@@ -30,7 +32,7 @@
           :class="{ active: currentFilter === 'Next Month' }"
         >Next Month</a>
       </div>
-      <div v-if="events.length >0"  class="event-list-content">
+      <div v-if="events.length > 0" class="event-list-content">
         <EventList :events="events" />
       </div>
     </div>
@@ -53,11 +55,11 @@ import CustomerService from '@/components/CustomerService.vue';
 import Footer from '@/components/homepage/Footer.vue';
 
 let userName = ref(null);
-
 const allEvents = ref([]);
 const events = ref([]);
 const currentFilter = ref('All');
 const currentCategory = ref('All');
+const isLoading = ref(true); 
 
 const categoryMapping = {
   'All': 0,
@@ -68,68 +70,73 @@ const categoryMapping = {
   'Seminar': 5
 };
 
+import recombee from 'recombee-js-api-client';
 
-import recombee from 'recombee-js-api-client'
-
-const client = new recombee.ApiClient('secourse-secourse-us', useRuntimeConfig().public.reccPublicKey, {region: 'us-west'});
+const client = new recombee.ApiClient('secourse-secourse-us', useRuntimeConfig().public.reccPublicKey, { region: 'us-west' });
 
 let currentUserSID = null;
 if (process.client) {
-  currentUserSID = localStorage.getItem("SID")
+  currentUserSID = localStorage.getItem("SID");
 }
 
 const recommendations = ref([]);
 
 const fetchEvents = async () => {
-
-  var rq = new recombee.RecommendItemsToUser(currentUserSID, 3,
-      {
-        returnProperties: false,
-        scenario: 'homepage'
+  try {
+    var rq = new recombee.RecommendItemsToUser(currentUserSID, 3, {
+      returnProperties: false,
+      scenario: 'homepage'
+    });
+    rq.timeout = 30000;
+    await client.send(rq, (err, resp) => {
+      if (err) {
+        console.log("Could not load recomms: ", err);
+        return;
       }
-  )
-  rq.timeout = 30000
-  await client.send(rq,
-      (err, resp) => {
-        if(err) {
-          console.log("Could not load recomms: ", err);
-          return;
-        }
-        recommendations.value = resp.recomms
-        console.log("Recommendations: ", recommendations.value);
+      recommendations.value = resp.recomms;
+      console.log("Recommendations: ", recommendations.value);
+    });
 
-      }
-  );
-
-  const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents');
-  if (response.ok) {
-    const data = await response.json();
-    allEvents.value = data;
-    // Apply filters to the initial data
-    events.value = data;
-    console.log(data);
-    filterEvents();
-  } else {
-    console.error('Failed to fetch events:', response.statusText);
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents');
+    if (response.ok) {
+      const data = await response.json();
+      allEvents.value = data;
+      events.value = data;
+      console.log(data);
+      filterEvents();
+    } else {
+      console.error('Failed to fetch events:', response.statusText);
+      ElNotification.error({
+        title: 'Error',
+        message: `Error fetching events. ${response}`,
+        offset: 100,
+      });    
+    }
+  } catch (error) {
+    console.error('Error fetching events:', error);
     ElNotification.error({
       title: 'Error',
-      message: `Error fetching events. ${response}`,
+      message: `Error fetching events. ${error.message}`,
       offset: 100,
-    });    
-}
+    });
+  } finally {
+    isLoading.value = false; 
+  }
 };
+
 onMounted(() => {
   fetchEvents();
   if (process.client) {
-    const name = localStorage.getItem("Username") || ''
-    console.log("Banner name :",name)
+    const name = localStorage.getItem("Username") || '';
+    console.log("Banner name :", name);
     userName.value = name;
   }
 });
 
 const selectCategory = async (categoryName) => {
+  isLoading.value = true;
   currentCategory.value = categoryName;
-  currentFilter.value = 'All';  // Reset time filter to 'All'
+  currentFilter.value = 'All';
 
   const catNumber = categoryMapping[categoryName];
   let url = 'https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents';
@@ -137,50 +144,37 @@ const selectCategory = async (categoryName) => {
     url = `https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEventsByCategory/${catNumber}`;
   }
 
-  const response = await fetch(url);
-  if (response.ok) {
-    const data = await response.json();
-    allEvents.value = data;
-    events.value = data;  // Populate events with the new category data without filtering by time
-  } else {
-    console.error('Failed to fetch events:', response.statusText);
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      const data = await response.json();
+      allEvents.value = data;
+      events.value = data;
+    } else {
+      console.error('Failed to fetch events:', response.statusText);
+      ElNotification.error({
+        title: 'Error',
+        message: `Error fetching events. ${response}`,
+        offset: 100,
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching events:', error);
     ElNotification.error({
       title: 'Error',
-      message: "Error fetching venues" + response,
+      message: `Error fetching events. ${error.message}`,
       offset: 100,
     });
+  } finally {
+    isLoading.value = false; // Hide loading screen
   }
 };
-
-
-// const fetchEventsByCategory = async (categoryName) => {
-//   let url = 'https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents';
-//   if (categoryName !== 'All') {
-//     const categoryMapping = {
-//       'Competition': 1,
-//       'Fair': 2,
-//       'Performance': 3,
-//       'Activity': 4,
-//       'Seminar': 5
-//     };
-//     const catNumber = categoryMapping[categoryName];
-//     url = `https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEventsByCategory/${catNumber}`;
-//   }
-
-//   const response = await fetch(url);
-//   if (response.ok) {
-//     const data = await response.json();
-//     events.value = data;
-//   } else {
-//     console.error('Failed to fetch events:', response.statusText);
-//   }
-// };
 
 const filterEvents = () => {
   const now = new Date();
   let filteredEvents;
 
-  switch(currentFilter.value) {
+  switch (currentFilter.value) {
     case 'This Week':
       const startWeek = startOfWeek(now);
       const endWeek = endOfWeek(now);
@@ -205,21 +199,11 @@ const filterEvents = () => {
         return eventDate >= startNextMonth && eventDate <= endNextMonth;
       });
       break;
-    default:  // 'All' and any other cases
+    default: // 'All' and any other cases
       if (recommendations.value.length > 0) {
-        filteredEvents = [];
-
-        for (let i = 0; i < allEvents.value.length; i++) {
-          const event = allEvents.value[i];
-          console.log("Event ",event)
-          // Check if the event's ID is included in recommendations.value
-          if (recommendations.value.some(recommendation => recommendation.id === event.id)) {
-
-            filteredEvents.push(event);
-          }
-        }
-        console.log("Filtered events", filteredEvents)
-
+        filteredEvents = allEvents.value.filter(event =>
+          recommendations.value.some(recommendation => recommendation.id === event.id)
+        );
       } else {
         filteredEvents = allEvents.value;
       }
@@ -229,25 +213,54 @@ const filterEvents = () => {
   events.value = filteredEvents;
 };
 
-
 // Function to handle selecting a filter
 const selectFilter = (filter) => {
   currentFilter.value = filter;
   filterEvents();
 };
-
-// Function to handle selecting a category
-// const selectCategory = (categoryName) => {
-//   currentCategory.value = categoryName;
-//   filterEvents(); // Refilter events with the selected category
-// };
-
-// onMounted(() => fetchEventsByCategory('All'));
-
-
 </script>
-
 <style scoped>
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);  
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  color: #333;
+}
+
+.loading-screen::before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 10px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #3498db;  
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.loading-overlay-text {
+  z-index: 1;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px rgba(0,0,0,0.5); 
+}
   *{
     font-family: sans-serif;
   }
@@ -255,163 +268,60 @@ const selectFilter = (filter) => {
     font-size: 50px;
     margin-left: 5%;
   }
-  .filter-tabs {
-    margin-left: 5%;
+  .event-list-section {
+    padding: 20px;
   }
+  
+  .filter-tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-left: 5%;
+    padding: 10px 0;
+    font-family: sans-serif;
+    font-size: large;
+  }
+  
   .filter-tabs a {
-    /* Styles for the category names */
     text-decoration: none;
     text-align: center;
     color: #000;
-    width: 20px;
-    margin: 30px;
-    font-size: 30px;
-    opacity: 50%;
-  }
-  .event-list-content {
-    display: flex;
-    justify-content: center; /* Center items horizontally */
-  }
-
-  .filter-tabs a {
-    opacity: 0.5; /* Default low opacity for all */
-    /* Add more styles for your tabs */
+    margin: 0 15px; /* Horizontal margin */
+    font-size: 1.25rem;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    white-space: nowrap; /* Prevent text from wrapping */
   }
   
   .filter-tabs a:hover,
-  .filter-tabs a.active { /* When hovering or the tab is active */
-    opacity: 1.0; /* Full opacity */
+  .filter-tabs a.active { 
+    opacity: 1.0; 
     cursor: pointer;
-    /* Add any other hover and active styles here */
+  }
+  
+  .event-list-content {
+    display: flex;
+    justify-content: center;
+  }
+  
+  @media only screen and (max-width: 1024px) {
+    .filter-tabs a {
+      font-size: 1rem;
+      margin: 0 10px; /* Adjusted margin for smaller screens */
+    }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .filter-tabs {
+      padding: 10px 5%;
+    }
+    .filter-tabs a {
+      font-size: 0.875rem;
+      margin: 0 5px; /* Adjusted margin for smaller screens */
+    }
   }
   
   
-@media (max-width: 1620px) and (max-height:2160px){
-  .box{
-    width:70%;
-    height: 50%;
-  }
-}
-
-@media (max-width: 1024px) {
-  .box {
-    width: 90%;
-    height: auto;
-  }
-  .left, .right {
-    width: 100%;
-    padding: 10px;
-    border: none;
-  }
-  .left {
-    border-bottom: solid 1px silver;
-  }
-
-}
-
-@media (max-width:1024px) and (max-height:1366px){
-  .box{
-    width: 80%;
-    height: 30%;
-  }
-
-  .left-login h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-form .input, .log-in {
-    height: 40px;
-  }
-
-  .right {
-    display: none;
-  }
-}
-
-@media (max-width: 830px) {
-  .box{
-    width: 90%;
-    height: 60%
-  }
-  .left-login h1 {
-    font-size: 1.5rem;
-  }
-  .login-form .input, .log-in {
-    width: 500px;
-    height: 60px;
-  }
-  .left-login h1 {
-    font-size: 4rem;
-  }
-  .logo {
-    display: none;
-  }
-  .right{
-    display: none;
-  }
-}
-
-@media (max-width: 830px) and (max-height:1800px){
-  .box{
-    width: 90%;
-    height: 40%;
-  }
-  .login-form .input, .log-in {
-    width: 500px;
-    height: 60px;
-  }
-  .left-login h1 {
-    font-size: 4rem;
-  }
-
-}
-
-@media (max-width:820px) and (max-height:1180px){
-  .box{
-    width:80%;
-    height: 40%;
-  }
-
-  .left-login h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-form .input, .log-in {
-    width: 500px;
-    height: 60px;
-  }
-
-  .right {
-    display: none;
-  }
-}
-
-@media (max-width: 700px) {
-  .left-login h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-form .input, .log-in {
-    height: 40px;
-    width: 300px;
-  }
-
-  .right {
-    display: none;
-  }
-}
-
-@media (max-width: 450px) {
-  .box {
-    width: 80%;
-    padding: 10px;
-  }
-  .login-form .input, .log-in {
-    width: 250px;
-    height: 35px;
-  }
-}
-
 
 </style>
 

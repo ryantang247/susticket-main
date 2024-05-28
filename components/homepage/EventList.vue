@@ -14,7 +14,7 @@
         <p>{{ getVenueName(event.venueId) }}</p>
         <h2>{{ '¥' + displayPrice(event.price) }}</h2>
         <p class="available">{{ event.available }}</p>
-        <div class="bookmark-share">
+        <div v-if="userStat == 'success'" class="bookmark-share">
           <img :src="bookmarkSrc(event)" @click="toggleBookmark(event)" class="bookmark">
           <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)">
         </div>
@@ -33,12 +33,26 @@ import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const props = defineProps(['events']);
 const { events } = toRefs(props);
-
 const bookmarkEvents = ref({})
-
-
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerThanMd = breakpoints.smaller('sm') // only smaller than lg
+const smallerThanMd = breakpoints.smaller('sm') 
+
+let userStat = null;
+// let name;
+
+onMounted(() => {
+  if (process.client) {
+    console.log("EVENTLIST");
+    const status = localStorage.getItem("Status");
+    userStat = status;
+    console.log("status : ");
+    console.log(status);
+
+    // if (status) {
+    //   name = localStorage.getItem("Username");
+    // }
+  }
+});
 
 const toggleBookmark = async (event) => {
   console.log('button clicked');
@@ -250,46 +264,127 @@ function displayPrice(priceJson) {
 
 
 </script>
-
 <style scoped>
 .event-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content:left; /* Adjust alignment between items */
+  justify-content: left;
   margin-left: 5%;
+  margin-right: 12%;
   font-family: sans-serif;
-  overflow-y: scroll;
-
 }
 
 .event-card {
-  width: calc(20% - 20px); /* Adjust card width to fit 6 cards per row */
+  width: calc(20% - 20px);
   margin: 10px;
   padding: 10px;
   border: 1px solid #6DC9C8;
   border-radius: 10px;
   transition: border 0.3s;
+  box-sizing: border-box;
 }
 
-.event-card:hover{
+.event-card:hover {
   border: 2px solid #6DC9C8;
 }
-.event-image{
+
+.event-image {
   width: 100%;
-  height: 200px;
+  height: 17em;
   object-fit: cover;
 }
-.available{
+
+.available {
   color: rgb(84, 83, 83);
 }
+h1{
+  font-size: 300%;
+}
+p{
+  font-size: 200%;
+}
+h2{
+  font-size: 250%;
+}
+
 .bookmark, .share {
   width: 10%;
   height: auto;
 }
-.bookmark:hover, .share:hover{
+
+.bookmark:hover, .share:hover {
   background-color: #ccc;
   border-radius: 50%;
 }
+
+@media only screen and (max-width: 2880px){
+  .event-image{
+    height: 10em;
+  }
+  h1{
+    font-size: 200%;
+  }
+  p{
+    font-size: 100%;
+  }
+  h2{
+    font-size: 150%;
+  }
+  
+}
+
+@media only screen and (max-width: 1800px) {
+  .event-card {
+    width: calc(25% - 20px); 
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .event-list {
+    margin-left: 5%;
+  }
+  .event-card {
+    width: calc(33.33% - 20px); 
+  }
+}
+
+@media only screen and (max-width: 870px) {
+  .event-card {
+    width: calc(50% - 20px); 
+  }
+}
+@media only screen and (max-width: 830px) {
+  .event-list {
+    margin-left: 1%;
+    margin-right: 1%;
+    display: block;
+    justify-content: center;
+  }
+  .event-card {
+    width: calc(100% - 20px); 
+    margin: 10px auto; 
+  }
+  .event-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+}
+@media only screen and (max-width: 500px){
+  .event-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+}
+@media only screen and (max-width: 300px){
+  .event-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+}
+
 
 
 </style>

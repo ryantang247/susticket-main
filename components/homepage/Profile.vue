@@ -3,8 +3,9 @@
       <div class="profile-box" v-if="isVisible">
         <div v-if="loginStatus" class="profile-content">
           <h2>{{ name }}</h2>
-          <div v-show="email"><p>{{ email }}</p>></div>
-          <p><b> 123 coins</b></p>
+          <div v-show="email"><p>{{ email }}</p></div>
+          <!-- <p><b> 123 coins</b></p> -->
+          <el-button type="warning" plain>1500 coins</el-button><br>
 
           <el-button  @click="logout" type="danger" round class="logout-btn">Log out</el-button>
 
@@ -19,6 +20,9 @@
   </template>
   
   <script>
+import { faListNumeric } from '@fortawesome/free-solid-svg-icons';
+
+let userStat = null;
 
   export default {
     props:{
@@ -28,16 +32,22 @@
       return {
         name: "",
         email: null,
-        loginStatus: true
+        loginStatus: false
       }
     },
     mounted(){
       if (process.client) {
-      const status = localStorage.getItem("Status")
+      const status = localStorage.getItem("Status");
+      userStat = status;
+      console.log("loginStatus: ");
+      console.log(this.loginStatus);
+      console.log("status : ");
+      console.log(status);
 
         if (status){
-            this.name = localStorage.getItem("Username")
-            this.email = localStorage.getItem("Email")
+            this.name = localStorage.getItem("Username");
+            this.email = localStorage.getItem("Email");
+            this.loginStatus = true;
         }else {
           this.loginStatus = false
           this.name = "Guest"
@@ -77,18 +87,22 @@
   *{
     font-family: sans-serif;
   }
-  .profile-box {
+  .profile-content {
     position: absolute;
-    right: 20px; /* Adjust as needed */
-    top: 70px; /* Adjust based on the header height */
+    right: 7em; 
+    top: 6.5em; 
     background-color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     border-radius: 8px;
     padding: 20px;
-    width: 250px; /* Adjust width as necessary */
+    width: 250px; 
     z-index: 100;
     align-items: center;
     text-align: center;
+  }
+  .logout-btn{
+    text-align: center;
+    margin-top: 2em;
   }
 
   </style>

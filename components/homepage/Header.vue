@@ -10,48 +10,49 @@
       <div class="logo">
         <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
       </div>
-      <div class="search-box">
-        <!-- <a href="#" class="search-icon-wrapper">
-          <img src="~/assets/header/search.png" class="search-icon" alt="Search" @click="searchEvent"/>
-        </a> -->
-        <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
+
+      <!-- <div v-if="userStat == 'success'"> </div> -->
+      <div class="right">
+        <div class="nav-container">
+          <div class="image-container-calendar" @click="goToCalendar">
+            <img src="~/assets/header/calendar.png" alt="Image" class="image">
+            <button class="calendar-button">Calendar</button>
+          </div>
+    
+          <div class="image-container-bookmark" @click="goToBookmarks">
+            <img src="~/assets/header/bookmark.png" alt="Image" class="image">
+            <button class="bookmark-button">Bookmark</button>
+          </div>
+    
+          <div class="image-container-ticket" @click="goToTickets">
+            <img src="~/assets/header/ticket.png" alt="Image" class="image">
+            <button class="ticket-button">My Tickets</button>
+          </div>
+    
+          <div class="image-container-cart" @click="goToCart">
+            <img src="~/assets/header/cart.png" alt="Image" class="image">
+            <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge>
+            <button class="cart-button">Cart</button>
+          </div>      
+    
+          <div class="image-container-notif">
+            <el-badge v-if="notificationsCount !== 0" :value="notificationsCount" class="item">
+              <img src="~/assets/header/nontif.png" alt="Image" class="image" @click="toggleNotifBox">
+            </el-badge>
+            <NotifPopup :isVisible="showNotifBox" />
+    
+            <button class="notif-button" @click="toggleNotifBox">Notification</button>
+  
+          </div>
+        </div>      
+          
+        <div class="user-profile" @click="toggleProfileBox">
+          <img v-if="userStat == 'success'" :src="avatar">
+          <img v-else src="~/assets/header/profile_nologin.png" />
+        </div>
+        <Profile :isVisible="showProfileBox" />
       </div>
 
-      <div class="image-container-calendar" @click="goToCalendar">
-        <img src="~/assets/header/calendar.png" alt="Image" class="image">
-        <button class="calendar-button">Calendar</button>
-      </div>
-
-      <div class="image-container-bookmark" @click="goToBookmarks">
-        <img src="~/assets/header/bookmark.png" alt="Image" class="image">
-        <button class="bookmark-button">Bookmark</button>
-      </div>
-
-      <div class="image-container-ticket" @click="goToTickets">
-        <img src="~/assets/header/ticket.png" alt="Image" class="image">
-        <button class="ticket-button">My Tickets</button>
-      </div>
-
-      <div class="image-container-cart" @click="goToCart">
-        <img src="~/assets/header/cart.png" alt="Image" class="image">
-        <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge>
-        <button class="cart-button">Cart</button>
-      </div>      
-
-      <div class="image-container-notif">
-        <el-badge v-if="notificationsCount !== 0" :value="notificationsCount" class="item">
-          <img src="~/assets/header/nontif.png" alt="Image" class="image" @click="toggleNotifBox">
-        </el-badge>
-        <NotifPopup :isVisible="showNotifBox" />
-
-        <button class="notif-button" @click="toggleNotifBox">Notification</button>
-      </div>
-
-      <div class="user-profile" @click="toggleProfileBox">
-        <img :src="avatar" />
-      </div>
-
-      <Profile :isVisible="showProfileBox" />
     </header>
   </div>
   <div v-else>
@@ -62,38 +63,132 @@
     </header>
   </div>
 
+  <div v-else>
+    <header class="header">
+        <div class="mobile-taskbar">
+                  <!-- <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer"> -->
+          <button @click="toggleSidebar" class="button-menu">☰</button>
+        
+          <el-badge v-if="notificationsCount !== 0" :value="notificationsCount" class="item">
+            <img class="notif-btn" src="~/assets/header/nontif.png" @click="toggleNotifBox">
+          </el-badge>
+          <NotifPopup :isVisible="showNotifBox" />
+          <img class="mycart-btn" src="~/assets/header/cart.png" @click="goToCart">
+          <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge>
+      <!-- <div class="sidebar-search-box">
+        <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
+      </div> -->
+        </div>
+
+    </header>
+
+    <div class="sidebar" :class="{ open: isSidebarOpen }">
+      <div class="up">
+        <img class="logo" src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
+        <button @click="toggleSidebar" class="close-button">×</button>
+      </div>
+      
+      <div class="sidebar-content">
+        <div class="profile">
+          <img v-if="userStat == 'success'" :src="avatar">
+          <img v-else src="~/assets/header/profile_nologin.png" />
+          <h1>{{ userName }}</h1>
+          <h3>{{ userEmail }}</h3>
+          <!-- <p>{{ userCoins }} coins</p> -->
+          <el-button type="warning" plain>1500 coins</el-button><br>
+        </div>
+        <div class="menu-items">
+          <div @click="goToCalendar">Calendar</div>
+          <div @click="goToTickets">My Tickets</div>
+          <div @click="goToBookmarks">Bookmarks</div>
+          <div @click="logout" class="logout">Log out</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </template>
+
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import axios from 'axios';
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerThanMd = breakpoints.smaller('xl') // only smaller than lg
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
-const avatar = ref('');
+import axios from 'axios';
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const smallerThanMd = breakpoints.smaller('xl');
+const isSidebarOpen = ref(false);
+
+let userName = '';
+let userEmail = '';
+let avatar = '';
+let userStat = null;
 const notificationsCount = ref(0);
 const myCartCount = ref(0)
+const router = useRouter();
+const searchQuery = ref('');
 
-// const userProfile = defineProps({
-//   name: String,
-//   email: String,
-//   avatar: String,
-//   sid: String,
-//   default: ''
-// });
+// Clickable box in header
+const showProfileBox = ref(false);
+const showNotifBox = ref(false);
+const showMenu = ref(false);
 
-// if(avatar === ''){
-//   avatar = '~/assets/logo.png'
-// }
-
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value;
+};
 
 
+onMounted(() => {
+  fetchNotificationsCount();
+  fetchMyCartCount();
 
+  if (process.client) {
+    console.log('HEADER: ');
+      const status = localStorage.getItem("Status");
+      userStat = status;
+      console.log("status : ");
+      console.log(status);
 
+        if (status){
+            avatar= localStorage.getItem("Avatar");
+            userName = localStorage.getItem("Username");
+            userEmail = localStorage.getItem("Email");
+        } else {
+          avatar = '~/assets/header/profile_nologin.png';
+        }
+      }
+
+});
+
+const logout = () => {
+  console.log("User logout successfully");
+
+  // Set cookie asynchronously
+  const cookie = useCookie('secourse');
+  cookie.value = null;
+
+  // Clear local storage
+  if (process.client) {
+    localStorage.setItem("Username", null);
+    localStorage.setItem("Avatar", null);
+    localStorage.setItem("Email", null);
+    localStorage.setItem("Status", null);
+  }
+
+  // Optional: Show a success notification (if using Element UI)
+  // ElNotification.success({
+  //   title: 'Success',
+  //   message: "Successfully logged out!",
+  //   offset: 100,
+  // });
+
+  // Redirect to the login page
+  router.push('/login');
+};
+
+// Counting how many Notifications and Cart
 const fetchNotificationsCount = async () => {
   try {
     const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications',{ withCredentials:true});
@@ -126,28 +221,6 @@ const fetchMyCartCount = async () => {
   }
 };
 
-onMounted(() => {
-  fetchNotificationsCount();
-  fetchMyCartCount();
-
-  if (process.client) {
-    const status = localStorage.getItem("Status");
-    if (!status) {
-      ElNotification.error({
-        title: 'Error',
-        message: "User not logged in",
-        offset: 100,
-      });
-    } else {
-        console.log("HELLO!!!")
-        avatar.value = localStorage.getItem("Avatar") || 'assets/logo.png';
-      }
-  }
-});
-
-const showProfileBox = ref(false);
-const showNotifBox = ref(false);
-const showMenu = ref(false);
 
 function toggleProfileBox() {
   console.log('profile clicked');
@@ -178,17 +251,10 @@ const isScreenSmall = computed(() =>{
 
 })
 
-const avatarSrc = computed(() => {
-  return userProfile.avatar || 'assets/avatarr.png';
-});
 
-const router = useRouter();
-
-const searchQuery = ref('');
-
+// Search event in the header
 const searchEvent = async () => {
   if (searchQuery.value.trim()) {
-    // Redirect to the found event page with the search query
     router.push({ path: '/foundEvent/foundEventPage', query: { query: searchQuery.value.trim() } });
   }
 };
@@ -210,9 +276,6 @@ const goToBookmarks = () => {
   router.push('/bookmark/bookmarkPage');
 };
 
-function goToFoundEvent(){
-  router.push('/foundEvent/foundEventPage');
-}
 function goToHomepage(){
   router.push('/')
 }
@@ -220,28 +283,44 @@ function goToHomepage(){
 
 </script>
 <style scoped>
+/* General header styles */
 .header {
-  width: 100%;
   display: flex;
   justify-content: space-between;
-  background-color: #6DC9C8; /* Adjust the color to match the image */
+  background-color: #6DC9C8;
   align-items: center;
 }
 
 .logo {
-  font-size: 50px;
-  font-weight: bold;
-  color: #FFAA00; /* Adjust the color to match the image */
-  align-items: center;
-}
-.logo img{
-  height: 45px;
-  object-fit: cover;
-  align-items: center;
-  margin-top: 10px;
-  margin-left: 30px;
+  margin-left: 6em;
+  float: left;
 }
 
+.logo img {
+  height: 45px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.menu-button {
+  display: none; 
+  font-size: 4em;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.right{
+  display: flex;
+  float: right;
+}
+.nav-container {
+  display: flex;
+  gap: 4em; 
+  margin-right: 3em;
+  margin-top:1em;
+  margin-bottom: 1em;
+}
 
 .cart-button,
 .ticket-button,
@@ -249,29 +328,35 @@ function goToHomepage(){
 .calendar-button,
 .notif-button {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 1em;
   cursor: pointer;
   opacity: 70%;
-  gap: 5px;
+  gap: 0.5em;
 }
+
 .cart-button:hover,
 .ticket-button:hover,
 .bookmark-button:hover,
 .calendar-button:hover,
-.notif-button{
+.notif-button:hover {
   opacity: 100%;
 }
 
 .user-profile img {
-  border-radius: 50%; 
-  width: 50px; 
-  height: 50px;
+  border-radius: 50%;
+  width: 5em;
+  height: 5em;
   cursor: pointer;
-  margin-right: 150px;
+  margin-right: 10em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
-.user-profile:hover img{
+
+.user-profile:hover img {
   transform: scale(1.05);
 }
 
@@ -279,50 +364,172 @@ function goToHomepage(){
 .image-container-ticket,
 .image-container-bookmark,
 .image-container-calendar,
-.image-container-notif{
-  position: relative;
-  display: flex;
+.image-container-notif {
   align-items: center;
+  text-align: center;
+  justify-content: center;
 }
 
 .image-container-cart img,
 .image-container-ticket img,
 .image-container-bookmark img,
 .image-container-calendar img,
-.image-container-notif img{
-  width: 45px;
-  height: 45px;
+.image-container-notif img {
+  width: 3.5em;
+  height: 3.5em;
   opacity: 70%;
 }
+
 .search-box {
-  position: relative;
-  display: inline-block;
-  width: 25%;
-}
-
-.search-icon-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-}
-
-.search-icon {
-  width: 20px; /* Adjust icon size as needed */
-  height: 20px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 10px;
 }
 
 .search-input {
-  padding: 8px 30px; /* Adjust padding to ensure text doesn't overlap with icon */
+  padding: 8px 30px;
   border: 1px solid #ccc;
   border-radius: 20px;
-  font-size: 14px; /* Adjust font size as needed */
-  outline: none; /* Remove outline when input is focused */
+  font-size: 20px;
+  outline: none;
 }
 
 .search-input::placeholder {
-  color: #999; /* Adjust placeholder color as needed */
+  color: #999;
+}
+
+/* Sidebar styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 100%;
+  background-color: #6DC9C8;
+  z-index: 1000;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+.header .mobile-taskbar{
+  display: flex;
+  justify-content: center;
+  gap: 3em;
+}
+.mobile-taskbar img{
+  width: 4em;
+  height: 4em;
+  margin-top: 1em;
+}
+
+.button-menu {
+  background: none;
+  border: none;
+  font-size: 4em;
+  margin-left: 0.5em;
+}
+.up{
+  text-align: center;
+  justify-content: center;
+  display: inline-flex;
+}
+
+.up .logo{
+  width: 45%;
+  margin-right: 20%;
+  margin-left: 20%;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.close-button {
+  font-size: 50px;
+  background: none;
+  border: none;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+.sidebar-content {
+  width: 90%;
+  margin-top: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+}
+
+.profile p {
+  margin: 5px 0;
+}
+
+.menu-items {
+  width: 90%;
+}
+
+.menu-items div {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #fff;
+  color: #333;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.menu-items div:hover {
+  background-color: #ddd;
 }
 
 
+@media only screen and (max-width: 2880px){
+
+  .cart-button,
+  .ticket-button,
+  .bookmark-button,
+  .calendar-button,
+  .notif-button{
+    font-size: 1em;
+  }
+
+  .image-container-cart img,
+  .image-container-ticket img,
+  .image-container-bookmark img,
+  .image-container-calendar img,
+  .image-container-notif img {
+    width: 2em;
+    height: 2em;
+  }
+  .user-profile img{
+    width: 3em;
+    height: 3em;
+  }
+}
+
+
+
+
 </style>
+
