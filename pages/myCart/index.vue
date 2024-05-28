@@ -13,8 +13,8 @@
             <!-- <img src="/assets/header/ticked.png" class="checkbox"> -->
             <img :src="tickedSrc(cart)" @click="toggleTicked(cart)" class="checkbox">
           </aside>
-          <aside class="desc">
-            <h1>{{ cart.event[0].title }}</h1>
+          <aside v-if="cart.event" class="desc">
+            <h1 >{{ cart.event[0].title }}</h1>
             <p>{{ cart.event[0].startDate + ' | ' + cart.event[0].endDate }}</p>
             <p>{{ cart.event[0].location }}</p>
             <p class="seat"><b>{{cart.event[0].seat}}</b></p>
@@ -23,7 +23,7 @@
             <p class="available">{{ cart.event[0].available }}</p>
           </aside>
         </aside>
-        <aside class="right">
+        <aside v-if="cart.event" class="right">
           <div class="image-container">
             <img :src="cart.event[0].thumbnail" alt="event-image" class="event-image">
           </div>
