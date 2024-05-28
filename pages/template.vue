@@ -102,6 +102,7 @@
   <script>
   import axios from "axios";
   import Choose from "~/components/Choose.vue";
+
   export default {
     components: {Choose},
     data() {

@@ -138,11 +138,11 @@ const selectCategory = async (categoryName) => {
   currentCategory.value = categoryName;
   currentFilter.value = 'All';
 
-  const catNumber = categoryMapping[categoryName];
-  let url = 'https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents';
-  if (catNumber !== 0) {
-    url = `https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEventsByCategory/${catNumber}`;
-  }
+    const catNumber = categoryMapping[categoryName];
+    let url = 'https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEvents';
+    if (catNumber !== 0) {
+      url = `https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllEventsByCategory/${catNumber}`;
+    }
 
   try {
     const response = await fetch(url);

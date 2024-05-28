@@ -155,6 +155,8 @@
 <script>
 import axios from "axios";
 import Choose from "~/components/Choose.vue";
+import { ElLoading, ElNotification } from 'element-plus';
+
 export default {
   components: {Choose},
   data() {

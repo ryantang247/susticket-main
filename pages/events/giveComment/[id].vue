@@ -35,6 +35,8 @@
     import { ref } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
+    import { ElLoading, ElNotification } from 'element-plus';
+
     const router = useRouter();
     const route = useRoute()
     const currentEvent = route.params.id;
@@ -70,6 +72,11 @@
       reader.readAsDataURL(uploadFile.raw);
     }
     const postComment = async (eventId, text, picture) => {
+        const loading = ElLoading.service({
+            lock: true,
+            text: 'Loading...',
+            background: 'rgba(0, 0, 0, 0.7)',
+        });
     try {
         console.log()
         // Make a POST request to the API endpoint
@@ -93,6 +100,9 @@
         // Handle errors, show error message, etc.
         showErrorNotification(`Failed to submit comment. ${error.response.data.error}`);
     }
+    finally {
+      loading.close();
+    }
     };
     const showErrorNotification = (message) => {
         // You can use Element Plus Notification component to show error messages
@@ -107,6 +117,11 @@
         router.push('/events/'+route.params.id);
     };
     const submitted = async () => {
+        const loading = ElLoading.service({
+            lock: true,
+            text: 'Loading...',
+            background: 'rgba(0, 0, 0, 0.7)',
+        });
         try {
             // Call the postComment function with appropriate parameters
             await postComment(route.params.id, feedback.value, fileList.value[0]);
@@ -121,6 +136,9 @@
                 offset: 100
             });
         }
+    finally {
+      loading.close();
+    }
     }
 /**
  * AI-generated-content

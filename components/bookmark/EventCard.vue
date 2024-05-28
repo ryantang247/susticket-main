@@ -20,7 +20,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios'; // Import axios for making HTTP requests
-import { ElNotification } from 'element-plus';
+import { ElLoading, ElNotification } from 'element-plus';
 import emptyBookmark from '@/assets/event/bookmark_empty.png';
 import filledBookmark from '@/assets/header/bookmark.png';
 
@@ -72,10 +72,10 @@ const copyLink = (event) => {
       offset: 100,
     });
   }).catch(err => {
-    console.error('Failed to copy: ', err);
+    console.error('Failed to copy link: ', err);
     ElNotification.error({
       title: 'Error',
-      message: "Failed to copy" + err,
+      message: "Failed to copy link" + err,
       offset: 100,
     });
   });
@@ -92,25 +92,37 @@ function formatDate(dateString) {
 
 const venues = ref([]);
 onMounted(async () => {
-  const venueResponse = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues');
-  if (venueResponse.ok) {
-    const venueData = await venueResponse.json();
-    venues.value = venueData;
-    console.log(venueData);
-    ElNotification.success({
-      title: 'Success',
-      message: "Sucessfully fetch venues!",
-      offset: 100,
-    }
-    );
-    
-  } else {
-    console.error('Failed to fetch venues:', venueResponse.statusText);
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
+  try{
+    const venueResponse = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues');
+    if (venueResponse.ok) {
+      const venueData = await venueResponse.json();
+      venues.value = venueData;
+      console.log(venueData);
+      ElNotification.success({
+        title: 'Success',
+        message: "Sucessfully fetch venues!",
+        offset: 100,
+      }
+      );
+      
+    } else {
+      throw new Error(`Failed to fetch venues: ${venueResponse.statusText}`);
+      
+    } 
+  } catch (error) {
+    console.error(error);
     ElNotification.error({
       title: 'Error',
-      message: "Error fetching venues" + error,
+      message: `Error fetching venues: ${error.message}`,
       offset: 100,
     });
+  } finally {
+    loading.close();
   }
 });
 

@@ -62,7 +62,7 @@
 </template>
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import { ElNotification } from 'element-plus'
+import { ElLoading, ElNotification } from 'element-plus';
 
 import Header from '@/components/homepage/Header.vue';
 import Footer from '@/components/homepage/Footer.vue';

@@ -25,11 +25,11 @@
 
 <script setup>
 import { ref, onMounted,toRefs  } from 'vue';
-import { ElNotification } from 'element-plus'
+import { ElLoading, ElNotification } from 'element-plus';
 import emptyBookmark from '@/assets/event/bookmark_empty.png';
 import filledBookmark from '@/assets/header/bookmark.png';
 import axios from 'axios';
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
 const props = defineProps(['events']);
 const { events } = toRefs(props);
@@ -156,55 +156,69 @@ function formatDate(dateString) {
 
 const venues = ref([]);
 onMounted(async () => {
-  const venueResponse = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues');
-  if (venueResponse.ok) {
-    const venueData = await venueResponse.json();
-    venues.value = venueData;
-    // console.log(venueData);
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
+  try{
+    const venueResponse = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues');
+    if (venueResponse.ok) {
+      const venueData = await venueResponse.json();
+      venues.value = venueData;
+      // console.log(venueData);
 
-    const eventIDMap = {};
-    const eventsData = await events.value;
-    eventsData.forEach(event => {
-      eventIDMap[event.id] = false; // Assuming eventID is a unique identifier for each event
-    });
+      const eventIDMap = {};
+      const eventsData = await events.value;
+      eventsData.forEach(event => {
+        eventIDMap[event.id] = false; // Assuming eventID is a unique identifier for each event
+      });
 
-    const bookmarkResponse = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents' ,{//AxiosRequestConfig parameter
-      withCredentials: true //correct
-    } );
-    console.log("Bookmark response " ,bookmarkResponse.data)
-    if(bookmarkResponse){
-      bookmarkResponse.data.forEach(item =>{
-        if (eventIDMap.hasOwnProperty(item.eventId)) {
-          eventIDMap[item.eventId] = true;
-        }
+      const bookmarkResponse = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents' ,{//AxiosRequestConfig parameter
+        withCredentials: true //correct
+      } );
+      console.log("Bookmark response " ,bookmarkResponse.data)
+      if(bookmarkResponse){
+        bookmarkResponse.data.forEach(item =>{
+          if (eventIDMap.hasOwnProperty(item.eventId)) {
+            eventIDMap[item.eventId] = true;
+          }
 
-      })
-      console.log("eventIDMap",eventIDMap)
-      bookmarkEvents.value = eventIDMap
-    }else{
-      console.error('Failed to fetch bookmarks:', bookmarkResponse.statusText);
+        })
+        console.log("eventIDMap",eventIDMap)
+        bookmarkEvents.value = eventIDMap
+      }else{
+        console.error('Failed to fetch bookmarks:', bookmarkResponse.statusText);
+        ElNotification.error({
+            title: 'Error',
+            message: "Error fetching bookmarks" + error,
+            offset: 100,
+          });
+      }
+      ElNotification.success({
+        title: 'Success',
+        message: "Sucessfully fetch venues!",
+        offset: 100,
+      }
+      );
+    } else {
+      console.error('Failed to fetch venues:', venueResponse.statusText);
       ElNotification.error({
-          title: 'Error',
-          message: "Error fetching bookmarks" + error,
-          offset: 100,
-        });
+        title: 'Error',
+        message: "Error fetching venues" + error,
+        offset: 100,
+      });
     }
-    ElNotification.success({
-      title: 'Success',
-      message: "Sucessfully fetch venues!",
-      offset: 100,
-    }
-    );
-  } else {
-    console.error('Failed to fetch venues:', venueResponse.statusText);
+  } catch (error) {
+    console.error('Error fetching data:', error);
     ElNotification.error({
       title: 'Error',
-      message: "Error fetching venues" + error,
+      message: `Error fetching data. ${error}`,
       offset: 100,
     });
+  } finally {
+    loading.close();
   }
-
-
 });
 
 // Function to get venue name by ID

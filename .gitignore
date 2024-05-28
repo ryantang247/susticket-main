@@ -24,3 +24,8 @@ logs
 !.env.example
 
 userconfig.json
+nuxt.config.ts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

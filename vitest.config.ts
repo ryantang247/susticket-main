@@ -1,10 +1,11 @@
-import { defineConfig } from 'vitest/config'
+import {configDefaults, defineConfig} from 'vitest/config'
 import { fileURLToPath, URL } from 'node:url'
 import Vue from '@vitejs/plugin-vue'
 
 export default defineConfig(
     {
     plugins: [Vue()],
+
         resolve: {
             extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
             alias: {
@@ -14,6 +15,9 @@ export default defineConfig(
         },
     test: {
 
-        globals: true
+        globals: true,
+        exclude: [
+            ...configDefaults.exclude,
+            'tests'],
     }
 })
