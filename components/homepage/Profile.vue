@@ -6,7 +6,7 @@
             <h2>{{ name }}</h2>
             <div v-if="email!=null"><p>{{ email }}</p></div>
             <!-- <p><b> 123 coins</b></p> -->
-            <el-button type="warning" plain>{{ coins }}</el-button><br>
+            <el-button type="warning" plain>{{ coins }} coins</el-button><br>
             <el-button  @click="logout" type="danger" round class="logout-btn">Log out</el-button>
           </div>
         </div>

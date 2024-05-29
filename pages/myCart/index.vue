@@ -36,7 +36,7 @@
       </div>
       <!-- <MyCardCard :transactions="transactions" /> -->
       <div class="use-coin-cart">
-        <p>You have {{ coinVal}} . Do you want to use it?</p>
+        <p>You have <span class="display-coin">{{ coinVal}} </span> coins . Do you want to use it?</p>
         <div>
           <input type="number" v-model="usedCoin"  min="0" max="50"> coins used.
 
@@ -62,6 +62,7 @@
 <script setup>
 import Header from '@/components/homepage/Header.vue';
 import Footer from '@/components/homepage/Footer.vue';
+import EventCard from '@/components/myTicket/MyCartCard.vue';
 import CustomerService from '@/components/CustomerService.vue';
 import { ref, computed } from 'vue';
 
@@ -166,6 +167,8 @@ const fetchEventsForCart = async () => {
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', {credentials: 'include'});
     const eventData = await response.json();
     transactions.value = eventData;
+    console.log('transactions: ');
+    console.log(transactions.value);
     console.log(eventData);
   } catch (error) {
     ElNotification.error({
@@ -388,6 +391,9 @@ h1{
   border: 2px solid #6DC9C8;
   margin-bottom: 15px;
   margin-left: 60px;
+}
+.display-coin{
+  color:red;
 }
 
 .left{

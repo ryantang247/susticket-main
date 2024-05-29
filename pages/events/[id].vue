@@ -74,12 +74,12 @@
                     </nuxt-link>
                   </div>
                 
-                  <div class="share-bookmark">
-                    <!-- <img :src="bookmarkSrc(currentEvent)" @click="toggleBookmark(currentEvent)"> -->
+                  <!-- <div class="share-bookmark">
+                    <img :src="bookmarkSrc(currentEvent)" @click="toggleBookmark(currentEvent)">
                     <h6>Bookmark</h6>
                     <img src="/assets/event/linkshare.png" @click="copyLink(event)">
                     <h6>Copy link</h6>
-                  </div>
+                  </div> -->
               </div>
               
           </div>

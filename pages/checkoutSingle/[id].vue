@@ -15,7 +15,7 @@
                 </label>
             </div>
             <div class="use-coin">
-                <p>You have <span>50 coins</span>. Do you want to use it?</p>
+                <p>You have <span>{{coinVal}}</span>. Do you want to use it?</p>
                 <input type="number" v-model="coinVal"  min="0" max="50"> coins used.
             </div>
             <PayPal v-if="eventId" :event-id="eventId" :object-selected="seatLabels" :event-key="seatsioEventsKey" :total-amount="totalAmount" :coins="coinVal"/>
@@ -51,8 +51,10 @@ import Footer from '@/components/homepage/Footer.vue';
 import CustomerService from '@/components/CustomerService.vue';
 import PayPal from "~/components/PayPal.vue";
 
+let userCoin = 100 ;
 const router = useRouter();
 const route = useRoute();
+
 const goBack = () => {
   router.go(-1); 
 };
@@ -67,7 +69,36 @@ const seatLabels = ref(route.query.seatLabels ? JSON.parse(route.query.seatLabel
 onMounted(() => {
   console.log("Seat Details Parsed:", seatDetails.value);
   console.log("Total Amount:", totalAmount.value);
+  getUserCoins();
 });
+
+const getUserCoins  = async () =>{
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
+  
+  try{
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getUser', {credentials: 'include'});
+    const eventData = await response.json();
+    console.log("User details: ",eventData);
+    coinVal.value = eventData.coin;
+    userCoin = eventData.coin;
+  }catch (e) {
+    console.log("Error getting user detail")
+    ElNotification.error({
+        title: 'Error',
+        message: 'Error getting user detail.'+error,
+        offset: 100
+    });
+    
+  }
+  finally {
+    loading.close();
+  }
+
+}
 
 /**
  * AI-generated-content

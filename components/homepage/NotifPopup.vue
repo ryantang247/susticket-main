@@ -24,10 +24,6 @@
       return {
         // Hardcoded list of notifications
         notifications: [
-          "Seminar by Prof Hao Qi starts in 1 hour. Be prepared!",
-          "Seminar by Prof Hao Qi starts in 1 hour. Be prepared!",
-          "Seminar by Prof Hao Qi starts in 1 hour. Be prepared!",
-
         ]
       }
     },
@@ -97,6 +93,8 @@
     border-radius: 8px;
     width: 500px;
     z-index: 100;
+    max-height: 600px;
+    overflow-y: auto;
   }
   
   .fade-enter-active, .fade-leave-active {

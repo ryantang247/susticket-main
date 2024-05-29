@@ -66,6 +66,8 @@ const fetchPurchasedTickets = async () => {
     const ticketData = await response.json();
     console.log(ticketData)
     transactions.value = ticketData;
+    console.log('MY TICKET transactions:');
+    console.log(transactions.value);
   } catch (error) {
     console.error('Error fetching purchased tickets:', error);
     ElNotification.error({

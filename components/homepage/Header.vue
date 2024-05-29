@@ -13,7 +13,7 @@
 
       <!-- <div v-if="userStat == 'success'"> </div> -->
       <div class="right">
-        <div class="nav-container">
+        <div v-if="loginStatus" class="nav-container">
           <div class="image-container-calendar" @click="goToCalendar">
             <img src="~/assets/header/calendar.png" alt="Image" class="image">
             <button class="calendar-button">Calendar</button>
@@ -30,8 +30,8 @@
           </div>
     
           <div class="image-container-cart" @click="goToCart">
-            <img src="~/assets/header/cart.png" alt="Image" class="image">
             <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge>
+            <img src="~/assets/header/cart.png" alt="Image" class="image">
             <button class="cart-button">Cart</button>
           </div>      
     
@@ -73,8 +73,9 @@
             <img class="notif-btn" src="~/assets/header/nontif.png" @click="toggleNotifBox">
           </el-badge>
           <NotifPopup :isVisible="showNotifBox" />
+          <!-- <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge> -->
           <img class="mycart-btn" src="~/assets/header/cart.png" @click="goToCart">
-          <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge>
+          
       <!-- <div class="sidebar-search-box">
         <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
       </div> -->
@@ -90,14 +91,14 @@
       
       <div class="sidebar-content">
         <div class="profile">
-          <img v-if="userStat == 'success'" :src="avatar">
-          <img v-else src="~/assets/header/profile_nologin.png" />
+          <img v-if="userStat === 'success'" :src="avatar">
+          <img v-else @click="goToLogin" src="~/assets/header/profile_nologin.png" />
           <h1>{{ userName }}</h1>
-          <h3>{{ userEmail }}</h3>
+          <h3 v-if="userStat === 'success'">{{ userEmail }}</h3>
           <!-- <p>{{ userCoins }} coins</p> -->
-          <el-button type="warning" plain>1500 coins</el-button><br>
+          <el-button v-if="userStat === 'success'" type="warning" plain>{{coinVal}} coins</el-button><br>
         </div>
-        <div class="menu-items">
+        <div v-if="userStat === 'success'" class="menu-items">
           <div @click="goToCalendar">Calendar</div>
           <div @click="goToTickets">My Tickets</div>
           <div @click="goToBookmarks">Bookmarks</div>
@@ -125,10 +126,13 @@ let userName = '';
 let userEmail = '';
 let avatar = '';
 let userStat = null;
+let loginStatus = false;
+let userCoin =0;
 const notificationsCount = ref(0);
 const myCartCount = ref(0)
 const router = useRouter();
 const searchQuery = ref('');
+const coinVal = ref(0);
 
 // Clickable box in header
 const showProfileBox = ref(false);
@@ -146,21 +150,33 @@ onMounted(() => {
 
   if (process.client) {
     console.log('HEADER: ');
+    getCoins();
       const status = localStorage.getItem("Status");
       userStat = status;
       console.log("status : ");
       console.log(status);
 
-        if (status){
-            avatar= localStorage.getItem("Avatar");
-            userName = localStorage.getItem("Username");
-            userEmail = localStorage.getItem("Email");
-        } else {
-          avatar = '~/assets/header/profile_nologin.png';
-        }
+      if (status!== "null"){
+        userName = localStorage.getItem("Username");
+        userEmail = localStorage.getItem("Email");
+        loginStatus = true;
+      }else {
+        loginStatus = false
+        userName = "Guest"
+        userEmail = null
       }
+    }
 
 });
+
+const getCoins = async () => {
+      const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getUser', { credentials: 'include' });
+      const userDetails = await response.json();
+      //coins.value = userDetails.coin;
+      userCoin = userDetails.coin();
+      coinVal = userDetails.coin();
+
+};
 
 const logout = () => {
   console.log("User logout successfully");
@@ -188,7 +204,7 @@ const logout = () => {
   router.push('/login');
 };
 
-// Counting how many Notifications and Cart
+// Counting how many  and Cart
 const fetchNotificationsCount = async () => {
   try {
     const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications',{ withCredentials:true});
@@ -287,6 +303,10 @@ const goToBookmarks = () => {
 function goToHomepage(){
   router.push('/')
 }
+
+const goToLogin = () => {
+  router.push('/login');
+};
 
 
 </script>
