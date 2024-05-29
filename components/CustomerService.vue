@@ -1,5 +1,5 @@
 <template>
-  <div v-if="userStat">
+  <div>
     <!-- Chat button/icon -->
     <div v-if="!showChatBox" class="chat-button" @click="toggleChatBox">
       <img src="/assets/header/cs.png" alt="Chat Icon">
@@ -71,7 +71,7 @@ export default {
       privateKey: useRuntimeConfig().public.chatPrivateKey,
       username: '',
       chatID: '',
-      chatAccessKey: ''
+      chatAccessKey: null
     };
   },
   mounted(){
