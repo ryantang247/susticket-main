@@ -110,7 +110,7 @@ For more detailed guides, check out the [Features](#features) section.
 
 **Description**: Get notified to stay up to date.
 
-#### How to Use Feature 2
+#### How to Use
 
 1. Click the Notification icon in the taskbar.
 2. The nontifications are order vertically by the latest update.
@@ -165,7 +165,6 @@ For more questions and answers, visit the [Troubleshooting](#troubleshooting) se
 **Solution**:
 1. Ensure you are using the correct email and password.
 2. Check your internet connection.
-3. Try resetting your password.
 
 #### Issue 2: Page Not Loading
 
