@@ -1,11 +1,10 @@
 <template>
   <div class="event-list">
-      <div v-for="event in events" :key="event.id" class="event-card" >
-        <div>
-            <NuxtLink :to="`/events/${event.id}`">
-              <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;">
-            </NuxtLink>
-        <!-- <el-button type="danger" round class="status">{{event.status}}</el-button> -->
+    <div v-for="event in validEvents" :key="event.id" class="event-card">
+      <div v-if="event">
+        <NuxtLink :to="`/events/${event.id}`">
+          <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;">
+        </NuxtLink>
         <el-button type="warning" round class="status" v-if="event.status == 0">on sale</el-button>
         <el-button type="success" round class="status" v-if="event.status == 1">on going</el-button>
         <el-button type="info" round class="status" v-if="event.status == 2">ended</el-button>
@@ -18,55 +17,50 @@
           <img :src="bookmarkSrc(event)" @click="toggleBookmark(event)" class="bookmark">
           <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)">
         </div>
-        </div>
       </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted,toRefs  } from 'vue';
+import { ref, onMounted, toRefs } from 'vue';
 import { ElLoading, ElNotification } from 'element-plus';
 import emptyBookmark from '@/assets/event/bookmark_empty.png';
 import filledBookmark from '@/assets/header/bookmark.png';
 import axios from 'axios';
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
 
-const props = defineProps(['events']);
+const props = defineProps({
+  events: {
+    type: Array,
+    default: () => []
+  }
+});
 const { events } = toRefs(props);
-const bookmarkEvents = ref({})
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerThanMd = breakpoints.smaller('sm') 
+const bookmarkEvents = ref({});
+const breakpoints = useBreakpoints(breakpointsTailwind);
+const smallerThanMd = breakpoints.smaller('sm');
 
 let userStat = null;
-// let name;
 
 onMounted(() => {
   if (process.client) {
-    console.log("EVENTLIST");
     const status = localStorage.getItem("Status");
     userStat = status;
-    console.log("status : ");
-    console.log(status);
-
-    // if (status) {
-    //   name = localStorage.getItem("Username");
-    // }
   }
 });
 
+const validEvents = computed(() => events.value.filter(event => event !== undefined && event !== null));
+
 const toggleBookmark = async (event) => {
-  console.log('button clicked');
-
-  if(bookmarkEvents.value.hasOwnProperty(event.id)){
-
-    if(!bookmarkEvents.value[event.id]){
+  if (bookmarkEvents.value.hasOwnProperty(event.id)) {
+    if (!bookmarkEvents.value[event.id]) {
       try {
-        const bookmarkResponse = await axios.post('https://secourse2024-675d60a0d98b.herokuapp.com/api/bookmarkThisEvent',
-            { eventId: event.id },
-            {//AxiosRequestConfig parameter
-            withCredentials: true //correct
-        } );
-        console.log(bookmarkResponse);
+        const bookmarkResponse = await axios.post(
+          'https://secourse2024-675d60a0d98b.herokuapp.com/api/bookmarkThisEvent',
+          { eventId: event.id },
+          { withCredentials: true }
+        );
         bookmarkEvents.value[event.id] = true;
         ElNotification.success({
           title: 'Copied',
@@ -74,36 +68,25 @@ const toggleBookmark = async (event) => {
           offset: 100,
         });
       } catch (error) {
-        // Handle the error
-        console.error('Error occurred while bookmarking the event:', error);
-        // Optionally, you can also notify the user about the error
         ElNotification.error({
           title: 'Error',
           message: `Failed to bookmark the event. Please try again later. ${error}`,
           offset: 100,
         });
       }
-
     } else {
       try {
-        const bookmarkResponse = await axios.delete('https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteThisEventBookmark', {
-          data: {eventId: event.id},
-        }, {
-          //AxiosRequestConfig parameter
-          withCredentials: true //correct
-        }
+        const bookmarkResponse = await axios.delete(
+          'https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteThisEventBookmark',
+          { data: { eventId: event.id }, withCredentials: true }
         );
-        console.log(bookmarkResponse)
-        bookmarkEvents.value[event.id] = false
+        bookmarkEvents.value[event.id] = false;
         ElNotification.success({
           title: 'Copied',
           message: "Event's successfully removed from bookmark!",
           offset: 100,
         });
-
-      } catch(error){
-        console.error('Error occurred while bookmarking the event:', error);
-        // Optionally, you can also notify the user about the error
+      } catch (error) {
         ElNotification.error({
           title: 'Error',
           message: `Failed to delete bookmark. Please try again later. ${error}`,
@@ -111,10 +94,9 @@ const toggleBookmark = async (event) => {
         });
       }
     }
-
   }
 
-  event.bookmarked = !event.bookmarked; // Toggle the bookmarked state
+  event.bookmarked = !event.bookmarked;
 };
 
 const bookmarkSrc = (event) => {
@@ -130,7 +112,6 @@ const copyLink = (event) => {
       offset: 100,
     });
   }).catch(err => {
-    console.error('Failed to copy: ', err);
     ElNotification.error({
       title: 'Error',
       message: `Failed to copy. ${err}`,
@@ -140,12 +121,6 @@ const copyLink = (event) => {
 };
 
 function formatDate(dateString) {
-    /**
- * AI-generated-content
- * tool: Copilot
- * version: latest
- * usage: displaying date in readable format
- */
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   const date = new Date(dateString);
   const formattedDate = date.toLocaleDateString('en-US', options);
@@ -161,56 +136,49 @@ onMounted(async () => {
     text: 'Loading...',
     background: 'rgba(0, 0, 0, 0.7)',
   });
-  try{
+  try {
     const venueResponse = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues');
     if (venueResponse.ok) {
       const venueData = await venueResponse.json();
       venues.value = venueData;
-      // console.log(venueData);
 
       const eventIDMap = {};
       const eventsData = await events.value;
       eventsData.forEach(event => {
-        eventIDMap[event.id] = false; // Assuming eventID is a unique identifier for each event
+        if (event) eventIDMap[event.id] = false;
       });
 
-      const bookmarkResponse = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents' ,{//AxiosRequestConfig parameter
-        withCredentials: true //correct
-      } );
-      console.log("Bookmark response " ,bookmarkResponse.data)
-      if(bookmarkResponse){
-        bookmarkResponse.data.forEach(item =>{
+      const bookmarkResponse = await axios.get(
+        'https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents',
+        { withCredentials: true }
+      );
+      if (bookmarkResponse) {
+        bookmarkResponse.data.forEach(item => {
           if (eventIDMap.hasOwnProperty(item.eventId)) {
             eventIDMap[item.eventId] = true;
           }
-
-        })
-        console.log("eventIDMap",eventIDMap)
-        bookmarkEvents.value = eventIDMap
-      }else{
-        console.error('Failed to fetch bookmarks:', bookmarkResponse.statusText);
+        });
+        bookmarkEvents.value = eventIDMap;
+      } else {
         ElNotification.error({
-            title: 'Error',
-            message: "Error fetching bookmarks" + error,
-            offset: 100,
-          });
+          title: 'Error',
+          message: "Error fetching bookmarks",
+          offset: 100,
+        });
       }
       ElNotification.success({
         title: 'Success',
-        message: "Sucessfully fetch venues!",
+        message: "Successfully fetched venues!",
         offset: 100,
-      }
-      );
+      });
     } else {
-      console.error('Failed to fetch venues:', venueResponse.statusText);
       ElNotification.error({
         title: 'Error',
-        message: "Error fetching venues" + error,
+        message: "Error fetching venues",
         offset: 100,
       });
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
     ElNotification.error({
       title: 'Error',
       message: `Error fetching data. ${error}`,
@@ -221,62 +189,40 @@ onMounted(async () => {
   }
 });
 
-// Function to get venue name by ID
 function getVenueName(venueId) {
   const venue = venues.value.find(v => v.id === venueId);
   return venue ? venue.name : 'Unknown venue';
 }
 
 function displayPrice(priceJson) {
-  /**
- * AI-generated-content
- * tool: Copilot
- * version: latest
- * usage: displaying prices in beautiful UI
- * I slightly adapt the generated code by modifying the RMB symbol
- */
-  // console.log("Parsed ", priceJson);
-  
   let prices;
   try {
     prices = JSON.parse(priceJson);
   } catch (e) {
-    console.error("Parsing error: ", e);
-    return; // Or handle the error as appropriate for your application
+    return;
   }
 
   if (!prices || !Array.isArray(prices) || prices.length === 0) {
     return `Free`;
   }
 
-  // Convert all prices to numbers to avoid any further issues
   prices = prices.map(price => ({
     ...price,
     price: Number(price.price)
   }));
 
-  // Sort the array by the price field
   prices.sort((a, b) => a.price - b.price);
 
-  // Check if all prices are the same and not zero, return the single price
   const allPricesAreSame = prices.every(price => price.price === prices[0].price);
   if (allPricesAreSame) {
     return prices[0].price === 0 ? `Free` : `${prices[0].price.toFixed(2)}`;
   }
 
-  // Get the lowest and highest price
   const lowestPrice = prices[0].price;
   const highestPrice = prices[prices.length - 1].price;
 
-  // Return the formatted price range or single price
-  if (lowestPrice === highestPrice) {
-    return `${lowestPrice.toFixed(2)}`;
-  }
-  return `${lowestPrice.toFixed(2)}-${highestPrice.toFixed(2)}`;
+  return lowestPrice === highestPrice ? `${lowestPrice.toFixed(2)}` : `${lowestPrice.toFixed(2)}-${highestPrice.toFixed(2)}`;
 }
-
-
-
 </script>
 <style scoped>
 .event-list {
