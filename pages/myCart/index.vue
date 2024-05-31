@@ -19,7 +19,10 @@
             <p>{{ getVenueName(cart.event.venueId) }}</p>
             <p class="seat"><b>{{cart.event.seat}}</b></p>
             <h2>{{ '¥' + cart.price }}</h2>
-            <el-button type="danger" round class="status">{{cart.status}}</el-button>
+            <!-- <el-button type="danger" round class="status">{{cart.status}}</el-button> -->
+            <el-button type="warning" round class="status" v-if="cart.status == 0">on sale</el-button>
+            <el-button type="success" round class="status" v-if="cart.status == 1">on going</el-button>
+            <el-button type="info" round class="status" v-if="cart.status == 2">ended</el-button>
             <p class="available">{{ cart.event.available }}</p>
           </aside>
         </aside>
