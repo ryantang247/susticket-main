@@ -7,8 +7,6 @@
     </div>
     <div class="container">
       <MyTicketCard :transactions="transactions" />
-      <MyTicketCard :events="events" />
-
     </div>
     <Footer />
     <el-backtop :right="60" :bottom="150" />
@@ -32,28 +30,7 @@ const goToHomepage = () => {
 };
 const transactions = ref([]);
 const categories = ref(["Paid","Finished"]);
-const events = ref([
-  // Other event objects...
-]);
-const goToReview = () => {
-  router.push('/giveRating/reviewRatingPage');
-};
-const copyLink = (event) => {
-  navigator.clipboard.writeText(event.link).then(() => {
-    ElNotification.success({
-      title: 'Copied',
-      message: "Event's link is copied to the clipboard",
-      offset: 100,
-    });
-  }).catch(err => {
-    console.error('Failed to copy: ', err);
-    ElNotification.error({
-      title: 'Error',
-      message: "Failed to copy link" + err,
-      offset: 100,
-    });
-  });
-};
+
 // Fetch purchased tickets from the API endpoint
 const fetchPurchasedTickets = async () => {
   const loading = ElLoading.service({
