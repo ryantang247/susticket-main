@@ -8,24 +8,24 @@
     <div class="container">
 
       <div v-for="cart in transactions" :key="cart.id" class="event-card">
-        <aside class="left">
+        <aside v-if="cart.event" class="left">
           <aside class="check-box">
             <!-- <img src="/assets/header/ticked.png" class="checkbox"> -->
             <img :src="tickedSrc(cart)" @click="toggleTicked(cart)" class="checkbox">
           </aside>
           <aside v-if="cart.event" class="desc">
-            <h1 >{{ cart.event[0].title }}</h1>
-            <p>{{ cart.event[0].startDate + ' | ' + cart.event[0].endDate }}</p>
-            <p>{{ cart.event[0].location }}</p>
-            <p class="seat"><b>{{cart.event[0].seat}}</b></p>
+            <h1 >{{ cart.event.title }}</h1>
+            <p>{{ formatDate(cart.event.startDate) }}</p>
+            <p>{{ getVenueName(cart.event.venueId) }}</p>
+            <p class="seat"><b>{{cart.event.seat}}</b></p>
             <h2>{{ '¥' + cart.price }}</h2>
             <el-button type="danger" round class="status">{{cart.status}}</el-button>
-            <p class="available">{{ cart.event[0].available }}</p>
+            <p class="available">{{ cart.event.available }}</p>
           </aside>
         </aside>
         <aside v-if="cart.event" class="right">
           <div class="image-container">
-            <img :src="cart.event[0].thumbnail" alt="event-image" class="event-image">
+            <img :src="cart.event.thumbnail" alt="event-image" class="event-image">
           </div>
           <div class="button-actions">
             <!-- <button class="next-action">Next actions</button> -->
@@ -294,6 +294,115 @@ onMounted(() => {
   fetchEventsForCart();
   getUserCoins();
 });
+
+const venues = ref([]);
+onMounted(async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading...',
+    background: 'rgba(0, 0, 0, 0.7)',
+  });
+  try{
+    const venueResponse = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getAllVenues');
+    if (venueResponse.ok) {
+      const venueData = await venueResponse.json();
+      venues.value = venueData;
+      // console.log(venueData);
+
+      const eventIDMap = {};
+      const eventsData = await events.value;
+      eventsData.forEach(event => {
+        eventIDMap[event.id] = false; // Assuming eventID is a unique identifier for each event
+      });
+
+      const bookmarkResponse = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getBookmarkedEvents' ,{//AxiosRequestConfig parameter
+        withCredentials: true //correct
+      } );
+      console.log("Bookmark response " ,bookmarkResponse.data)
+      if(bookmarkResponse){
+        bookmarkResponse.data.forEach(item =>{
+          if (eventIDMap.hasOwnProperty(item.eventId)) {
+            eventIDMap[item.eventId] = true;
+          }
+
+        })
+        console.log("eventIDMap",eventIDMap)
+        bookmarkEvents.value = eventIDMap
+      }else{
+        console.error('Failed to fetch bookmarks:', bookmarkResponse.statusText);
+        ElNotification.error({
+            title: 'Error',
+            message: "Error fetching bookmarks" + error,
+            offset: 100,
+          });
+      }
+      ElNotification.success({
+        title: 'Success',
+        message: "Sucessfully fetch venues!",
+        offset: 100,
+      }
+      );
+    } else {
+      console.error('Failed to fetch venues:', venueResponse.statusText);
+      ElNotification.error({
+        title: 'Error',
+        message: "Error fetching venues" + error,
+        offset: 100,
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    ElNotification.error({
+      title: 'Error',
+      message: `Error fetching data. ${error}`,
+      offset: 100,
+    });
+  } finally {
+    loading.close();
+  }
+});
+
+const goToReview = () => {
+  router.push('/giveRating/reviewRatingPage');
+};
+
+const copyLink = (event) => {
+  navigator.clipboard.writeText(event.link).then(() => {
+    ElNotification.success({
+      title: 'Copied',
+      message: "Event's link is copied to the clipboard",
+      offset: 100,
+    });
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+    ElNotification.error({
+      title: 'Error',
+      message: `Failed to copy. ${err}`,
+      offset: 100,
+    });
+  });
+};
+
+function formatDate(dateString) {
+    /**
+ * AI-generated-content
+ * tool: Copilot
+ * version: latest
+ * usage: displaying date in readable format
+ */
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date(dateString);
+  const formattedDate = date.toLocaleDateString('en-US', options);
+  const time = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).replace(' ', '').toUpperCase();
+
+  return `${formattedDate} | ${time} BJT`;
+}
+
+function getVenueName(venueId) {
+  const venue = venues.value.find(v => v.id === venueId);
+  return venue ? venue.name : 'Unknown venue';
+}
+
 
 </script>
 <!--

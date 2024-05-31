@@ -7,13 +7,13 @@
                 <img :src="tickedSrc(event)" @click="toggleTicked(event)" class="checkbox">
             </aside>
             <aside class="desc">
-                <h1>{{ event.title }}</h1>
-                <p>{{ event.date + ' | ' + event.time }}</p>
-                <p>{{ event.location }}</p>
+                <h1>{{ event.event.title }}</h1>
+                <p>{{ formatDate(event.event.startDate) }}</p>
+                <p>{{ getVenueName(event.event.venueId) }}</p>
                 <p class="seat"><b>{{event.seat}}</b></p>
                 <h2>{{ '¥' + event.price }}</h2>
-                <el-button type="danger" round class="status">{{event.status}}</el-button>
-                <p class="available">{{ event.available }}</p>
+                <!-- <el-button type="danger" round class="status">{{event.event.status}}</el-button> -->
+                <p class="available">{{ event.event.available }}</p>
             </aside>
         </aside>
         <aside class="right">
@@ -32,7 +32,7 @@
     
     </template>
     
-    <script setup>
+<script setup>
     import { ref } from 'vue';
     defineProps(['events']);
   
@@ -57,6 +57,26 @@ const tickedSrc = (event) => {
   return event.bookmarked ? tickedImage : checkboxImage;
 };
 
+function formatDate(dateString) {
+    /**
+ * AI-generated-content
+ * tool: Copilot
+ * version: latest
+ * usage: displaying date in readable format
+ */
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date(dateString);
+  const formattedDate = date.toLocaleDateString('en-US', options);
+  const time = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }).replace(' ', '').toUpperCase();
+
+  return `${formattedDate} | ${time} BJT`;
+}
+
+function getVenueName(venueId) {
+  const venue = venues.value.find(v => v.id === venueId);
+  return venue ? venue.name : 'Unknown venue';
+}
+
 /**
  * AI-generated-content
  * tool: ChatGPT
@@ -65,7 +85,7 @@ const tickedSrc = (event) => {
  * copy the code from its response ad modified according the desired style
  */
 
-    </script>
+</script>
     
     <style scoped>
   

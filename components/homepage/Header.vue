@@ -30,7 +30,7 @@
           </div>
     
           <div class="image-container-cart" @click="goToCart">
-            <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge>
+            <!-- <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge> -->
             <img src="~/assets/header/cart.png" alt="Image" class="image">
             <button class="cart-button">Cart</button>
           </div>      
@@ -99,10 +99,10 @@
           <el-button v-if="userStat === 'success'" type="warning" plain>{{coinVal}} coins</el-button><br>
         </div>
         <div v-if="userStat === 'success'" class="menu-items">
-          <div @click="goToCalendar">Calendar</div>
-          <div @click="goToTickets">My Tickets</div>
-          <div @click="goToBookmarks">Bookmarks</div>
-          <div @click="logout" class="logout">Log out</div>
+          <div @click="goToCalendar"><img src="~/assets/header/calendar.png" alt="Image" class="image">Calendar</div>
+          <div @click="goToTickets"><img src="~/assets/header/ticket.png" alt="Image" class="image">My Tickets</div>
+          <div @click="goToBookmarks" ><img src="~/assets/header/bookmark.png" alt="Image" class="image">Bookmarks</div>
+          <div @click="logout" class="logout"><img src="~/assets/header/logout-icon.png" alt="Image" class="image">Log out</div>
         </div>
       </div>
     </div>
@@ -146,7 +146,7 @@ const toggleSidebar = () => {
 
 onMounted(() => {
   fetchNotificationsCount();
-  fetchMyCartCount();
+  //fetchMyCartCount();
 
   if (process.client) {
     console.log('HEADER: ');
@@ -207,9 +207,9 @@ const logout = () => {
 // Counting how many  and Cart
 const fetchNotificationsCount = async () => {
   try {
-    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications',{ withCredentials:true});
+    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications', { withCredentials: true });
     console.log("NOTIF");
-    console.log(response)
+    console.log(response);
     notificationsCount.value = response.data.length; 
   } catch (error) {
     console.error('Failed to fetch notifications: ', error);
@@ -221,29 +221,29 @@ const fetchNotificationsCount = async () => {
   }
 };
 
-const fetchMyCartCount = async () => {
-  const loading = ElLoading.service({
-    lock: true,
-    text: 'Loading...',
-    background: 'rgba(0, 0, 0, 0.7)',
-  });
-  try {
-    const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', { withCredentials:true});
-    console.log("MY CART");
-    console.log(response.data.length);
-    myCartCount.value = response.data.length; 
-  } catch (error) {
-    console.error('Failed to fetch carts: ', error);
-    ElNotification.error({
-      title: 'Error',
-      message: `Error fetching carts. ${error.message}`,
-      offset: 100,
-    });
-  }
-  finally {
-      loading.close();
-  }
-};
+
+// const fetchMyCartCount = async () => {
+//   this.loadingInstance = ElLoading.service({
+//         fullscreen: true,
+//         background: 'rgba(0, 0, 0, 0.7)',
+//       });
+//   try {
+//     const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getOrderByStatus/0', { withCredentials:true});
+//     console.log("MY CART");
+//     console.log(response.data.length);
+//     myCartCount.value = response.data.length; 
+//   } catch (error) {if (this.loadingInstance) {this.loadingInstance.close(); }
+//     console.error('Failed to fetch carts: ', error);
+//     ElNotification.error({
+//       title: 'Error',
+//       message: `Error fetching carts. ${error.message}`,
+//       offset: 100,
+//     });
+//   }
+//   finally {
+//       if (this.loadingInstance) {this.loadingInstance.close(); }
+//   }
+// };
 
 
 function toggleProfileBox() {
@@ -452,6 +452,8 @@ const goToLogin = () => {
   width: 4em;
   height: 4em;
   margin-top: 1em;
+  display: flex;
+  flex-direction: column;
 }
 
 .button-menu {
@@ -502,33 +504,55 @@ const goToLogin = () => {
 
 .profile img {
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   margin-bottom: 10px;
 }
 
 .profile p {
   margin: 5px 0;
 }
+.profile h1 {
+  size: 30px;
+}
+
+.profile h3 {
+  size: 20px;
+}
 
 .menu-items {
-  width: 90%;
+  width: 100%;
 }
 
 .menu-items div {
   width: 100%;
-  padding: 15px;
+  padding: 25px;
   margin: 10px 0;
-  background-color: #fff;
-  color: #333;
-  text-align: center;
-  border-radius: 5px;
+  background-color: transparent;
+  border-top: 1px solid #FAA543;
+  justify-content: space-between;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 28px;
+  opacity: 0.8;
+}
+
+.menu-items img {
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+  padding-bottom: 3px;
+  margin-right: 8px;
+  opacity: 0.8;
 }
 
 .menu-items div:hover {
-  background-color: #ddd;
+  opacity: 1.0;
+  background-color: #FAA543;
+}
+
+.logout {
+  border-bottom: 1px solid #FAA543;
 }
 
 
