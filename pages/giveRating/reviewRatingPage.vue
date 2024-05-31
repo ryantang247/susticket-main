@@ -9,9 +9,6 @@
                 <span class="demonstration">How was the event?</span>
                 <el-rate v-model="value2" :colors="colors" />
             </div>
-            <!-- <div class="add-photos">
-                <button class="add-photos-button">Add photos or videos</button>
-            </div> -->
             <div class="upload-box">
                 <el-upload
                 v-model:file-list="fileList"
@@ -40,18 +37,16 @@
 <script setup>
     import CustomerService from '@/components/CustomerService.vue';
     import { ref } from 'vue';
-    import { Delete, Download, Plus, ZoomIn } from '@element-plus/icons-vue';
     import { useRouter } from 'vue-router';
     const router = useRouter();
-    
-    const value1 = ref(null);
+
     const value2 = ref(null);
     const colors = ref(['#99A9BF', '#F7BA2A', '#FF9900']);
     const fileList = ref([]);
 
     // If you're not using TypeScript, you cannot type the parameters
     // You should remove the type annotation here
-    const handleChange = (uploadFile, uploadFiles) => {
+    const handleChange = () => {
         fileList.value = fileList.value.slice(-5);
     }
 
@@ -103,7 +98,6 @@
     }
     .header h2{
         margin-left: 20px;
-        margin: 0;
     }
 
     .content {

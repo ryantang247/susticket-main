@@ -20,9 +20,9 @@
             <p class="seat"><b>{{cart.event.seat}}</b></p>
             <h2>{{ '¥' + cart.price }}</h2>
             <!-- <el-button type="danger" round class="status">{{cart.status}}</el-button> -->
-            <el-button type="warning" round class="status" v-if="cart.status == 0">on sale</el-button>
-            <el-button type="success" round class="status" v-if="cart.status == 1">on going</el-button>
-            <el-button type="info" round class="status" v-if="cart.status == 2">ended</el-button>
+            <el-button type="warning" round class="status" v-if="cart.status === 0">on sale</el-button>
+            <el-button type="success" round class="status" v-if="cart.status === 1">on going</el-button>
+            <el-button type="info" round class="status" v-if="cart.status === 2">ended</el-button>
             <p class="available">{{ cart.event.available }}</p>
           </aside>
         </aside>
@@ -65,7 +65,6 @@
 <script setup>
 import Header from '@/components/homepage/Header.vue';
 import Footer from '@/components/homepage/Footer.vue';
-import EventCard from '@/components/myTicket/MyCartCard.vue';
 import CustomerService from '@/components/CustomerService.vue';
 import { ref, computed } from 'vue';
 
@@ -74,6 +73,7 @@ import tickedImage from '@/assets/header/ticked.png';
 
 import { useRouter } from 'vue-router';
 import {ElNotification} from "element-plus";
+import axios from "axios";
 
 const router = useRouter();
 

@@ -17,6 +17,11 @@
           :class="{ active: currentFilter === 'All' }"
         >All</a>
         <a
+            href="#"
+            @click.prevent="selectFilter('Recomendded')"
+            :class="{ active: currentFilter === 'Recomendded' }"
+        >Reccomended</a>
+        <a
           href="#"
           @click.prevent="selectFilter('This Week')"
           :class="{ active: currentFilter === 'This Week' }"
@@ -199,15 +204,17 @@ const filterEvents = () => {
         return eventDate >= startNextMonth && eventDate <= endNextMonth;
       });
       break;
-    default: // 'All' and any other cases
+    case 'Recomendded':
       if (recommendations.value.length > 0) {
         filteredEvents = allEvents.value.filter(event =>
-          recommendations.value.some(recommendation => recommendation.id === event.id)
+            recommendations.value.some(recommendation => recommendation.id === event.id)
         );
       } else {
         filteredEvents = allEvents.value;
       }
       break;
+    default: // 'All' and any other cases
+      filteredEvents = allEvents.value
   }
 
   events.value = filteredEvents;

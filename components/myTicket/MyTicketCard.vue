@@ -19,7 +19,7 @@
           <img :src="ticket.event.thumbnail" alt="event-image" class="event-image">
         </div>
         <div class="bookmark-share">
-          <el-button type="warning" class="action-btn" @click="goToReview">Give Comment</el-button>
+          <el-button type="warning" class="action-btn" @click="goToReview(ticket.eventId)">Give Comment</el-button>
           <img src="/assets/event/linkshare.png" class="share" @click="copyLink(ticket)"> 
         </div>
       </aside>
@@ -55,17 +55,6 @@
   defineProps(['transactions','events']);
 
   const router = useRouter();
-
-//   import {
-//   Check,
-//   Delete,
-//   Edit,
-//   Message,
-//   Search,
-//   Star,
-// } from '@element-plus/icons-vue'
-
-
 const venues = ref([]);
 onMounted(async () => {
   const loading = ElLoading.service({
@@ -133,10 +122,9 @@ onMounted(async () => {
   }
 });
 
-const goToReview = () => {
-  router.push('/giveRating/reviewRatingPage');
+const goToReview = (eventId) => {
+  router.push(`/events/giveComment/${eventId}`);
 };
-
 const copyLink = (event) => {
   navigator.clipboard.writeText(event.link).then(() => {
     ElNotification.success({
@@ -252,11 +240,6 @@ h1{
   border: 2px solid #6DC9C8;
   margin-bottom: 15px;
   margin-left: 60px;
-}
-
-.event-details {
-  flex: 1; /* Take remaining space */
-  float: left;
 }
 
 .left{

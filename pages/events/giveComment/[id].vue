@@ -5,7 +5,12 @@
             <h2>Event Details</h2>
         </div>
         <div class="content">
+          <div class="rate-block">
+            <span class="demonstration">How was the event?</span>
+            <el-rate v-model="value2" :colors="colors" />
+          </div>
             <textarea class="feedback" placeholder="Share your thoughts about this event ...."></textarea>
+
             <div class="upload-box">
                 <el-upload
                    :file-list="fileList"
@@ -50,7 +55,7 @@
 
     // If you're not using TypeScript, you cannot type the parameters
     // You should remove the type annotation here
-    const handleChange = (uploadFile, uploadFiles) => {
+    const handleChange = (uploadFile) => {
       // Create a new FileReader object
       const reader = new FileReader();
 
@@ -181,7 +186,6 @@
     }
     .header h2{
         margin-left: 20px;
-        margin: 0;
     }
 
     .content {
@@ -219,18 +223,6 @@
         padding-top: 5px;
     }
 
-    
-    .add-photos {
-        margin: 20px 0;
-    }
-    
-    .add-photos-button {
-        background-color: #f0f0f0;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-    }
-    
     .feedback {
         width: 90%;
         height: 130px;

@@ -273,7 +273,7 @@ const goToCart = () => {
 };
 
 const goToTickets = () => {
-  router.push('/myTickets/myTickets');
+  router.push('/myTickets');
 };
 
 const goToBookmarks = () => {
@@ -378,13 +378,6 @@ const goToLogin = () => {
   width: 3.5em;
   height: 3.5em;
   opacity: 70%;
-}
-
-.search-box {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  padding: 0 10px;
 }
 
 /* Sidebar styles */
