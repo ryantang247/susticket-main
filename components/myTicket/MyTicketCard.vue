@@ -19,7 +19,7 @@
           <img :src="ticket.event.thumbnail" alt="event-image" class="event-image">
         </div>
         <div class="bookmark-share">
-          <!-- <el-button type="warning" class="action-btn" @click="goToReview">Next Action</el-button> -->
+          <el-button type="warning" class="action-btn" @click="goToReview">Give Comment</el-button>
           <img src="/assets/event/linkshare.png" class="share" @click="copyLink(ticket)"> 
         </div>
       </aside>
