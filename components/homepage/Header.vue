@@ -10,8 +10,6 @@
       <div class="logo">
         <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
       </div>
-
-      <!-- <div v-if="userStat == 'success'"> </div> -->
       <div class="right">
         <div v-if="loginStatus" class="nav-container">
           <div class="image-container-calendar" @click="goToCalendar">
@@ -47,8 +45,8 @@
         </div>      
           
         <div class="user-profile" @click="toggleProfileBox">
-          <img v-if="userStat == 'success'" :src="avatar">
-          <img v-else src="~/assets/header/profile_nologin.png" />
+          <img v-if="loginStatus" alt="~/assets/header/profile_nologin.png" :src="avatar">
+          <img v-else src="~/assets/header/profile_nologin.png"  alt="~/assets/header/profile_nologin.png"/>
         </div>
         <Profile :isVisible="showProfileBox" />
       </div>
@@ -74,7 +72,7 @@
           </el-badge>
           <NotifPopup :isVisible="showNotifBox" />
           <!-- <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge> -->
-          <img class="mycart-btn" src="~/assets/header/cart.png" @click="goToCart">
+          <img alt="~/assets/header/cart.png" class="mycart-btn" src="~/assets/header/cart.png" @click="goToCart">
           
       <!-- <div class="sidebar-search-box">
         <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
@@ -91,7 +89,7 @@
       
       <div class="sidebar-content">
         <div class="profile">
-          <img v-if="userStat === 'success'" :src="avatar">
+          <img v-if="userStat === 'success'" :src="avatar" alt="~/assets/header/profile_nologin.png">
           <img v-else @click="goToLogin" src="~/assets/header/profile_nologin.png" />
           <h1>{{ userName }}</h1>
           <h3 v-if="userStat === 'success'">{{ userEmail }}</h3>
@@ -111,7 +109,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Profile from '/components/homepage/Profile.vue';
 import NotifPopup from '/components/homepage/NotifPopup.vue';
@@ -124,20 +122,18 @@ const isSidebarOpen = ref(false);
 
 let userName = '';
 let userEmail = '';
-let avatar = '';
+let avatar = ref("");
 let userStat = null;
-let loginStatus = false;
+const loginStatus = ref(false);
 let userCoin =0;
 const notificationsCount = ref(0);
 const myCartCount = ref(0)
 const router = useRouter();
-const searchQuery = ref('');
-const coinVal = ref(0);
+let coinVal = ref(0);
 
 // Clickable box in header
 const showProfileBox = ref(false);
 const showNotifBox = ref(false);
-const showMenu = ref(false);
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;
@@ -145,6 +141,8 @@ const toggleSidebar = () => {
 
 
 onMounted(() => {
+  avatar.value = localStorage.getItem("Avatar");
+
   fetchNotificationsCount();
   //fetchMyCartCount();
 
@@ -159,9 +157,9 @@ onMounted(() => {
       if (status!== "null"){
         userName = localStorage.getItem("Username");
         userEmail = localStorage.getItem("Email");
-        loginStatus = true;
+        loginStatus.value = true;
       }else {
-        loginStatus = false
+        loginStatus.value = false
         userName = "Guest"
         userEmail = null
       }
@@ -173,8 +171,8 @@ const getCoins = async () => {
       const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getUser', { credentials: 'include' });
       const userDetails = await response.json();
       //coins.value = userDetails.coin;
-      userCoin = userDetails.coin();
-      coinVal = userDetails.coin();
+      userCoin = userDetails.coin;
+      coinVal = userDetails.coin;
 
 };
 
@@ -266,24 +264,6 @@ function toggleNotifBox() {
   }
 }
 
-const isScreenSmall = computed(() =>{
-    if (process.client) {
-      let width = window.innerWidth
-      console.log("Screen small: ",width < 700)
-      return width < 700
-    }
-
-})
-
-
-// Search event in the header
-const searchEvent = async () => {
-  if (searchQuery.value.trim()) {
-    router.push({ path: '/foundEvent/foundEventPage', query: { query: searchQuery.value.trim() } });
-  }
-};
-
-
 const goToCalendar = () => {
   router.push('/calendar/calendarPage');
 };
@@ -328,14 +308,6 @@ const goToLogin = () => {
   height: 45px;
   cursor: pointer;
   margin-right: 10px;
-}
-
-.menu-button {
-  display: none; 
-  font-size: 4em;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 
 .right{
@@ -413,18 +385,6 @@ const goToLogin = () => {
   display: flex;
   justify-content: center;
   padding: 0 10px;
-}
-
-.search-input {
-  padding: 8px 30px;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  font-size: 20px;
-  outline: none;
-}
-
-.search-input::placeholder {
-  color: #999;
 }
 
 /* Sidebar styles */

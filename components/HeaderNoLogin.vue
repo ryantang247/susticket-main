@@ -11,19 +11,16 @@
       </div>
       
       <div class="user-profile">
-        <img src="assets\logo.png" alt="User Profile" @click="toggleProfileBox" />
+        <img src="~/assets/logo.png" alt="~/assets/logo.png" @click="toggleProfileBox" />
       </div>
-      <Profile :userProfile="userProfile" :isVisible="showProfileBox" />
+      <Profile />
     </header>
   </template>
   <script setup>
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   import Profile from '/components/homepage/Profile.vue';
-  
 
-  
-  
   const router = useRouter();
   
   const searchQuery = ref('');
@@ -34,9 +31,7 @@
       router.push({ path: '/foundEvent/foundEventPage', query: { query: searchQuery.value.trim() } });
     }
   };
-  
-  
- 
+
   function goToHomepage(){
     router.push('/')
   }
@@ -66,26 +61,7 @@
     margin-top: 10px;
     margin-left: 30px;
   }
-  
-  .cart-button,
-  .ticket-button,
-  .bookmark-button,
-  .calendar-button {
-    display: flex;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 70%;
-    gap: 5px;
-  }
-  .cart-button:hover,
-  .ticket-button:hover,
-  .bookmark-button:hover,
-  .calendar-button:hover{
-    opacity: 100%;
-  }
-  
+
   .user-profile img {
     border-radius: 50%; 
     width: 20%; 
@@ -95,15 +71,6 @@
   }
   .user-profile:hover img{
     transform: scale(1.05);
-  }
-  
-  .image-container-cart,
-  .image-container-ticket,
-  .image-container-bookmark,
-  .image-container-calendar{
-    position: relative;
-    display: flex;
-    align-items: center;
   }
   
   .image-container-cart img,
