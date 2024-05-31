@@ -2,13 +2,15 @@
   <div class="event-list">
     <div v-for="event in validEvents" :key="event.id" class="event-card">
       <div v-if="event">
-        <NuxtLink :to="`/events/${event.id}`">
+        <NuxtLink style="text-decoration: none; color: inherit;" :to="`/events/${event.id}`">
           <img :src="event.thumbnail" alt="event-image" class="event-image" style="cursor:pointer;">
-        </NuxtLink>
+
         <el-button type="warning" round class="status" v-if="event.status == 0">on sale</el-button>
         <el-button type="success" round class="status" v-if="event.status == 1">on going</el-button>
         <el-button type="info" round class="status" v-if="event.status == 2">ended</el-button>
         <h1>{{ event.title }}</h1>
+        </NuxtLink>
+
         <p>{{ formatDate(event.startDate) }}</p>
         <p>{{ getVenueName(event.venueId) }}</p>
         <h2>{{ '¥' + displayPrice(event.price) }}</h2>
