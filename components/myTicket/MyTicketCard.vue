@@ -1,7 +1,7 @@
 <template>
   <div class="myticket-card">
     <div v-for="ticket in transactions" :key="ticket.id" class="event-card">
-      <aside class="left">
+      <aside v-if="ticket.event" class="left">
         <h1>{{ ticket.event.title }}</h1>
         <p>{{ formatDate(ticket.event.startDate) }}</p>
         <p>{{ getVenueName(ticket.event.venueId) }}</p>
@@ -14,33 +14,13 @@
         <!-- <el-button type="danger" round class="status">Status</el-button> -->
         <p class="available">{{ ticket.event.available }}</p>
       </aside>
-      <aside class="right">
+      <aside v-if="ticket.event" class="right">
         <div class="image-container">
           <img :src="ticket.event.thumbnail" alt="event-image" class="event-image">
         </div>
         <div class="bookmark-share">
           <el-button type="warning" class="action-btn" @click="goToReview(ticket.eventId)">Give Comment</el-button>
           <img src="/assets/event/linkshare.png" class="share" @click="copyLink(ticket)"> 
-        </div>
-      </aside>
-    </div>
-    <div v-for="event in events" :key="event.id" class="event-card">
-      <aside class="left">
-          <h1>{{ event.title }}</h1>
-          <p>{{ event.date + ' | ' + event.time }}</p>
-          <p>{{ event.location }}</p>
-          <p class="seat"><b>{{event.seat}}</b></p>
-          <h2>{{ '¥' + event.price }}</h2>
-          <!-- <el-button type="danger" round class="status">Status</el-button> -->
-          <p class="available">{{ event.available }}</p>
-      </aside>
-      <aside class="right">
-        <div class="image-container">
-          <img src="/assets/events/event6.jpg" alt="event-image" class="event-image">
-        </div>
-        <div class="bookmark-share">
-          <!-- <el-button type="warning" class="action-btn" @click="goToReview">Next Action</el-button> -->
-          <img src="/assets/event/linkshare.png" class="share" @click="copyLink(event)"> 
         </div>
       </aside>
     </div>
