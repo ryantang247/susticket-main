@@ -260,21 +260,29 @@ const deleteFromCart = async (orderId) => {
     const foundOrder = transactions.value.find(order => order.id === orderId);
     console.log(foundOrder)
     const notes = JSON.parse(foundOrder.notes)
-    const seatsArr = JSON.parse(notes.labels)
+
+    var seatsArr = []
+    if(notes.labels){
+      seatsArr = JSON.parse(notes.labels)
+    }
     // TODO: Release object if we remove it from cart
-    await axios.post(
-        `https://api-oc.seatsio.net/events/${foundOrder.event.seatsioEventsKey}/actions/release`,
-        {
-          objects: seatsArr,
-        },
-        {
-          auth: {
-            username: useRuntimeConfig().public.seatsioKey
+
+    if(foundOrder.event.seatsioEventsKey){
+      await axios.post(
+          `https://api-oc.seatsio.net/events/${foundOrder.event.seatsioEventsKey}/actions/release`,
+          {
+            objects: seatsArr,
+          },
+          {
+            auth: {
+              username: useRuntimeConfig().public.seatsioKey
+            }
           }
-        }
-    ).then((bookingResponse) => {
-      console.log("Release success", bookingResponse)
-    })
+      ).then((bookingResponse) => {
+        console.log("Release success", bookingResponse)
+      })
+    }
+
 
     const response = await fetch(`https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteFromMyCart/${orderId}`, {
       method: 'DELETE',
