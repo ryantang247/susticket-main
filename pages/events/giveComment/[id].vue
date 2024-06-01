@@ -7,9 +7,9 @@
         <div class="content">
           <div class="rate-block">
             <span class="demonstration">How was the event?</span>
-            <el-rate v-model="value2" :colors="colors" />
+            <el-rate v-model="rating" :colors="colors" />
           </div>
-            <textarea class="feedback" placeholder="Share your thoughts about this event ...."></textarea>
+            <textarea class="feedback" v-model="feedback" placeholder="Share your thoughts about this event ...."></textarea>
 
             <div class="upload-box">
                 <el-upload
@@ -47,8 +47,7 @@
     const currentEvent = route.params.id;
     const feedback = ref(''); // Define feedback as a reactive variable
 
-    const value1 = ref(null);
-    const value2 = ref(null);
+    const rating = ref(null);
     const colors = ref(['#99A9BF', '#F7BA2A', '#FF9900']);
     const fileList = ref([]);
 
@@ -88,7 +87,8 @@
         const response = await axios.post('https://secourse2024-675d60a0d98b.herokuapp.com/api/postComment', {
         eventId: eventId,
         text: text,
-        picture: picture
+        picture: picture,
+          rating: rating.value
         } , {//AxiosRequestConfig parameter
           withCredentials: true //correct
         } );

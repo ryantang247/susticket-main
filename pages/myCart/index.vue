@@ -270,6 +270,21 @@ const deleteFromCart = async (orderId) => {
         offset: 100
       });
 
+      // TODO: Release object if we remove it from cart
+      // axios.post(
+      //     `https://api-oc.seatsio.net/events/${props.eventKey}/actions/release`,
+      //     {
+      //       objects: props.objectSelected,
+      //     },
+      //     {
+      //       auth: {
+      //         username: useRuntimeConfig().public.seatsioKey
+      //       }
+      //     }
+      // ).then((bookingResponse) => {
+      //   console.log("Release success", bookingResponse)
+      // })
+
     } else {
       ElNotification.error({
         title: 'Error',

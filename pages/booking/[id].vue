@@ -108,12 +108,13 @@ const addToCart = async (totalAmount) => {
       credentials: 'include',
       body: JSON.stringify({
         eventId: currentEvent.value,
+        notes: JSON.stringify(seats.value),
         price: totalAmount// Adjust this accordingly based on how you get the price
       })
     });
 
     // TODO: Add axios to seatsio to temporarily book the seat
-    if(eventData.seatsioEventsKey){
+    if(eventData.value.seatsioEventsKey){
       await axios.post(
           `https://api-oc.seatsio.net/events/${eventData.value.seatsioEventsKey}/actions/book`,
           {

@@ -1,4 +1,5 @@
 <template>
+
   <div id="paypal-buttons"></div>
 </template>
 
@@ -15,7 +16,8 @@ export default defineComponent({
     eventId: String,
     eventKey: String,
     coins: Number,
-    objectSelected: Object
+    objectSelected: Object,
+    category: String
   },
   setup(props){
     let buttonRendered = true;
@@ -49,14 +51,21 @@ export default defineComponent({
                     },
                     createOrder: (data, actions) => {
                       if (props.eventId && props.totalAmount) {
-                        console.log(props.eventId, props.totalAmount);
+                        console.log("Passed in transaction: ");
+                        console.log({
+                          eventId: props.eventId,
+                          coin: props.coins,
+                          price: Number(props.totalAmount),
+                          notes: props.category
+                        })
                         // Make the first axios request to paySingleOrder
                         axios.post(
                             `https://secourse2024-675d60a0d98b.herokuapp.com/api/paySingleOrder`,
                             {
                               eventId: props.eventId,
                               coin: props.coins,
-                              price: Number(props.totalAmount)
+                              price: Number(props.totalAmount),
+                              notes: props.category
                             },{
                               //AxiosRequestConfig parameter
                               withCredentials: true //correct
@@ -71,6 +80,7 @@ export default defineComponent({
                               if (status === 200) {
                                 // Make the axios request to book the seats
                                 if(props.eventKey){
+                                  console.log("Seatsio booking: ",props.objectSelected, " in ", props.eventKey)
                                   axios.post(
                                       `https://api-oc.seatsio.net/events/${props.eventKey}/actions/book`,
                                       {
