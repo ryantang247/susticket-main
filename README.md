@@ -18,8 +18,8 @@ Welcome to the documentation for SUSTech TICKET Website. This guide will help yo
 3. [Features](#features)
 4. [FAQs](#frequently-asked-questions)
 5. [Troubleshooting](#troubleshooting)
-6. [Developer Guide] (#developer-guide)
-7. [API Documentation] (#api-documentation)
+6. [Developer Guide](#developer-guide)
+7. [API Documentation](#api-documentation)
 
 ## Introduction
 
