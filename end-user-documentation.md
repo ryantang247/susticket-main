@@ -1,3 +1,12 @@
+<div align=center>
+<img src="assets/login_logo.png" width=300 alt="logo"/>
+
+# SUSTech TICKET
+
+**CS304 Project for Software Engineering**
+
+</div>
+
 # Website Documentation
 
 Welcome to the documentation for SUSTech TICKET Website. This guide will help you understand and use the features of our website effectively.
@@ -9,10 +18,10 @@ Welcome to the documentation for SUSTech TICKET Website. This guide will help yo
 3. [Features](#features)
 4. [FAQs](#frequently-asked-questions)
 5. [Troubleshooting](#troubleshooting)
+6. [Developer Guide] (#developer-guide)
+7. [API Documentation] (#api-documentation)
 
 ## Introduction
-
-Welcome to SUSTech TICKET Website. This website is designed to provide service on SUSTech's event and ticketing for SUSTech students and visitors.
 
 ### Key Features
 
@@ -31,7 +40,7 @@ This guide will help you get started with SUSTech TICKET Website.
 
 ### Login
 
-1. Go to the [login page](#).
+1. Go to the [login page](https://susticket-main.vercel.app).
 2. Login with your SID and Password
 
 If you are non SUSTech student, you will not able to login to access specific features. However, you can go through the website to stay up to date about SUSTech's events. For special inquiries, please email at sustech_ticket@mail.edu.cn.
@@ -173,5 +182,83 @@ For more questions and answers, visit the [Troubleshooting](#troubleshooting) se
 2. Clear your browser's cache.
 3. Try accessing the page from a different browser.
 
-For additional help, visit our [FAQs](#frequently-asked-questions) section or contact support sustech_ticket@mail.edu.cn.
+## Developer Guide
+
+This section provides all the necessary information for developers who want to contribute to the project.
+
+### Setting Up the Development Environment
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/yourusername/susticket-main.git
+   ```
+2. **Install Dependencies**
+   Make sure to install the dependencies:
+
+  ```bash
+  # npm
+  npm install
+
+  # pnpm
+  pnpm install
+
+  # yarn
+  yarn install
+
+  # bun
+  bun install
+  ```
+3. **Run Development Server**
+   Start the development server on `http://localhost:3000`:
+
+  ```bash
+  # npm
+  npm run dev
+
+  # pnpm
+  pnpm run dev
+
+  # yarn
+  yarn dev
+
+  # bun
+  bun run dev
+  ```
+4. **Production**
+   Build the application for production:
+
+  ```bash
+  # npm
+  npm run build
+
+  # pnpm
+  pnpm run build
+
+  # yarn
+  yarn build
+
+  # bun
+  bun run build
+  ```
+
+  Locally preview production build:
+
+  ```bash
+  # npm
+  npm run preview
+
+  # pnpm
+  pnpm run preview
+
+  # yarn
+  yarn preview
+
+  # bun
+  bun run preview
+  ```
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+   
+## API Documentation
+
+For additional help, visit our [FAQs](#frequently-asked-questions) section or contact support [sustech_ticket@mail.edu.cn](mailto:sustech_ticket@mail.edu.cn).
 
