@@ -446,6 +446,7 @@ const goToLogin = () => {
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
+  overflow-y: scroll;
 }
 
 .profile {
@@ -475,6 +476,7 @@ const goToLogin = () => {
 
 .menu-items {
   width: 100%;
+
 }
 
 .menu-items div {
