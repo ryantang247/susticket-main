@@ -257,6 +257,25 @@ const deleteFromCart = async (orderId) => {
     background: 'rgba(0, 0, 0, 0.7)',
   });
   try {
+    const foundOrder = transactions.value.find(order => order.id === orderId);
+    console.log(foundOrder)
+    const notes = JSON.parse(foundOrder.notes)
+    const seatsArr = JSON.parse(notes.labels)
+    // TODO: Release object if we remove it from cart
+    await axios.post(
+        `https://api-oc.seatsio.net/events/${foundOrder.event.seatsioEventsKey}/actions/release`,
+        {
+          objects: seatsArr,
+        },
+        {
+          auth: {
+            username: useRuntimeConfig().public.seatsioKey
+          }
+        }
+    ).then((bookingResponse) => {
+      console.log("Release success", bookingResponse)
+    })
+
     const response = await fetch(`https://secourse2024-675d60a0d98b.herokuapp.com/api/deleteFromMyCart/${orderId}`, {
       method: 'DELETE',
       credentials: 'include',
@@ -270,20 +289,6 @@ const deleteFromCart = async (orderId) => {
         offset: 100
       });
 
-      // TODO: Release object if we remove it from cart
-      // axios.post(
-      //     `https://api-oc.seatsio.net/events/${props.eventKey}/actions/release`,
-      //     {
-      //       objects: props.objectSelected,
-      //     },
-      //     {
-      //       auth: {
-      //         username: useRuntimeConfig().public.seatsioKey
-      //       }
-      //     }
-      // ).then((bookingResponse) => {
-      //   console.log("Release success", bookingResponse)
-      // })
 
     } else {
       ElNotification.error({

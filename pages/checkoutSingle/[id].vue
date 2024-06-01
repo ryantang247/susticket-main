@@ -19,7 +19,7 @@
                 <input type="number" v-model="coinVal"  min="0" max="50"> coins used.
             </div>
           <div id="PaypalButton" >
-            <PayPal v-if="eventId" :event-id="eventId" :object-selected="seatLabels" :event-key="seatsioEventsKey" :total-amount="totalAmount" :coins="coinVal" :category="seat.type"/>
+            <PayPal v-if="eventId" :event-id="eventId" :object-selected="seatLabels" :event-key="seatsioEventsKey" :total-amount="totalAmount" :coins="coinVal" :category="JSON.stringify(seatDetails)"/>
           </div>
             <div class="cancel-order-btn" @click="goBack">
               Cancel payment

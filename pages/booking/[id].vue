@@ -98,7 +98,10 @@ const addToCart = async (totalAmount) => {
 
   try {
     console.log('Adding to cart:', currentEvent.value, totalAmount);
-    
+    const noteData = {
+        category: JSON.stringify(seats.value),
+        labels: JSON.stringify(seatLabels.value)
+    }
     // Send a POST request to the API endpoint
     const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/putToMyCart', {
       method: 'POST',
@@ -108,7 +111,7 @@ const addToCart = async (totalAmount) => {
       credentials: 'include',
       body: JSON.stringify({
         eventId: currentEvent.value,
-        notes: JSON.stringify(seats.value),
+        notes: JSON.stringify(noteData),
         price: totalAmount// Adjust this accordingly based on how you get the price
       })
     });
