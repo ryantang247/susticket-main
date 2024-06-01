@@ -95,23 +95,33 @@
   <div class="comments-box">
       <h2>Comments</h2>
       <!-- <el-button type="warning" class="comment-btn" @click="goToCommentPage">Give Comment</el-button> -->
-      <div class="comment" v-for="(comment, index) in comments" :key="index">
-        <!-- <el-rate
-            v-model="value"
-            disabled
-            show-score
-            text-color="#ff9900"
-            :value="comment.star"
-            score-template="{ value } points"
-        /> -->
-        <p>
-          <strong>{{ comment.user }}</strong>: {{ comment.text }}
-        </p>
-        <img v-if="comment.image" :src="comment.image" alt="User Comment">
-        <video v-if="comment.video" controls>
-          <source :src="comment.video" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+      <div class="comment" v-for="(comment, index) in eventData.comments" :key="index">
+
+        <el-row>
+          <el-col :span="2">
+            <el-avatar :src="comment.user.avatar"></el-avatar>
+          </el-col>
+          <el-col :span="16">
+            <p>
+              <strong>{{ comment.user.name }}</strong>
+            </p>
+          </el-col>
+          <el-col  :span="4">
+            <div style="margin-left: auto">
+              <el-rate
+                  v-model="comment.rating"
+                  disabled
+                  show-score
+                  text-color="#ff9900"
+                  :value="comment.rating"
+                  score-template="{ value } points"
+              />
+            </div>
+
+          </el-col>
+        </el-row>
+        <p>{{ comment.text }}</p>
+        <img v-if="comment.picture" :src="comment.picture" alt="User Comment">
         <el-divider/>
       </div>
       <el-button v-if="userStat == 'success'" type="warning" class="action-btn" @click="goToCommentPage">Add Comment</el-button>
@@ -121,16 +131,14 @@
     
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
-import { ElLoading, ElNotification } from 'element-plus';
+import {onMounted, ref} from 'vue';
+import {ElLoading, ElNotification} from 'element-plus';
 
 import Header from '@/components/homepage/Header.vue';
 import Footer from '@/components/homepage/Footer.vue';
 import CustomerService from '@/components/CustomerService.vue';
-import { useRouter, useRoute } from 'vue-router';
-import { getEvents } from '@/api';
-import emptyBookmark from '@/assets/event/bookmark.png';
-import filledBookmark from '@/assets/event/bookmark (1).png';
+import {useRoute, useRouter} from 'vue-router';
+import {getEvents} from '@/api';
 
 const bookmarkEvents = ref({});
 const event = ref([]);
@@ -308,10 +316,10 @@ onMounted(async () => {
   });
   try {
     // Call your API function to fetch event comments
-    const comments = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getEventComment/'+route.params.id);
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getEventComment/'+route.params.id);
     // Handle the fetched comments as needed
-    comments.value = comments;
-    console.log(comments);
+    eventData.value.comments = await response.json();
+    console.log("Comment ", eventData.value.comments);
   } catch (error) {
     console.error('Error fetching event comments:', error);
     ElNotification.error({
@@ -411,205 +419,219 @@ function formatDate(dateString) {
 
 
 <style scoped>
-  *{
-      font-family: sans-serif;
-  }
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.8);  /* Semi-transparent white */
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2em;
-    color: #333;
-  }
-  
-  .loading-overlay::before {
-    content: '';
-    box-sizing: border-box;
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 10px solid rgba(0, 0, 0, 0.1);
-    border-top-color: #3498db;  
-    animation: spin 1s linear infinite;
-  }
-  
-  .loading-overlay-text {
-    z-index: 1;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-weight: bold;
-    text-shadow: 0px 0px 10px rgba(0,0,0,0.5); /* Soft shadow for text */
-  }
-  .event-desc-container{
-      width: 50%;
-      margin: 0 auto;
-      border: #ccc 1px solid;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-      padding: 20px;
-      margin-top: 50px;
-  }
-  .header {
-      text-align: left;
-      display: flex;
-      align-items: center; 
-      margin-bottom: 20px;
-  }
-  .left{
-      border: #6DC9C8 1px;
-  }
-  
-  .back{
-      width: 25px;
-      height: 25px;
-  }
-  .back:hover{
-      background-color: #ccc;
-      border-radius: 50%;
-  }
-  .carousel-image{
-    height: 20%;
-  }
-  .carousel-image{
-      width: 100%;
-      height: 700px;
-      object-fit: cover;
-      margin-bottom: 10px;
-  }
-  .date-loc img{
-      width: 25px;
-      height: 25px;
-  }
-  h5{
-      font-size: 25px;
-      margin-bottom: 0;
-  }
-  h6{
-      font-size: 20px;
-      margin-top: 0;
-  }
-  h1, h5, h6 {
-      margin: 5px;
-      padding: 0;
-  }
-  h1{
-    font-size: 50px;
-      margin-bottom: 40px;
-  }
-  .date-loc{
-      position: relative;
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-  }
-  .button-action{
-      width: 300px;
-      height: 200px;
-      border-radius: 10px;
-      border: 1px solid #6DC9C8; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
-      align-items: center; 
-  }
-  
-  .down{
-    display: flex;
-    justify-content: right;
-  }
-  
- .get-ticket-btn{
-      background-color: #284949;
-      width: 250px;
-      height: 50px;
-      border-radius: 10px;
-      margin-bottom: 5px;
-      font-size: 20px;
-      color: #fff;
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      text-align: center; 
-      text-decoration: none;
-  }
 
-  .get-ticket-btn{
-      background-color: #284949;
-      border: #284949 solid 2px;
-      text-decoration: none;
-  }
-  .get-ticket-btn a{
-    text-decoration: none;
-    color: #fff;
-  }
-  .get-ticket-btn:hover{
-      background-color: #fff;
-      color: #000;
-      cursor: pointer;
-  }
-  .get-ticket-btn a:hover{
-    color: #000;
-  }
-  .desc{
-      margin-top: 40px;
-  }
-  .desc h6{
-      font-size: 16px;
-  }
-  .share-bookmark{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-  }
-  .share-bookmark img{
-      width: 30px;
-      height: 30px;
-  }
-  .share-bookmark img:hover{
-      background-color: #ccc;
-      border-radius: 50%;
-  }
-  .share-bookmark h6{
-      font-size: 14px;
-  }
-  .desc-box{
-      padding: 20px;
-      border: 1px solid #ccc;
-      box-shadow: #ccc;
-  }
-
-  .fixed-size-tag {
-    width: 100px; 
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .comments-box{
-    width: 50%;
-    height: 200px;
-    margin: 0 auto;
-    border: #ccc 1px solid;
-    padding: 20px;
-    margin-bottom: 50px;
+* {
+  font-family: sans-serif;
 }
-.live-stream{
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2em;
+  color: #333;
+}
+
+.loading-overlay::before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 10px solid rgba(0, 0, 0, 0.1);
+  border-top-color: #3498db;
+  animation: spin 1s linear infinite;
+}
+
+.loading-overlay-text {
+  z-index: 1;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: bold;
+  text-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+}
+
+.event-desc-container {
+  width: 50%;
+  margin: 0 auto;
+  border: #ccc 1px solid;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  padding: 20px;
+  margin-top: 50px;
+  flex: 1;
+}
+
+.header {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.left {
+  border: #6dc9c8 1px;
+}
+
+.back {
+  width: 25px;
+  height: 25px;
+}
+
+.back:hover {
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.carousel-image {
+  width: 100%;
+  height: 700px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.date-loc img {
+  width: 25px;
+  height: 25px;
+}
+
+h5 {
+  font-size: 25px;
+  margin-bottom: 0;
+}
+
+h6 {
+  font-size: 20px;
+  margin-top: 0;
+}
+
+h1, h5, h6 {
+  margin: 5px;
+  padding: 0;
+}
+
+h1 {
+  font-size: 50px;
+  margin-bottom: 40px;
+}
+
+.date-loc {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.button-action {
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+  border: 1px solid #6dc9c8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.down {
+  display: flex;
+  justify-content: right;
+}
+
+.get-ticket-btn {
+  background-color: #284949;
+  width: 250px;
+  height: 50px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+}
+
+.get-ticket-btn:hover {
+  background-color: #fff;
+  color: #000;
+  cursor: pointer;
+}
+
+.desc {
+  margin-top: 40px;
+}
+
+.desc h6 {
+  font-size: 16px;
+}
+
+.share-bookmark {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.share-bookmark img {
+  width: 30px;
+  height: 30px;
+}
+
+.share-bookmark img:hover {
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.share-bookmark h6 {
+  font-size: 14px;
+}
+
+.desc-box {
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: #ccc;
+}
+
+.fixed-size-tag {
+  width: 100px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.comments-box {
+  width: 50%;
+  margin: 0 auto;
+  border: #ccc 1px solid;
+  padding: 20px;
+  margin-bottom: 50px;
+}
+
+.live-stream {
   width: 50%;
   height: 400px;
   margin: 0 auto;
@@ -618,28 +640,15 @@ function formatDate(dateString) {
   padding: 20px;
 }
 
-@media only screen and (max-width: 2880px){
-  .event-desc-container{
-    width: 70%;
-  }
-  .live-stream{
-    width: 70%;
-  }
-  .comments-box{
+@media only screen and (max-width: 2880px) {
+  .event-desc-container, .live-stream, .comments-box {
     width: 70%;
   }
 }
 
 @media only screen and (max-width: 830px) {
-  .event-desc-container{
-    width: 90%;
-  }
-  .live-stream{
-    width: 90%;
-  }
-  .comments-box{
+  .event-desc-container, .live-stream, .comments-box {
     width: 90%;
   }
 }
-
 </style>
