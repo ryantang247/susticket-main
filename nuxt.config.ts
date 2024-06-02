@@ -1,11 +1,10 @@
-
 export default defineNuxtConfig({
     routeRules: {
         '/': { prerender: true },
     },
-    build:{
-        transpile: ['veaury'],
-    },
+    // build:{
+    //     transpile: ['veaury'],
+    // },
     runtimeConfig:{
 
         public:{
@@ -17,20 +16,17 @@ export default defineNuxtConfig({
         } ,
 
     },
-    modules: [
-        '@element-plus/nuxt',
-        '@nuxt/test-utils/module'
-        // 'nuxt-icon'
-    ],
+    modules: [// 'nuxt-icon'
+    '@element-plus/nuxt', '@nuxt/test-utils/module', "@nuxt/content"],
     devtools: { enabled: true },
     vite: {
         // plugins: [
         //     veaury
         // ]
-        build: {
-            commonjsOptions: {
-                transformMixedEsModules: true,
-            },
-        }
+        // build: {
+        //     commonjsOptions: {
+        //         transformMixedEsModules: true,
+        //     },
+        // }
     }
 })

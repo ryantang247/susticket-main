@@ -1,15 +1,16 @@
 {
   "name": "nuxt-app",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "coverage": "vitest run --coverage",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "preview": "nuxt preview",
+    "styleguide": "vue-cli-service styleguidist --config styleguide.config.js",
+    "styleguide:build": "vue-cli-service styleguidist:build --config styleguide.config.js",
+    "test": "vitest"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
@@ -17,9 +18,13 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/vue-fontawesome": "^3.0.6",
     "@mdi/js": "^7.4.47",
+    "@nuxt/content": "^2.12.1",
+    "@nuxtjs/storybook": "^8.0.0",
     "@paypal/paypal-js": "^8.0.2",
     "@seatsio/seatsio-vue": "^3.4.0",
+    "@storybook-vue/nuxt": "^0.2.7",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vuese/cli": "^2.14.3",
     "axios": "^1.6.7",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
@@ -48,6 +53,10 @@
     "less": "^4.2.0",
     "playwright-core": "^1.43.1",
     "sass": "^1.75.0",
-    "vitest": "^1.5.2"
-  }
+    "vitest": "^1.5.2",
+    "vue-cli-plugin-styleguidist": "~4.72.4",
+    "vue-styleguidist": "^4.72.4",
+    "webpack": "^4.47.0"
+  },
+  "type": "module"
 }
