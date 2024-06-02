@@ -13,7 +13,6 @@
     padding: 20px;
     background-color: #284949;
     color: #ccc;
-    margin-top: auto;
   }
   </style>
   

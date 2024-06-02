@@ -1,12 +1,12 @@
 <template>
   <div class="event-list">
     <div v-for="event in events" :key="event.id" class="event-card">
-      <img :src="event.event[0].thumbnail" alt="event-image" class="event-image">
+      <img :src="event.thumbnail" alt="event-image" class="event-image">
       <el-button type="danger" round class="status">{{event.status}}</el-button>
-      <h1>{{ event.event[0].title }}</h1>
-      <p>{{ formatDate(event.event[0].startDate) }}</p>
-      <p>{{ getVenueName(event.event[0].venueId) }}</p>
-      <h2>{{ '¥' + displayPrice(event.event[0].price) }}</h2>
+      <h1>{{ event.title }}</h1>
+      <p>{{ formatDate(event.startDate) }}</p>
+      <p>{{ getVenueName(event.venueId) }}</p>
+      <h2>{{ '¥' + displayPrice(event.price) }}</h2>
       <p class="available">{{ event.available }}</p>
       <div class="bookmark-share">
         <!-- <img src="/assets/header/bookmark.png" class="bookmark"> -->

@@ -1,12 +1,8 @@
-
 <template>
-  <div>
-    <ContentDoc />
-  </div>
-
+    <content-doc/>
 </template>
 
 
-<style scoped>
-
+<style>
+@import url("../assets/main.css");
 </style>

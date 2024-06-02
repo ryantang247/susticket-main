@@ -66,14 +66,14 @@
         <div class="mobile-taskbar">
                   <!-- <img src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer"> -->
           <button @click="toggleSidebar" class="button-menu">☰</button>
-        
+
           <el-badge v-if="notificationsCount !== 0" :value="notificationsCount" class="item">
             <img class="notif-btn" src="~/assets/header/nontif.png" @click="toggleNotifBox">
           </el-badge>
           <NotifPopup :isVisible="showNotifBox" />
           <!-- <el-badge v-if="myCartCount !== 0" :value="myCartCount" class="item"></el-badge> -->
           <img alt="~/assets/header/cart.png" class="mycart-btn" src="~/assets/header/cart.png" @click="goToCart">
-          
+
       <!-- <div class="sidebar-search-box">
         <input type="text" class="search-input" placeholder="Search event..." v-model="searchQuery" @keyup.enter="searchEvent"/>
       </div> -->
@@ -86,7 +86,7 @@
         <img class="logo" src="~/assets/header/brand_logo.png" alt="logo" @click="goToHomepage" style="cursor: pointer">
         <button @click="toggleSidebar" class="close-button">×</button>
       </div>
-      
+
       <div class="sidebar-content">
         <div class="profile">
           <img v-if="userStat === 'success'" :src="avatar" alt="~/assets/header/profile_nologin.png">

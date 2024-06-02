@@ -3,16 +3,46 @@ title: Nuxt Content Example
 description: An example for the new @nuxt/content and @nuxt/components modules
 ---
 
+<div align="center">
+<h1>Main Page Documentation</h1>
+<!-- <img src="../assets/logo2.png" width="300" alt="logo"/> -->
+<!-- <h3>Welcome to Admin Page Documentation!</h3> -->
+<h4>Following documentation will guide you to understand Main Page code structure and component.</h4>
 
-# Component Documentation
-This site is a quick overview on our Components, its functions and what do they do. I won't go into details, but hope you get a brief insight on what they do, happy coding! :)
+</div>
+
+<link href="../assets/main.css" rel="stylesheet"></link>
 
 ## Profile
+
+Profile component, gateway for login and logout
+
 ::Profile
 ---
 isVisible: True
 ---
 ::
+<pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
 
 ## AMap
 
@@ -34,14 +64,14 @@ Calender component, powered using ElementPlus.
 ::CategoryMenu
 ::
 
-### CategoryMenu Props
+### Props
 
 | Prop Name        | Type    | Description                          |
 | ---------------- | ------- | ------------------------------------ |
 | `categories`     | Array   | List of categories with name and icon. |
 | `selectedCategory` | Object | The currently selected category.      |
 
-### CategoryMenu Methods
+### Methods
 
 #### `selectCategory(category)`
 
@@ -65,7 +95,6 @@ Note that in nuxt.config.ts, to run in dev mode, the following code must be comm
 ## EventCard
 
 ::EventCard
-
 ---
 events: [
 {
@@ -95,6 +124,12 @@ events: [
 ::EventFilter
 ::
 
+### EventFilter Methods:
+
+#### `selectFilter(filter)`:
+- Description: Filter based on the values in the defined array: ['All', 'This week', 'This month', 'Next month'], 
+- Parameters:
+    - `filter`: String - String from the array above.
 
 ## EventList
 
@@ -131,7 +166,7 @@ events: [
 | --------- | ---- | ----------- |
 | `events`  | Array | List of events to display. Each event contains details like `id`, `event`, `status`, `available`, and more. |
 
-#### EventList Methods
+### EventList Methods
 
 #### `toggleBookmark(event)`
 
@@ -186,14 +221,173 @@ events: [
 ::Header
 ::
 
+### Props
+
+#### `isVisible`
+- **Type**: Boolean
+- **Usage**: Determines whether the notification or profile pop-up is visible.
+
+#### `coinVal`:
+- **Type**: Number
+- **Usage**: Represents the number of coins the user has, used to display the coin balance in the sidebar.
+
+### Methods
+
+#### `toggleSidebar`
+
+**Description**: Toggles the visibility of the sidebar.
+**Parameters**: None.
+- **Code**:
+  ```javascript
+  const toggleSidebar = () => {
+    isSidebarOpen.value = !isSidebarOpen.value;
+  };
+    ```
+
+#### `toggleProfileBox`
+**Description**: Toggles the visibility of the profile pop-up and ensures the notification pop-up is closed if open.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  function toggleProfileBox() {
+    showProfileBox.value = !showProfileBox.value;
+    if (showNotifBox.value) {
+      showNotifBox.value = false;
+    }
+  }
+  ```
+
+#### `toggleNotifBox`
+**Description**: Toggles the visibility of the notification pop-up and ensures the profile pop-up is closed if open.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  function toggleNotifBox() {
+    showNotifBox.value = !showNotifBox.value;
+    if (showProfileBox.value) {
+      showProfileBox.value = false;
+    }
+  }
+  ```
+
+#### `goToCalendar`
+**Description**: Navigates the user to the calendar page.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const goToCalendar = () => {
+    router.push('/calendar/calendarPage');
+  };
+  ```
+
+#### `goToCart`
+**Description**: Navigates the user to the cart page.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const goToCart = () => {
+    router.push('/myCart');
+  };
+  ```
+
+#### `goToTickets`
+**Description**: Navigates the user to the tickets page.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const goToTickets = () => {
+    router.push('/myTickets');
+  };
+  ```
+#### `goToBookmarks`
+**Description**: Navigates the user to the bookmarks page.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const goToBookmarks = () => {
+    router.push('/bookmark/bookmarkPage');
+  };
+  ```
+
+####  `goToHomepage`
+**Description**: Navigates the user to the homepage.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  function goToHomepage() {
+    router.push('/');
+  }
+  ```
+
+#### `goToLogin`
+**Description**: Navigates the user to the login page.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const goToLogin = () => {
+    router.push('/login');
+  };
+  ```
+
+#### `logout`
+**Description**: Logs out the user by clearing cookies and local storage, and redirects to the login page.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const logout = () => {
+    console.log("User logout successfully");
+    const cookie = useCookie('secourse');
+    cookie.value = null;
+    if (process.client) {
+      localStorage.setItem("Username", null);
+      localStorage.setItem("Avatar", null);
+      localStorage.setItem("Email", null);
+      localStorage.setItem("Status", null);
+    }
+    router.push('/login');
+  };
+  ```
+
+#### `getCoins`
+**Description**: Fetches the user's coin balance from the server.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const getCoins = async () => {
+    const response = await fetch('https://secourse2024-675d60a0d98b.herokuapp.com/api/getUser', { credentials: 'include' });
+    const userDetails = await response.json();
+    userCoin = userDetails.coin;
+    coinVal = userDetails.coin;
+  };
+  ```
+
+#### `fetchNotificationsCount`
+**Description**: Fetches the count of notifications for the user from the server.
+**Parameters**: None.
+**Code**:
+  ```javascript
+  const fetchNotificationsCount = async () => {
+    try {
+      const response = await axios.get('https://secourse2024-675d60a0d98b.herokuapp.com/api/getNotifications', { withCredentials: true });
+      notificationsCount.value = response.data.length; 
+    } catch (error) {
+      console.error('Failed to fetch notifications: ', error);
+      ElNotification.error({
+        title: 'Error',
+        message: `Error fetching notifications. ${error.message}`,
+        offset: 100,
+      });
+    }
+  };
+  ```
+
+
+
 ## HeaderLogin
 
 ::HeaderLogin
 ::
 
-## MyCartCard
-:: MyCartCard
-::
 
 ## MyTicketCard
 Component for rendering the events that I have put in the cart
@@ -257,7 +451,18 @@ transactions: [{
 
 ## NotifPopup
 ::NotifPopup
+isVisible: true
 ::
+
+### Props:
+`calendarVal`: A reactive reference to the currently selected date in the calendar.
+`calendarData`: A reactive reference to an array of objects representing the data to be displayed on the calendar. Each object contains:
+`date`: The date of the event.
+`visits`: The number of visits on that date.
+`type`: The type of event (used for styling).
+### Methods:
+`getDate`(day): A method that formats a given date to return the day of the month.
+`selectedDate`(data): A method that handles the click event on a date cell. It finds the corresponding data in calendarData and emits a selectedDate event with the data.
 
 ## Paypal Button
 
@@ -299,12 +504,12 @@ When the button is clicked:
 4. **Error Handling**: Catches errors, releases seats, and shows notifications.
 
 
-
-## Thumbnail
-::Thumbnail
-::
-
-
 ## WelcomeBanner
+
+The welcome banner in our main page.
+
 ::WelcomeBanner
 ::
+
+
+

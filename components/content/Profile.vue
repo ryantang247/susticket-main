@@ -99,14 +99,13 @@
   }
   .profile-content {
     position: absolute;
-    right: 7em; 
-    top: 6.5em; 
+
     background-color: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     border-radius: 8px;
     padding: 20px;
     width: 250px; 
-    z-index: 100;
+
     align-items: center;
     text-align: center;
   }
