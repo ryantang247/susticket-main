@@ -1,7 +1,8 @@
 <template>
   <div class="myticket-card">
-    <div v-for="ticket in transactions" :key="ticket.id" class="event-card">
-      <aside v-if="ticket.event" class="left">
+    <div v-for="ticket in transactions" :key="ticket.id">
+    <div  v-if="ticket.event" class="event-card">
+      <aside  class="left">
         <h1>{{ ticket.event.title }}</h1>
         <p>{{ formatDate(ticket.event.startDate) }}</p>
         <p>{{ getVenueName(ticket.event.venueId) }}</p>
@@ -23,6 +24,7 @@
           <img src="/assets/event/linkshare.png" class="share" @click="copyLink(ticket)"> 
         </div>
       </aside>
+    </div>
     </div>
   </div>
   

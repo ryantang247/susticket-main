@@ -7,8 +7,9 @@
     </div>
     <div class="container">
 
-      <div v-for="cart in transactions" :key="cart.id" class="event-card">
-        <aside v-if="cart.event" class="left">
+      <div v-for="cart in transactions" :key="cart.id" >
+        <div v-if="cart.event" class="event-card">
+        <aside  class="left">
           <aside class="check-box">
             <!-- <img src="/assets/header/ticked.png" class="checkbox"> -->
             <img :src="tickedSrc(cart)" @click="toggleTicked(cart)" class="checkbox">
@@ -36,6 +37,7 @@
             <!-- <el-button type="danger" :icon="Delete" circle /> -->
           </div>
         </aside>
+      </div>
       </div>
       <!-- <MyCardCard :transactions="transactions" /> -->
       <div class="use-coin-cart">
