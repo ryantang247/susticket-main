@@ -1,0 +1,77 @@
+/* styles.css */
+
+/* Style headings */
+
+body {
+    margin-left: 30px; /* Adjust the value as needed */
+    margin-right: 30px; /* Adjust the value as needed */
+
+}
+h1, h2, h3 {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+
+h1 {
+    font-size: 4em;
+    border-bottom: 2px solid #0d1117;
+    text-align: center;
+    padding-bottom: 0.5em; /* Add padding to bottom */
+}
+
+h2 {
+    font-size: 2em;
+    padding-bottom: 0.3em; /* Add padding to bottom */
+}
+
+h3 {
+
+    font-size: 1.2em;
+    padding-bottom: 0.2em; /* Add padding to bottom */
+}
+h4 {
+    font-size: 1.2em;
+    padding-bottom: 0.2em; /* Add padding to bottom */
+}
+
+/* Style paragraphs */
+p {
+    font-family: Arial, sans-serif;
+    margin-bottom: 1.5em; /* Increase margin */
+}
+
+/* Style lists */
+ul, ol {
+    margin-bottom: 1.5em; /* Increase margin */
+}
+
+li {
+    margin-bottom: 0.8em; /* Increase margin */
+}
+
+/* Style links */
+a {
+    color: black;
+    text-decoration: underline;
+}
+
+h4 a {
+    color: dimgrey; /* Change color for links within h4 */
+}
+
+a:hover {
+    color: darkgreen;
+}
+
+/* Style code blocks */
+pre {
+    background-color: #f4f4f4;
+    padding: 1.5em; /* Increase padding */
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: monospace;
+}
