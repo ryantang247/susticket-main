@@ -161,7 +161,7 @@ For more detailed guides, check out the [Features](#features) section.
 
 **Q**: What password do I use for login?
 
-**A**: U can login using the same password you use to access sustech account. In case you forget your password, please contact sustech admin through email to reset password.
+**A**: You can login using the same password you use to access sustech account. In case you forget your password, please contact sustech admin through email to reset password.
 
 For more questions and answers, visit the [Troubleshooting](#troubleshooting) section.
 
@@ -190,7 +190,7 @@ This section provides all the necessary information for developers who want to c
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/susticket-main.git
+   git clone https://github.com/ryantang247/susticket-main.git
    ```
 2. **Install Dependencies**
    Make sure to install the dependencies:
@@ -259,6 +259,7 @@ This section provides all the necessary information for developers who want to c
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
    
 ## API Documentation
+Visit the following to access for the API documentation: 
 
 For additional help, visit our [FAQs](#frequently-asked-questions) section or contact support [sustech_ticket@mail.edu.cn](mailto:sustech_ticket@mail.edu.cn).
 
