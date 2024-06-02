@@ -96,6 +96,67 @@ events: [
 ---
 ::
 
+## MyTicketCard
+Component for rendering the events that I have put in the cart
+
+::MyTicketCard
+---
+transactions: [{
+"id": 1,
+"event": {
+"title": "Sample Event 1",
+"startDate": "2024-06-01T09:00:00Z",
+"venueId": "497b1133-9b18-4760-966f-df1dbae0e48a",
+"available": 100
+},
+"seat": "A12",
+"price": 50,
+"bookmarked": false
+}]
+---
+::
+
+### Component Props:
+
+#### `transactions`:
+- Type: Array
+- Description: Array of transaction objects representing tickets purchased by the user.
+
+#### `events`:
+- Type: Array
+- Description: Array of event objects.
+
+### Methods:
+
+#### `formatDate(dateString)`:
+- Description: Formats a date string into a readable format with both date and time.
+- Parameters:
+   - `dateString`: String - A date string to be formatted.
+- Returns: String - Formatted date and time string.
+
+#### `getVenueName(venueId)`:
+- Description: Retrieves the name of the venue based on the venue ID.
+- Parameters:
+   - `venueId`: String or Number - ID of the venue to retrieve the name for.
+- Returns: String - Name of the venue.
+
+#### `displayPrice(priceJson)`:
+- Description: Displays the price in a beautiful UI format. Handles both single and multiple prices.
+- Parameters:
+   - `priceJson`: String - JSON string representing the prices.
+- Returns: String - Formatted price or price range.
+
+#### `goToReview(eventId)`:
+- Description: Navigates the user to the review page for a specific event.
+- Parameters:
+   - `eventId`: String or Number - ID of the event to navigate to for review.
+
+#### `copyLink(event)`:
+- Description: Copies the link of the event to the clipboard.
+- Parameters:
+   - `event`: Object - Event object containing the link to be copied.
+
+
 
 
 
